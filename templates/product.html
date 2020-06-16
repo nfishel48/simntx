@@ -12,7 +12,7 @@
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt="">
+          <img src="{{ item.image.url }}" class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
@@ -22,7 +22,7 @@
 
           <!--Content-->
           <div class="p-4">
-
+            <h2>{{ object.title }} </h2>
             <div class="mb-3">
               <a href="">
                 <span class="badge purple mr-1">{{object.get_category_display}}</span>
