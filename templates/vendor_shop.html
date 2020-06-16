@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-  <!--Main layout-->
   <main>
     <div class="container">
 
@@ -24,18 +22,18 @@
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="/shop">Show items
+              <a class="nav-link" href="/">Show vendors
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             {% comment %} <li class="nav-item">
-              <a class="nav-link" href="#">Clothing</a>
+              <a class="nav-link" href="#">Shirts</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Food</a>
+              <a class="nav-link" href="#">Sport wears</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Other</a>
+              <a class="nav-link" href="#">Outwears</a>
             </li> {% endcomment %}
 
           </ul>
@@ -52,66 +50,67 @@
       </nav>
       <!--/.Navbar-->
 
-      <!--Section: Vendors v.3-->
+      <!--Section: Products v.3-->
       <section class="text-center mb-4">
 
-        <!--Grid row-->
         <div class="row wow fadeIn">
 
-          <!--Grid column-->
-          {% for vendor in object_list %}
+          {% for item in items %}
+          {% if item.get_item_owner == owner %}
           <div class="col-lg-3 col-md-6 mb-4">
 
-            <!--Card-->
             <div class="card">
 
-              <!--Card image-->
               <div class="view overlay">
-                <img src="{{ vendor.image.url }}" class="card-img-top">
-                <a href="{{ vendor.get_absolute_url }}" >
+                {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
+                <img src="{{ item.image.url }}" class="card-img-top">
+                <a href="{{ item.get_absolute_url }}">
                   <div class="mask rgba-white-slight"></div>
                 </a>
               </div>
-              <!--Card image-->
 
-              <!--Card content-->
               <div class="card-body text-center">
-                <!--Category & Title-->
-                {% comment %} <a href="" class="grey-text">
-                  <h5>{{ vendor.category }}</h5>
-                </a> {% endcomment %}
+                <a href="" class="grey-text">
+                  <h5>{{ item.get_category_display }}</h5>
+                </a>
                 <h5>
                   <strong>
-                    <a href="{{ vendor.get_absolute_url }}" class="dark-grey-text">{{ vendor.title}}
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
+                      <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
                     </a>
                   </strong>
                 </h5>
 
+                <h4 class="font-weight-bold blue-text">
+                  <strong>$
+                  {% if item.discount_price %}
+                  {{ item.discount_price }}
+                  {% else %}
+                  {{ item.price }}
+                  {% endif %}
+                  </strong>
+                </h4>
 
               </div>
-              <!--Card content-->
 
             </div>
-            <!--Card-->
 
           </div>
+          {% endif %}
           {% endfor %}
-          <!--Grid column-->
-
         </div>
-        <!--Grid row-->
 
       </section>
       <!--Section: Products v.3-->
 
       <!--Pagination-->
+
       {% if is_paginated %}
       <nav class="d-flex justify-content-center wow fadeIn">
         <ul class="pagination pg-blue">
 
           {% if page_obj.has_previous %}
-          <!--Arrow left-->
-          <li class="page-item ">
+          <li class="page-item">
             <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
@@ -124,7 +123,7 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          
+
           {% if page_obj.has_next %}
           <li class="page-item">
             <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
@@ -135,7 +134,6 @@
           {% endif %}
         </ul>
       </nav>
-      <!--Pagination-->
       {% endif %}
 
     </div>
