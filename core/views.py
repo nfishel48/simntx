@@ -41,6 +41,16 @@ def is_valid_form(values):
     return valid
 
 
+class TestVendorView(ListView):
+    model = Vendor
+    paginate_by = 10
+    template_name = 'test/home.html'
+
+class TestItemDetailView(DetailView):
+    model = Item
+    template_name = 'test/product.html'
+
+
 class CheckoutView(View):
     def get(self, *args, **kwargs):
         try:
