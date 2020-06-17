@@ -1,0 +1,59 @@
+{% extends "test/base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/product.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+	<div id = "main-info">
+		<div id = "image-gallery" class = "shadow">
+			<div id = "gallery">
+				<div class = "gallery-img">
+					<img style = "width: 100%; filter: blur(5px);" src = "images/gallery/1.png">
+					<img style = "filter: blur(-5px);" src = "{% static 'img/1.jpg' %}">
+				</div>
+				<div class = "gallery-img">
+					<img style = "width: 100%; filter: blur(5px);" src = "images/gallery/2.png">
+					<img style = "filter: blur(-5px);" src = "{% static 'img/2.jpg' %}">
+				</div>
+				<div class = "gallery-img">
+					<img style = "width: 100%; filter: blur(5px);" src = "images/gallery/3.png">
+					<img style = "filter: blur(-5px);" src = "{% static 'img/3.jpg' %}">
+				</div>
+			</div>
+			<div id = "gallery-buttons">
+				<div class = "gallery-button left"><img src = "{% static 'img/left.png' %}"></div>
+				<div class = "gallery-button right"><img src = "{% static 'img/right.png' %}"></div>
+			</div>
+			<div id = "gallery-index"></div>
+		</div>
+		<div id = "product-info">
+			<p id = "product-name">Product Name</p>
+			<div class = "tags-container">
+				<p class = "tag">Clothing</p>
+			</div>
+			<p id = "product-price">$100.00</p>
+			<p id = "desc-label">Description</p>
+			<p id = "product-desc">Product description goes here.</p>
+			<div id = "product-options">
+				<a href = "{{ object.get_add_to_cart_url }}">
+					<div class = "cart-button shadow cart-blue">Add to Cart</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div id = "more-info">
+		<p></p>
+	</div>
+
+{% endblock %}
+
+{% block js %}
+
+	<script type = "text/javascript" src = "{% static 'js/product.js' %}"></script>
+
+{% endblock %}

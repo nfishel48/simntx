@@ -1,0 +1,88 @@
+{% extends "test/base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/home.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+	<div id = "search-options" class = "divided">
+		<div id = "search-left">
+			<div class = "dropdown shadow">
+				<p class = "dropdown-label">Vendors</p>
+				<img src = "{% static 'img/expand.png' %}">
+				<ul>
+					<li>Vendors</li>
+					<li>Items</li>
+				</ul>
+			</div>
+		</div>
+		<div id = "search-right">
+			<input id = "search" placeholder = "Search">
+		</div>
+	</div>
+	<div id = "listings">
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 1</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 2</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 3</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 4</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 5</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<div class = "tags-container">
+					<p class = "tag">Clothing</p>
+					<p class = "tag">Food</p>
+				</div>
+				<p>Vendor 6</p>
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}
+
+{% block js %}
+
+	<script type = "text/javascript" src = "{% static 'js/home.js' %}"></script>
+
+{% endblock %}

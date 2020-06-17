@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -19,11 +18,10 @@
     body,
     header,
     .carousel {
-      height: 60vh;
+		height: 60vh;
     }
 
     @media (max-width: 740px) {
-
       html,
       body,
       header,
@@ -33,13 +31,12 @@
     }
 
     @media (min-width: 800px) and (max-width: 850px) {
-
       html,
       body,
       header,
-      .carousel {
-        height: 100vh;
-      }
+		.carousel {
+			height: 100vh;
+		}
     }
   </style>
 </head>
@@ -47,20 +44,18 @@
 {% include "navbar.html" %}
 
 <body>
-
 <div class="mt-5 pt-4 ">
-{% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-    {% endfor %}
-{% endif %}
+	{% if messages %}
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+			{{ message }}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+		{% endfor %}
+	{% endif %}
 </div>
-
 
   {% block content %}
     {% endblock content %}

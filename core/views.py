@@ -354,6 +354,10 @@ class VendorView(ListView):
     paginate_by = 10
     template_name = 'home.html'
 
+class TestVendorView(ListView):
+    model = Vendor
+    paginate_by = 10
+    template_name = 'test/home.html'
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
@@ -372,6 +376,9 @@ class ItemDetailView(DetailView):
     model = Item
     template_name = 'product.html'
 
+class TestItemDetailView(DetailView):
+    model = Item
+    template_name = 'test/product.html'
 
 class VendorDetailView(DetailView):
     template_name = 'vendor_page.html'

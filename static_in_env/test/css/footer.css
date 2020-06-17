@@ -1,0 +1,19 @@
+#footer{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	
+	margin-top: 20px;
+}
+
+#social-media{
+	height: 75px;
+	
+	background-color: #929fba;
+}
+
+#legal-info{
+	height: 50px;
+	background-color: #757e94;
+}
