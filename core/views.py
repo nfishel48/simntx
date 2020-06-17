@@ -26,6 +26,12 @@ def products(request):
     }
     return render(request, "products.html", context)
 
+def drivers(request):
+    context = {
+        'orders': Order.objects.filter(ordered=True)
+    }
+    return render(request, "drivers.html", context)
+
 
 def is_valid_form(values):
     valid = True

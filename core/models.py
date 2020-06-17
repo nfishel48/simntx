@@ -132,6 +132,7 @@ class Order(models.Model):
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
+    driver = models.CharField(default="None", max_length=20)
 
     '''
     1. Item added to cart
@@ -154,6 +155,12 @@ class Order(models.Model):
         if self.coupon:
             total -= self.coupon.amount
         return total
+    
+    def get_ref_code(self):
+        return self.ref_code
+
+    def get_shipping(self):
+        return self.shipping_address
 
 
 class Address(models.Model):

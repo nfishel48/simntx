@@ -14,7 +14,8 @@ from .views import (
     VendorView,
     TestVendorView,
     VendorDetailView,
-    vendorShop
+    vendorShop,
+    drivers
 )
 
 app_name = 'core'
@@ -30,7 +31,6 @@ urlpatterns = [
 
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),
     path('test/product/<slug>/', TestItemDetailView.as_view(), name='test_product'),
-
     path('vendor_page/<slug>/', VendorDetailView.as_view(), name='vendor_page'),
     path('add-to-cart/<slug>/', add_to_cart, name='add-to-cart'),
     path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
@@ -39,5 +39,6 @@ urlpatterns = [
          name='remove-single-item-from-cart'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
-    path('vendor_shop/<owner>/', vendorShop, name='vendor-shop')
+    path('vendor_shop/<owner>/', vendorShop, name='vendor-shop'),
+    path('drivers/', drivers, name='drivers')
 ]
