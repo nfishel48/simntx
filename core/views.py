@@ -360,10 +360,12 @@ class VendorView(ListView):
     paginate_by = 10
     template_name = 'home.html'
 
-class TestVendorView(ListView):
-    model = Vendor
-    paginate_by = 10
-    template_name = 'test/home.html'
+def index(request):
+    print(request.user)
+
+    print(Vendor.objects.all())
+
+    return render(request, 'test/home.html', {'vendors': Vendor.objects.all()})
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
@@ -390,6 +392,9 @@ class VendorDetailView(DetailView):
     template_name = 'vendor_page.html'
     model = Vendor
 
+class TestVendorDetailView(DetailView):
+    template_name = 'test/vendor.html'
+    model = Vendor
 
 def vendorShop(request, owner):
     context = {

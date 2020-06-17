@@ -4,11 +4,20 @@
 {% block css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/home.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/listings.css' %}">
 
 {% endblock %}
 
 {% block content %}
-
+	<div id = "ad-div">
+		<div id = "ad-info">
+			<p class = "tag gold" style = "margin-right: 5px; align-self: center;">AD</p>
+			<p id = "ad-name">Vendor Name</p>
+			<a href>See more</a>
+		</div>
+		<div id = "ad-image"></div>
+	</div>
+	<p id = "browse-label">Browse</p>
 	<div id = "search-options" class = "divided">
 		<div id = "search-left">
 			<div class = "dropdown shadow">
@@ -25,46 +34,17 @@
 		</div>
 	</div>
 	<div id = "listings">
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
+		{% for vendor in vendors %}
+			<div class = "listing shadow">
+				<div class = "listing-image">
+					
+				</div>
+				<div class = "listing-info">
+					<p>{{ vendor.title }}</p>
+				</div>
 			</div>
-			<div class = "listing-info">
-				<p>Vendor 1</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 2</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 3</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 4</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 5</p>
-			</div>
-		</div>
+		{% endfor %}
+		
 		<div class = "listing shadow">
 			<div class = "listing-image">
 				

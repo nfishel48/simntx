@@ -9,21 +9,26 @@
 	height: 100%;
 }
 .nav-section{	
-	color: #2196f3;
+	
 }
 
 #nav-left{
 	font-size: 22px;
+	color: #2196f3;
 }
 
+.nav-button:hover{
+	opacity: .7;
+}
 .nav-button:not(:first-child){
 	margin-left: 15px;
 }
 .nav-button a{
 	display: flex;
+	align-items: center;
 }
-.nav-button a > *:not(:first-child){
-	margin-left: 5px;
+.nav-button a > :first-child{
+	margin-right: 5px;
 }
 #item-count-badge{
 	background: #f44336;

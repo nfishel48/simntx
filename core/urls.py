@@ -17,6 +17,7 @@ from .views import (
     vendorShop,
     drivers
 )
+from . import views
 
 app_name = 'core'
 
@@ -40,5 +41,10 @@ urlpatterns = [
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
     path('vendor_shop/<owner>/', vendorShop, name='vendor-shop'),
-    path('drivers/', drivers, name='drivers')
+    path('drivers/', drivers, name='drivers'),
+    path('shop/', views.ShopView.as_view(), name='shop'),
+    path('test', views.index, name='index'),
+    path('test/product/<slug>/', views.TestItemDetailView.as_view(), name='test_product'),
+    path('test/vendor/<slug>/', views.TestVendorDetailView.as_view(), name='test_vendor_page')
+   
 ]

@@ -1,0 +1,84 @@
+{% extends "test/base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/vendor.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/listings.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+	<div id = "vendor-info">
+		<p id = "vendor-name">Vendor Name</p>
+		<div id = "vendor-detail">
+			<div id = "vendor-image"></div>
+			<div id = "vendor-desc">
+				<p id = "about-label">About us</p>
+				<p id = "vendor-about">We are a small family run business.</p>
+			</div>
+		</div>
+	</div>
+	<div id = "listings">
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 1</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 2</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 3</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 4</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 5</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<div class = "tags-container">
+					<p class = "tag">Clothing</p>
+					<p class = "tag">Food</p>
+				</div>
+				<p>Vendor 6</p>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block js %}
+
+	<script type = "text/javascript" src = "{% static 'js/vendor.js' %}"></script>
+
+{% endblock %}
