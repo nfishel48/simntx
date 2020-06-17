@@ -1,18 +1,28 @@
+{% load staticfiles %}
+{% load cart_template_tags %}
+
 <div id = "nav" class = "shadow">
 	<div class = "safe-div divided">
 		<div class = "nav-section" id = "nav-left">
 			Simntx
 		</div>
 		<div class = "nav-section" id = "nav-right">
-			<div class = "nav-button">
-				<a href>
-					<div id = "item-count-badge">0</div>
-					<p>Cart</p>
-				</a>
-			</div>
-			<div class = "nav-button">
-				<a href>Logout</a>
-			</div>
+			{% if request.user.is_authenticated %}
+				<div class = "nav-button">
+					<a href = "{% url 'core:order-summary' %}">
+						<div id = "item-count-badge">{{ request.user|cart_item_count }}</div>
+						<img src = "{% static 'img/cart.png' %}">
+						<p>Cart</p>
+					</a>
+				</div>
+				<div class = "nav-button">
+					<a href = "{% url 'account_logout' %}">Logout</a>
+				</div>
+			{% else %}
+				<div class = "nav-button">
+					<a href = "{% url 'account_login' %}">Login</a>
+				</div>
+			{% endif %}
 		</div>
 	</div>
 </div>
