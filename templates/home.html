@@ -45,12 +45,14 @@
 					{% include 'listing_item.html' with item=vendor vendor=True %}
 				{% endfor %}
 			</div>
-			<div class = "slide-left">
-				<img src = "{% static 'img/icons/right-filled-30.png' %}">
-			</div>
-			<div class = "slide-right">
-				<img src = "{% static 'img/icons/right-filled-30.png' %}">
-			</div>
+			{% if vendors.count > 5 %}
+				<div class = "slide-left">
+					<img src = "{% static 'img/icons/right-filled-30.png' %}">
+				</div>
+				<div class = "slide-right">
+					<img src = "{% static 'img/icons/right-filled-30.png' %}">
+				</div>
+			{% endif %}
 		</div>
 	</div>
 	<div class = "section">
@@ -66,12 +68,14 @@
 					{% include 'listing_item.html' with item=item vendor=None %}
 				{% endfor %}
 			</div>
-			<div class = "slide-left">
-				<img src = "{% static 'img/icons/right-filled-30.png' %}">
-			</div>
-			<div class = "slide-right">
-				<img src = "{% static 'img/icons/right-filled-30.png' %}">
-			</div>
+			{% if vendors.count > 5 %}
+				<div class = "slide-left">
+					<img src = "{% static 'img/icons/right-filled-30.png' %}">
+				</div>
+				<div class = "slide-right">
+					<img src = "{% static 'img/icons/right-filled-30.png' %}">
+				</div>
+			{% endif %}
 		</div>
 	</div>
 

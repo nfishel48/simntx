@@ -24,7 +24,7 @@
 	</div>
 	<div id = "listings">
 		{% for item in products %}
-			{% include 'listing_item.html' with item=item %}
+			{% include 'listing_item.html' with item=item vendor=None %}
 		{% endfor %}
 	</div>
 
