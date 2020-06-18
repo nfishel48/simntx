@@ -154,7 +154,7 @@
 	
 	overflow: hidden;
 }
-.slider-item:not(:first-child){
+.slider a:not(:first-child){
 	margin-left: 10px;
 }
 .slider-image{

@@ -1,144 +1,185 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/home.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/listings.css' %}">
+
+{% endblock %}
 
 {% block content %}
-
-  <!--Main layout-->
-  <main>
-    <div class="container">
-
-      <!--Navbar-->
-      <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
-
-        <!-- Navbar brand -->
-        {% comment %} <span class="navbar-brand">Categories:</span> {% endcomment %}
-
-        <!-- Collapse button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-        </button>
-          <span class="navbar-toggler-icon"></span>
-
-        <!-- Collapsible content -->
-        <div class="collapse navbar-collapse" id="basicExampleNav">
-
-          <!-- Links -->
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/shop">Show items
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            {% comment %} <li class="nav-item">
-              <a class="nav-link" href="#">Clothing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Food</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Other</a>
-            </li> {% endcomment %}
-
-          </ul>
-          <!-- Links -->
-
-          <form class="form-inline">
-            <div class="md-form my-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            </div>
-          </form>
-        </div>
-        <!-- Collapsible content -->
-
-      </nav>
-      <!--/.Navbar-->
-
-      <!--Section: Vendors v.3-->
-      <section class="text-center mb-4">
-
-        <!--Grid row-->
-        <div class="row wow fadeIn">
-
-          <!--Grid column-->
-          {% for vendor in object_list %}
-          <div class="col-lg-3 col-md-6 mb-4">
-
-            <!--Card-->
-            <div class="card">
-
-              <!--Card image-->
-              <div class="view overlay">
-                <img src="{{ vendor.image.url }}" class="card-img-top">
-                <a href="{{ vendor.get_absolute_url }}" >
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center">
-                <!--Category & Title-->
-                {% comment %} <a href="" class="grey-text">
-                  <h5>{{ vendor.category }}</h5>
-                </a> {% endcomment %}
-                <h5>
-                  <strong>
-                    <a href="{{ vendor.get_absolute_url }}" class="dark-grey-text">{{ vendor.title}}
-                    </a>
-                  </strong>
-                </h5>
-
-
-              </div>
-              <!--Card content-->
-
-            </div>
-            <!--Card-->
-
-          </div>
-          {% endfor %}
-          <!--Grid column-->
-
-        </div>
-        <!--Grid row-->
-
-      </section>
-      <!--Section: Products v.3-->
-
-      <!--Pagination-->
-      {% if is_paginated %}
-      <nav class="d-flex justify-content-center wow fadeIn">
-        <ul class="pagination pg-blue">
-
-          {% if page_obj.has_previous %}
-          <!--Arrow left-->
-          <li class="page-item ">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-          {% endif %}
-
-          <li class="page-item active">
-            <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          
-          {% if page_obj.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
-      <!--Pagination-->
-      {% endif %}
-
-    </div>
-  </main>
+	<div id = "ad-div">
+		<div id = "ad-info">
+			<p class = "tag gold" style = "margin-right: 5px; align-self: center;">AD</p>
+			<p id = "ad-name">Vendor Name</p>
+			<a href>See more</a>
+		</div>
+		<div id = "ad-image"></div>
+	</div>
+	<!--<div id = "search-options" class = "divided">
+		<div id = "search-left">
+			<div class = "dropdown shadow">
+				<p class = "dropdown-label">Vendors</p>
+				<img src = "{% static 'img/expand.png' %}">
+				<ul>
+					<li>Vendors</li>
+					<li>Items</li>
+				</ul>
+			</div>
+		</div>
+		<div id = "search-right">
+			<input id = "search" placeholder = "Search">
+		</div>
+	</div>-->
+	<div class = "section">
+		<a href>
+			<div class = "section-header">
+				<p class = "section-label">Vendors</p>
+				<p class = "more-label">See all</p>
+			</div>
+		</a>
+		<div class = "section-slide">
+			<div class = "slider">
+				{% for vendor in vendors %}
+					<a href = "{{ vendor.get_absolute_url }}"><div class = "slider-item">
+						<div class = "slider-image">
+							<div class = "slider-tags">
+								{% for tag in vendor.tags %}
+									<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div class = "slider-info">
+							<p class = "slider-title">{{ vendor.title }}</p>
+							<div class = "slider-view">
+								<img src = "{% static 'img/icons/right-24.png' %}">
+							</div>
+						</div>
+					</div></a>
+				{% endfor %}
+			
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+			</div>
+			<div class = "slide-left">
+				<img src = "{% static 'img/icons/right-filled-30.png' %}">
+			</div>
+			<div class = "slide-right">
+				<img src = "{% static 'img/icons/right-filled-30.png' %}">
+			</div>
+		</div>
+		<!--<div id = "listings">
+			{% for vendor in vendors %}
+				<div class = "listing shadow">
+					<div class = "listing-image">
+						
+					</div>
+					<div class = "listing-info">
+						<div class = "tags-container">
+							{% for tag in vendor.tags %}
+								<p class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</p>
+							{% endfor %}
+						</div>
+						<p>{{ vendor.title }}</p>
+					</div>
+				</div>
+			{% endfor %}-->
+			
+			<!--<div class = "listing shadow">
+				<div class = "listing-image">
+					
+				</div>
+				<div class = "listing-info">
+					<div class = "tags-container">
+						<p class = "tag">Clothing</p>
+						<p class = "tag">Food</p>
+					</div>
+					<p>Vendor 6</p>
+				</div>
+			</div>-->
+	</div>
+	<div class = "section">
+		<a href>
+			<div class = "section-header">
+				<p class = "section-label">Products</p>
+				<p class = "more-label">See all</p>
+			</div>
+		</a>
+		<div class = "section-slide">
+			<div class = "slider">
+				{% for item in items %}
+					<a href = "{{ item.get_absolute_url }}"><div class = "slider-item">
+						<div class = "slider-image">
+							<div class = "slider-tags">
+								{% for tag in item.tags.all %}
+									<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div class = "slider-info">
+							<p class = "slider-title">{{ item.title }}</p>
+							<div class = "slider-view">
+								<img src = "{% static 'img/icons/right-24.png' %}">
+							</div>
+						</div>
+					</div></a>
+				{% endfor %}
+			
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+				<div class = "slider-item">
+					
+				</div>
+			</div>
+			<div class = "slide-left">
+				<img src = "{% static 'img/icons/right-filled-30.png' %}">
+			</div>
+			<div class = "slide-right">
+				<img src = "{% static 'img/icons/right-filled-30.png' %}">
+			</div>
+		</div>
+	</div>
 
 {% endblock content %}
+
+{% block js %}
+
+	<script type = "text/javascript" src = "{% static 'js/home.js' %}"></script>
+
+{% endblock %}

@@ -16,8 +16,16 @@ import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-def create_ref_code():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+def index(request):
+    vendors = Vendor.objects.all()[:10]
+    items = Item.objects.all()[:10]
+
+    for vendor in vendors:
+        vendor.tags = get_tags(vendor.id)
+
+    print(vendors.all())
+
+    return render(request, 'home.html', {'vendors': vendors, 'items': items})
 
 
 def products(request):
@@ -26,6 +34,13 @@ def products(request):
     }
     return render(request, "products.html", context)
 
+
+def vendor(request, slug):
+    vendor = Vendor.objects.get(slug = slug)
+
+    return render(request, 'vendor.html', {'vendor': vendor})
+
+
 def drivers(request):
     context = {
         'orders': Order.objects.filter(ordered=True)
@@ -33,22 +48,10 @@ def drivers(request):
     return render(request, "drivers.html", context)
 
 
-def is_valid_form(values):
-    valid = True
-    for field in values:
-        if field == '':
-            valid = False
-    return valid
+def product(request, slug):
+    product = Item.objects.get(slug = slug)
 
-
-class TestVendorView(ListView):
-    model = Vendor
-    paginate_by = 10
-    template_name = 'test/home.html'
-
-class TestItemDetailView(DetailView):
-    model = Item
-    template_name = 'test/product.html'
+    return render(request, 'product.html', {'product': product})
 
 
 class CheckoutView(View):
@@ -359,28 +362,6 @@ class PaymentView(View):
         return redirect("/payment/stripe/")
 
 
-class ShopView(ListView):
-    model = Item
-    paginate_by = 10
-    template_name = 'shop.html'
-
-
-class VendorView(ListView):
-    model = Vendor
-    paginate_by = 10
-    template_name = 'home.html'
-
-def index(request):
-    vendors = Vendor.objects.all()[:10]
-    items = Item.objects.all()[:10]
-
-    for vendor in vendors:
-        vendor.tags = get_tags(vendor.id)
-
-    print(vendors.all())
-
-    return render(request, 'test/home.html', {'vendors': vendors, 'items': items})
-
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         try:
@@ -392,30 +373,6 @@ class OrderSummaryView(LoginRequiredMixin, View):
         except ObjectDoesNotExist:
             messages.warning(self.request, "You do not have an active order")
             return redirect("/")
-
-
-class ItemDetailView(DetailView):
-    model = Item
-    template_name = 'product.html'
-
-class TestItemDetailView(DetailView):
-    model = Item
-    template_name = 'test/product.html'
-
-class VendorDetailView(DetailView):
-    template_name = 'vendor_page.html'
-    model = Vendor
-
-class TestVendorDetailView(DetailView):
-    template_name = 'test/vendor.html'
-    model = Vendor
-
-def vendorShop(request, owner):
-    context = {
-        'items': Item.objects.all(),
-        'owner': owner
-    }
-    return render(request, 'vendor_shop.html', context)
 
 
 @login_required
@@ -582,3 +539,13 @@ def get_tags(target):
                 tags.append(tag)
 
     return tags
+
+def create_ref_code():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+
+def is_valid_form(values):
+    valid = True
+    for field in values:
+        if field == '':
+            valid = False
+    return valid

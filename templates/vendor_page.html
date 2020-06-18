@@ -1,64 +1,84 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/vendor.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/listings.css' %}">
+
+{% endblock %}
 
 {% block content %}
 
-  <!--Main layout-->
-  <main class="mt-5 pt-4">
-    <div class="container dark-grey-text mt-5">
+	<div id = "vendor-info">
+		<p id = "vendor-name">Vendor Name</p>
+		<div id = "vendor-detail">
+			<div id = "vendor-image"></div>
+			<div id = "vendor-desc">
+				<p id = "about-label">About us</p>
+				<p id = "vendor-about">We are a small family run business.</p>
+			</div>
+		</div>
+	</div>
+	<div id = "listings">
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 1</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 2</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 3</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 4</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<p>Vendor 5</p>
+			</div>
+		</div>
+		<div class = "listing shadow">
+			<div class = "listing-image">
+				
+			</div>
+			<div class = "listing-info">
+				<div class = "tags-container">
+					<p class = "tag">Clothing</p>
+					<p class = "tag">Food</p>
+				</div>
+				<p>Vendor 6</p>
+			</div>
+		</div>
+	</div>
 
-      <!--Grid row-->
-      <div class="row wow fadeIn">
+{% endblock %}
 
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-          <h2>{{ object.title }}</h2>
-          <img src="{{ object.image.url }}" class="img-fluid" alt=""> 
+{% block js %}
 
-        </div>
-        <!--Grid column-->
+	<script type = "text/javascript" src = "{% static 'js/vendor.js' %}"></script>
 
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <!--Content-->
-          <div class="p-4">
-
-            <div class="mb-3">
-              
-            </div>
-
-            <p class="lead">
-            
-            </p>
-
-            <p class="lead font-weight-bold">About us</p>
-
-            <p>{{ object.description}}</p>
-              <!-- get ownder data from vendor and send to the url -->
-             <a href="/vendor_shop/{{ vendor.get_vendor_owner }}"  class="btn btn-primary btn-md my-0 p">
-              Go to this shop
-              </a>
-
-          </div>
-          <!--Content-->
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <hr>
-
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-         <h3>Coming Soon</h3>
-    </div>
-  </main>
-
-
-{% endblock content %}
+{% endblock %}

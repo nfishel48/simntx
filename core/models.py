@@ -22,6 +22,9 @@ class Tag(models.Model):
     name = models.CharField(max_length = 20)
     color = models.CharField(max_length = 7)
 
+    def __str__(self):
+        return self.name
+
 
 class Vendor(models.Model):
     title = models.CharField(max_length=100)
@@ -34,7 +37,7 @@ class Vendor(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("core:vendor_page", kwargs={
+        return reverse("core:vendor", kwargs={
             'slug': self.slug
         })
 

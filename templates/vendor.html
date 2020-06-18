@@ -1,4 +1,4 @@
-{% extends "test/base.html" %}
+{% extends "base.html" %}
 {% load staticfiles %}
 
 {% block css %}
@@ -11,12 +11,12 @@
 {% block content %}
 
 	<div id = "vendor-info">
-		<p id = "vendor-name">Vendor Name</p>
+		<p id = "vendor-name">{{ vendor.title }}</p>
 		<div id = "vendor-detail">
 			<div id = "vendor-image"></div>
 			<div id = "vendor-desc">
 				<p id = "about-label">About us</p>
-				<p id = "vendor-about">We are a small family run business.</p>
+				<p id = "vendor-about">{{ vendor.description }}</p>
 			</div>
 		</div>
 	</div>
