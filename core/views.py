@@ -8,7 +8,7 @@ from django.views.generic import ListView, DetailView, View
 from django.shortcuts import redirect
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Vendor
+from .models import *
 
 import random
 import string
@@ -372,7 +372,7 @@ class VendorView(ListView):
 
 def index(request):
     print(request.user)
-
+    print("\n\n\n")
     print(Vendor.objects.all())
 
     return render(request, 'test/home.html', {'vendors': Vendor.objects.all()})
@@ -562,3 +562,10 @@ class RequestRefundView(View):
             except ObjectDoesNotExist:
                 messages.info(self.request, "This order does not exist.")
                 return redirect("core:request-refund")
+
+# FUNCTIONS
+
+def get_tags(vendor_id):
+    vendor = Item.objects.get(id = vendor_id)
+
+    return

@@ -24,13 +24,18 @@ ADDRESS_CHOICES = (
 )
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length = 20)
+    color = models.CharField(max_length = 7)
+
+
 class Vendor(models.Model):
     title = models.CharField(max_length=100)
-    owner = models.CharField(max_length=100)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     slug = models.SlugField()
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     description = models.TextField()
     image = models.ImageField(max_length=100)
+    owner = models.ForeignKey('UserProfile', on_delete = models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -63,7 +68,7 @@ class Item(models.Model):
     slug = models.SlugField()
     description = models.TextField()
     image = models.ImageField()
-    owner = models.CharField(max_length=100)
+    vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -82,9 +87,6 @@ class Item(models.Model):
         return reverse("core:remove-from-cart", kwargs={
             'slug': self.slug
         })
-
-    def get_item_owner(self):
-        return self.owner
 
 
 class OrderItem(models.Model):
@@ -164,8 +166,7 @@ class Order(models.Model):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     apartment_address = models.CharField(max_length=100)
     country = CountryField(multiple=False)
@@ -182,8 +183,7 @@ class Address(models.Model):
 
 class Payment(models.Model):
     stripe_charge_id = models.CharField(max_length=50)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.SET_NULL, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
