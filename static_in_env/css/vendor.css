@@ -1,5 +1,5 @@
-.listing-item{
-	height: 200px !important;
+.listing-vendor{
+	display: none;
 }
 
 #vendor-info{

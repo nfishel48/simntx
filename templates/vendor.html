@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block title %}
+
+	<title>{{ vendor.title }} - Simntx</title>
+	
+{% endblock %}
+
 {% block css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/vendor.css' %}">

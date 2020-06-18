@@ -37,7 +37,7 @@ body{
 	margin: auto;
 }
 .shadow{
-	box-shadow: 0 2px 8px #eee;
+	box-shadow: 0 2px 8px #eee !important;
 }
 .divided{
 	display: flex;
