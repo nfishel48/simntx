@@ -11,12 +11,12 @@
 		<title>symntx</title>
 	{% endblock %}
 	
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/base.css' %}">
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/nav.css' %}">
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/footer.css' %}">
-	
 	{% block css %}
 	{% endblock %}
+	
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/base.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/nav.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/footer.css' %}">
 </head>
 <body>
 	{% include "nav.html" %}

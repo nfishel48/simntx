@@ -3,8 +3,8 @@
 
 {% block css %}
 
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/product.css' %}">
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'test/css/detailview.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/product.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/detailview.css' %}">
 
 {% endblock %}
 
@@ -36,14 +36,14 @@
 			<p id = "product-name">{{ product.title }}</p>
 			<div class = "tags-container">
 				{% for tag in product.tags.all %}
-					<p class = "tag">{{ tag.name }}</p>
+					<p class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</p>
 				{% endfor %}
 			</div>
 			<p id = "product-price">${{ product.price }}</p>
 			<p id = "desc-label">Description</p>
 			<p id = "product-desc">{{ product.description }}</p>
 			<div id = "product-options">
-				<a href = "{{ object.get_add_to_cart_url }}">
+				<a href = "{{ product.get_add_to_cart_url }}">
 					<div class = "cart-button shadow cart-blue">Add to Cart</div>
 				</a>
 			</div>
