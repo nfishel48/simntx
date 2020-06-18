@@ -14,7 +14,7 @@
 
 #nav-left{
 	font-size: 22px;
-	color: #2196f3;
+	color: var(--primary);
 }
 
 .nav-button:hover{
@@ -28,10 +28,10 @@
 	align-items: center;
 }
 .nav-button a > :first-child{
-	margin-right: 5px;
+	margin-right: 2px;
 }
 #item-count-badge{
-	background: #f44336;
+	background: var(--primary);
 	
 	font-size: 12px;
 	font-weight: bold;
@@ -40,4 +40,23 @@
 	padding: 2px 5px;
 	
 	border-radius: 3px;
+}
+
+#search{
+	width: 200px;
+	height: 30px;
+	
+	outline: none;
+	border: none;
+	border-bottom: 2px solid var(--primary);
+	
+	opacity: .7;
+}
+#search:focus{
+	opacity: 1;
+}
+
+::placeholder{
+	font-size: 14px;
+	color: var(--secondary);
 }

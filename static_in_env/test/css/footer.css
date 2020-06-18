@@ -10,10 +10,10 @@
 #social-media{
 	height: 75px;
 	
-	background-color: #929fba;
+	background-color: var(--primary);
 }
 
 #legal-info{
 	height: 50px;
-	background-color: #757e94;
+	background-color: var(--secondary);
 }

@@ -2,10 +2,11 @@
 {% load cart_template_tags %}
 
 <div id = "nav" class = "shadow">
-	<div class = "safe-div divided">
+	<div class = "safe-div divided" style = "align-items: center;">
 		<div class = "nav-section" id = "nav-left">
 			Simntx
 		</div>
+		<input id = "search" type = "text" placeholder = "Search">
 		<div class = "nav-section" id = "nav-right">
 			{% if request.user.is_authenticated %}
 				<div class = "nav-button">
