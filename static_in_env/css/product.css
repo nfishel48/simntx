@@ -92,7 +92,7 @@
 	margin: 7px 0 20px 0;
 	
 	font-size: 18px;
-	color: #116d00;
+	color: var(--price);
 }
 #desc-label{
 	font-family: Roboto-Medium;

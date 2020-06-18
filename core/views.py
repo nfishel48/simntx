@@ -37,8 +37,9 @@ def products(request):
 
 def vendor(request, slug):
     vendor = Vendor.objects.get(slug = slug)
+    products = Item.objects.filter(vendor = vendor)
 
-    return render(request, 'vendor.html', {'vendor': vendor})
+    return render(request, 'vendor.html', {'vendor': vendor, 'products': products})
 
 
 def drivers(request):

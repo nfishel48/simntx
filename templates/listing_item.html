@@ -1,0 +1,33 @@
+{% load staticfiles %}
+
+<a href = "{{ item.get_absolute_url }}">
+	<div class = "listing-item">
+		<div class = "listing-image">
+			<img src = "{{item.image.url}}">
+			<div class = "listing-tags">
+				{% if vendor == True %}
+					{% for tag in item.tags %}
+						<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
+					{% endfor %}
+				{% else %}
+					{% for tag in item.tags.all %}
+						<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class = "listing-info">
+			<div class = "listing-main">
+				<p class = "listing-title">{{ item.title }}</p>
+				{% if vendor == None %}
+					<p class = "listing-price">${{ item.price }}</p>
+				{% endif %}
+			</div>
+			{% if vendor == None %}
+				<div class = "listing-other">
+					<p class = "listing-vendor">{{ item.vendor.title }}</p>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</a>

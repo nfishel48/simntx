@@ -12,10 +12,11 @@
 }
 
 :root{
-	--safe: 60%;
+	--safe: 100%;
 	
 	--primary: #ff6b6b;
 	--secondary: #2f3133;
+	--price: #116d00;
 }
 *{
 	margin: 0;
@@ -106,24 +107,24 @@ a:visited{
 
 @media (min-width: 576px) {
 	:root {
-		--safe: 540px;
+		--safe: 100%;
 	}
 }
 
 @media (min-width: 768px) {
 	:root {
-		--safe: 720px;
+		--safe: 600px;
 	}
 }
 
 @media (min-width: 992px) {
 	:root {
-		--safe: 960px;
+		--safe: 800px;
 	}
 }
 
 @media (min-width: 1200px) {
 	:root {
-		--safe: 1140px;
+		--safe: 1100px;
 	}
 }

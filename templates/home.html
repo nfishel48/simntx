@@ -42,44 +42,8 @@
 		<div class = "section-slide">
 			<div class = "slider">
 				{% for vendor in vendors %}
-					<a href = "{{ vendor.get_absolute_url }}"><div class = "slider-item">
-						<div class = "slider-image">
-							<div class = "slider-tags">
-								{% for tag in vendor.tags %}
-									<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
-								{% endfor %}
-							</div>
-						</div>
-						<div class = "slider-info">
-							<p class = "slider-title">{{ vendor.title }}</p>
-							<div class = "slider-view">
-								<img src = "{% static 'img/icons/right-24.png' %}">
-							</div>
-						</div>
-					</div></a>
+					{% include 'listing_item.html' with item=vendor vendor=True %}
 				{% endfor %}
-			
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
 			</div>
 			<div class = "slide-left">
 				<img src = "{% static 'img/icons/right-filled-30.png' %}">
@@ -88,35 +52,6 @@
 				<img src = "{% static 'img/icons/right-filled-30.png' %}">
 			</div>
 		</div>
-		<!--<div id = "listings">
-			{% for vendor in vendors %}
-				<div class = "listing shadow">
-					<div class = "listing-image">
-						
-					</div>
-					<div class = "listing-info">
-						<div class = "tags-container">
-							{% for tag in vendor.tags %}
-								<p class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</p>
-							{% endfor %}
-						</div>
-						<p>{{ vendor.title }}</p>
-					</div>
-				</div>
-			{% endfor %}-->
-			
-			<!--<div class = "listing shadow">
-				<div class = "listing-image">
-					
-				</div>
-				<div class = "listing-info">
-					<div class = "tags-container">
-						<p class = "tag">Clothing</p>
-						<p class = "tag">Food</p>
-					</div>
-					<p>Vendor 6</p>
-				</div>
-			</div>-->
 	</div>
 	<div class = "section">
 		<a href>
@@ -128,44 +63,8 @@
 		<div class = "section-slide">
 			<div class = "slider">
 				{% for item in items %}
-					<a href = "{{ item.get_absolute_url }}"><div class = "slider-item">
-						<div class = "slider-image">
-							<div class = "slider-tags">
-								{% for tag in item.tags.all %}
-									<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
-								{% endfor %}
-							</div>
-						</div>
-						<div class = "slider-info">
-							<p class = "slider-title">{{ item.title }}</p>
-							<div class = "slider-view">
-								<img src = "{% static 'img/icons/right-24.png' %}">
-							</div>
-						</div>
-					</div></a>
+					{% include 'listing_item.html' with item=item vendor=None %}
 				{% endfor %}
-			
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
-				<div class = "slider-item">
-					
-				</div>
 			</div>
 			<div class = "slide-left">
 				<img src = "{% static 'img/icons/right-filled-30.png' %}">

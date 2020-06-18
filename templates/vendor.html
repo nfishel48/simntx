@@ -13,7 +13,9 @@
 	<div id = "vendor-info">
 		<p id = "vendor-name">{{ vendor.title }}</p>
 		<div id = "vendor-detail">
-			<div id = "vendor-image"></div>
+			<div id = "vendor-image">
+				<img src = "{{ vendor.image.url }}">
+			</div>
 			<div id = "vendor-desc">
 				<p id = "about-label">About us</p>
 				<p id = "vendor-about">{{ vendor.description }}</p>
@@ -21,58 +23,9 @@
 		</div>
 	</div>
 	<div id = "listings">
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 1</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 2</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 3</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 4</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<p>Vendor 5</p>
-			</div>
-		</div>
-		<div class = "listing shadow">
-			<div class = "listing-image">
-				
-			</div>
-			<div class = "listing-info">
-				<div class = "tags-container">
-					<p class = "tag">Clothing</p>
-					<p class = "tag">Food</p>
-				</div>
-				<p>Vendor 6</p>
-			</div>
-		</div>
+		{% for item in products %}
+			{% include 'listing_item.html' with item=item %}
+		{% endfor %}
 	</div>
 
 {% endblock %}

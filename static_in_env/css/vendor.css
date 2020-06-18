@@ -1,3 +1,7 @@
+.listing-item{
+	height: 200px !important;
+}
+
 #vendor-info{
 	padding: 50px 0 30px 0;
 	
@@ -21,7 +25,12 @@
 	width: 200px;
 	height: 200px;
 	
-	background-color: lightgray;
+	display: flex;
+	justify-content: center;
+}
+#vendor-image img{
+	width: auto;
+	height: 100%;
 }
 #about-label{
 	margin-bottom: 10px;
