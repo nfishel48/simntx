@@ -53,7 +53,7 @@
 					{% include 'listing_item.html' with item=item vendor=None %}
 				{% endfor %}
 			</div>
-			{% if vendors.count > 5 %}
+			{% if items.count > 5 %}
 				<div class = "slide-left">
 					<img src = "{% static 'img/icons/right-filled-30.png' %}">
 				</div>
@@ -69,5 +69,6 @@
 {% block js %}
 
 	<script type = "text/javascript" src = "{% static 'js/home.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/listings.js' %}"></script>
 
 {% endblock %}

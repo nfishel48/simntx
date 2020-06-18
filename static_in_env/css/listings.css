@@ -6,7 +6,7 @@
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-gap: 15px;
 	
-	padding-top: 30px;
+	margin-top: 10px;
 	
 	box-sizing: border-box;
 }
@@ -124,8 +124,6 @@
 	box-sizing: border-box;
 	
 	overflow: hidden;
-	
-	white-space: nowrap;
 }
 .listing-price{
 	color: var(--price);

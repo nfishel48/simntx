@@ -28,10 +28,15 @@
 			</div>
 		</div>
 	</div>
-	<div id = "listings">
-		{% for item in products %}
-			{% include 'listing_item.html' with item=item vendor=None %}
-		{% endfor %}
+	<div class = "section">
+		<div class = "section-header">
+				<p class = "section-label">Products</p>
+			</div>
+		<div id = "listings">
+			{% for item in products %}
+				{% include 'listing_item.html' with item=item vendor=None %}
+			{% endfor %}
+		</div>
 	</div>
 
 {% endblock %}
@@ -39,5 +44,6 @@
 {% block js %}
 
 	<script type = "text/javascript" src = "{% static 'js/vendor.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/listings.js' %}"></script>
 
 {% endblock %}

@@ -1,13 +1,11 @@
 #image-gallery{
-	height: 300px;
-	
 	max-width: 50%;
 	
 	display: flex;
 	flex-direction: column;
 	flex: 3;
 	
-	border: 1px solid #ddd;
+	//border: 1px solid #ddd;
 	
 	margin-right: 50px;
 	
@@ -17,65 +15,56 @@
 	
 	transition: all .5s ease;
 }
-#gallery{
-	display: flex;
-	flex-wrap: wrap;
-	flex: 1;
-	
-	visibility: hidden;
-	overflow: hidden;
-}
-#gallery-buttons{
+#gallery-image{
 	width: 100%;
-	height: 100%;
+	height: 300px;
 	
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	
-	z-index: 2;
+	background-color: white;
 }
-.gallery-button{
-	width: 10%;
+#gallery-image img{
+	width: auto;
 	height: 100%;
+}
+#image-selector{
+	height: 50px;
 	
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	
-	opacity: .5;
-	
-	cursor: pointer;
-	
-	transition: all .2s ease;
+	//border-top: 1px solid #ddd;
 }
-#gallery-index{
-	width: 100%;
-	height: 25px;
+.selector-image{
+	width: 40px;
+	height: 40px;
 	
 	display: flex;
-	align-items: center;
 	justify-content: center;
-	flex-wrap: wrap;
+	
+	border: 1px solid #aaa;
 	
 	box-sizing: border-box;
 	
-	z-index: 2;
-}
-.gallery-circle{
-	width: 12px;
-	height: 12px;
-	border-radius: 12px;
-	background: #ccc;
-	margin: 0 2px;
+	opacity: .6;
+	
+	overflow: hidden;
+	
 	cursor: pointer;
-	transition: all .1s ease;
 }
-.selected{
-	background: #888;
+.selector-image:not(:first-child){
+	margin-left: 5px;
+}
+.selector-image.selected{
+	border-color: #333;
+	
+	opacity: 1;
+}
+.selector-image img{
+	width: auto;
+	height: 100%;
 }
 
 #product-info{
@@ -85,13 +74,16 @@
 	font-family: Roboto-Regular;
 	font-size: 24px;
 }
+#product-vendor{
+	font-size: 12px;
+}
 #product-info .tags-container{
 	margin: 7px 0;
 }
 #product-price{
-	margin: 7px 0 20px 0;
+	margin: 10px 0 15px 0;
 	
-	font-size: 18px;
+	font-size: 20px;
 	color: var(--price);
 }
 #desc-label{
@@ -112,7 +104,6 @@
 #more-info{
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	
 	padding-top: 30px;
 }
@@ -120,17 +111,7 @@
 	font-family: Roboto-Medium;
 	font-size: 20px;
 }
-#products-container{
-	width: 100%;
-	
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	grid-gap: 15px;
-	
-	margin-top: 20px;
-}
-#products-container a{
-	height: 150px;
-	
-	background-color: lightgray;
+
+.section-slide{
+	margin-top: 20px !important;
 }

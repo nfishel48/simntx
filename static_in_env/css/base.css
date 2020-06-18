@@ -36,6 +36,9 @@ body{
 	
 	margin: auto;
 }
+.link{
+	color: #3268ca !important;
+}
 .shadow{
 	box-shadow: 0 2px 8px #eee !important;
 }

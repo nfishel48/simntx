@@ -27,6 +27,8 @@
 	
 	display: flex;
 	justify-content: center;
+	
+	overflow: hidden;
 }
 #vendor-image img{
 	width: auto;

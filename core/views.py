@@ -39,6 +39,8 @@ def vendor(request, slug):
     vendor = Vendor.objects.get(slug = slug)
     products = Item.objects.filter(vendor = vendor)
 
+    print("TEST")
+
     return render(request, 'vendor.html', {'vendor': vendor, 'products': products})
 
 
@@ -51,8 +53,9 @@ def drivers(request):
 
 def product(request, slug):
     product = Item.objects.get(slug = slug)
+    other_products = Item.objects.filter(vendor = product.vendor)
 
-    return render(request, 'product.html', {'product': product})
+    return render(request, 'product.html', {'product': product, 'other_products': other_products})
 
 
 class CheckoutView(View):

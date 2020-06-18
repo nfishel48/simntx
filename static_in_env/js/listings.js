@@ -17,13 +17,3 @@ $(document).ready(function(){
 		$(this).css('display', 'none');
 	});
 });
-
-function fixDropdownWidth(){
-	$('.dropdown').each(function(){
-		var width = parseInt($(this).find('img').width()) + parseInt($(this).find('img').css('margin-left')[0]);
-		console.log('0 ' + (20 + width) + 'px !important');
-		
-		//$(this).find('li').css('padding', '0 ' + (15 + width) + 'px');
-		$(this).width($(this).children('ul').outerWidth());
-	});
-}
