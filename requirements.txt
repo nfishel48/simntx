@@ -2,12 +2,15 @@ astroid==2.4.2
 autopep8==1.4.4
 certifi==2020.4.5.2
 chardet==3.0.4
+colorama==0.4.3
 defusedxml==0.6.0
 Django==2.2
 django-allauth==0.42.0
 django-countries==6.1.2
 django-crispy-forms==1.9.1
 django-debug-toolbar==1.10.1
+gunicorn==20.0.4
+heroku==0.1.4
 idna==2.9
 isort==4.3.21
 lazy-object-proxy==1.4.3
@@ -17,6 +20,7 @@ pep8==1.7.1
 Pillow==7.1.2
 pycodestyle==2.5.0
 pylint==2.5.3
+python-dateutil==1.5
 python3-openid==3.1.0
 pytz==2018.5
 requests==2.23.0
