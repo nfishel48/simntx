@@ -376,8 +376,6 @@ def index(request):
     for vendor in vendors:
         vendor.tags = get_tags(vendor.id)
 
-        print(vendor.tags)
-
     return render(request, 'test/home.html', {'vendors': vendors})
 
 class OrderSummaryView(LoginRequiredMixin, View):
@@ -568,15 +566,14 @@ class RequestRefundView(View):
 
 # FUNCTIONS
 
-def get_tags(vendor_id):
-    items = Item.objects.filter(id = vendor_id)
+def get_tags(target):
+    items = Item.objects.filter(vendor = target)
 
     tags = []
 
-    print('HELLO')
-    print(items)
-
     for item in items:
+        print(item.tags.all())
+
         for tag in item.tags.all():
             if tag not in tags:
                 tags.append(tag)
