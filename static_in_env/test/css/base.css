@@ -53,14 +53,15 @@ body{
 	flex-wrap: nowrap;
 }
 .tag{
-	padding: 1px 3px;
+	padding: 2px 4px;
 	margin-bottom: 2px;
 	
 	border-radius: 2px;
 	
 	background-color: red;
 	
-	font-size: 12px;
+	font-size: 10px;
+	text-transform: uppercase;
 	color: white;
 }
 .tag:not(:first-child){

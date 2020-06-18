@@ -6,12 +6,6 @@ from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
 
-CATEGORY_CHOICES = (
-    ('C', 'Clothing'),
-    ('F', 'Food'),
-    ('O', 'Other')
-)
-
 LABEL_CHOICES = (
     ('P', 'primary'),
     ('S', 'secondary'),
@@ -32,7 +26,6 @@ class Tag(models.Model):
 class Vendor(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField()
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     description = models.TextField()
     image = models.ImageField(max_length=100)
     owner = models.ForeignKey('UserProfile', on_delete = models.CASCADE)
@@ -63,12 +56,12 @@ class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField()
     description = models.TextField()
     image = models.ImageField()
     vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
+    tags = models.ManyToManyField('Tag')
 
     def __str__(self):
         return self.title

@@ -371,11 +371,14 @@ class VendorView(ListView):
     template_name = 'home.html'
 
 def index(request):
-    print(request.user)
-    print("\n\n\n")
-    print(Vendor.objects.all())
+    vendors = Vendor.objects.all()
 
-    return render(request, 'test/home.html', {'vendors': Vendor.objects.all()})
+    for vendor in vendors:
+        vendor.tags = get_tags(vendor.id)
+
+        print(vendor.tags)
+
+    return render(request, 'test/home.html', {'vendors': vendors})
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
@@ -566,6 +569,16 @@ class RequestRefundView(View):
 # FUNCTIONS
 
 def get_tags(vendor_id):
-    vendor = Item.objects.get(id = vendor_id)
+    items = Item.objects.filter(id = vendor_id)
 
-    return
+    tags = []
+
+    print('HELLO')
+    print(items)
+
+    for item in items:
+        for tag in item.tags.all():
+            if tag not in tags:
+                tags.append(tag)
+
+    return tags

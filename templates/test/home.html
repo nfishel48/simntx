@@ -40,12 +40,17 @@
 					
 				</div>
 				<div class = "listing-info">
+					<div class = "tags-container">
+						{% for tag in vendor.tags %}
+							<p class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</p>
+						{% endfor %}
+					</div>
 					<p>{{ vendor.title }}</p>
 				</div>
 			</div>
 		{% endfor %}
 		
-		<div class = "listing shadow">
+		<!--<div class = "listing shadow">
 			<div class = "listing-image">
 				
 			</div>
@@ -56,7 +61,7 @@
 				</div>
 				<p>Vendor 6</p>
 			</div>
-		</div>
+		</div>-->
 	</div>
 
 {% endblock content %}
