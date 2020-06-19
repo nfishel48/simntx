@@ -8,8 +8,6 @@ urlpatterns = [
     path('product/<slug>', views.product, name='product'),
     path('vendor/<slug>', views.vendor, name='vendor'),
     path('search', views.search, name = 'search'),
-    path('search/q=<str:query>&t=<slug>', views.search_all, name='search_all'),
-    path('search/t=<slug>', views.search_tags, name='search_tags'),
 
     path('checkout/', views.CheckoutView.as_view(), name='checkout'),
     path('order-summary/', views.OrderSummaryView.as_view(), name='order-summary'),

@@ -80,13 +80,14 @@ def search_tags(request, slug):
 
 def search(request):
     product_results = []
+    selected_tags = []
 
     if 'query' in request.POST and 'tags' in request.POST:
         query = request.POST['query'].lower()
-        tags = request.POST.getlist('tags')
+        selected_tags = request.POST.getlist('tags')
 
         rquery = Q(title__contains=query)
-        rtags = Q(tags__name__in=tags)
+        rtags = Q(tags__name__in=selected_tags)
 
         product_results = Item.objects.filter(rquery & rtags)
     elif 'query' in request.POST:
@@ -94,38 +95,17 @@ def search(request):
 
         print(request.POST['query'])
     elif 'tags' in request.POST:
-        tags = request.POST.getlist('tags')
+        selected_tags = request.POST.getlist('tags')
 
-        product_results = Item.objects.filter(tags__name__in=tags)
+        product_results = Item.objects.filter(tags__name__in=selected_tags)
 
-    print("QUERY RESULTS: " + str(product_results))
-    print(request.POST)
+    selected_tags = Tag.objects.filter(name__in = selected_tags)
+    remaining_tags = Tag.objects.all().exclude(name__in = selected_tags.all().values('name'))
 
-    return render(request, 'search.html', {'product_results': product_results, 'tags': Tag.objects.all()})
+    print("SELECTED TAGS: " + str(selected_tags))
+    print("REMAINING TAGS: " + str(remaining_tags))
 
-
-def search_all(request, query, slug):
-    print("\n\n\n\n\nSEARCH_ALL")
-
-    if len(slug) > 0:
-        tags = slug.split(' ')
-
-        for tag in tags:
-            tag = tag.lower()
-
-        rquery = Q(title__contains=query.lower())
-        rtags = Q(tags__name__in=tags)
-
-        print("QUERY RESULTS: " + str(rquery))
-        print("TAGS RESULTS: " + str(rtags))
-
-        product_results = Item.objects.filter(rquery & rtags)
-    else:
-        product_results = Item.objects.filter(Q(title__contains = query.lower()))
-
-    print(product_results)
-
-    return render(request, 'search.html', {'product_results': product_results})
+    return render(request, 'search.html', {'product_results': product_results, 'selected_tags': selected_tags, 'remaining_tags': remaining_tags})
 
 
 class CheckoutView(View):

@@ -15,13 +15,20 @@
 			{% csrf_token %}
 			
 			<div id = "added-tags-container">
-
+				{% for tag in selected_tags %}
+					<div class = "tag" style = "border-color: {{ tag.color }}; background-color: {{ tag.color }}; color: white;">
+						{{ tag.name }}
+						
+						<img src = "{% static 'img/icons/plus-13.png' %}">
+					</div>
+					<input checked style = "display: none;" type = "checkbox" name = "tags" value = "{{ tag.name }}">
+				{% endfor %}
 			</div>
 			
 			{% include 'searchbar.html' %}
 			
 			<div id = "tags-container">
-				{% for tag in tags %}
+				{% for tag in remaining_tags %}
 					<div class = "tag hollow" style = "border-color: {{ tag.color }}; color: {{ tag.color }};">
 						{{ tag.name }}
 						
