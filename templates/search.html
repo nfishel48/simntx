@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/search.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
+
+{% endblock %}
+
+{% block content %}
+	
+	<div id = "search-options">
+		<form action = "/search" method = "POST">
+			{% csrf_token %}
+			
+			<div id = "added-tags-container">
+
+			</div>
+			
+			{% include 'searchbar.html' %}
+			
+			<div id = "tags-container">
+				{% for tag in tags %}
+					<div class = "tag hollow" style = "border-color: {{ tag.color }}; color: {{ tag.color }};">
+						{{ tag.name }}
+						
+						<img src = "{% static 'img/icons/plus-13.png' %}">
+					</div>
+				{% endfor %}
+			</div>
+		</form>
+	</div>
+	<div class = "section">
+		<div class = "section-header">
+			<p class = "section-label">Search Results</p>
+		</div>
+		<div id = "listings">
+			{% for item in product_results %}
+				{% include 'listing_item.html' with item=item vendor=None%}
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock content %}
+
+{% block js %}
+
+	<script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/search.js' %}"></script>
+
+{% endblock %}

@@ -6,7 +6,10 @@
 		<div class = "nav-section" id = "nav-left">
 			<a href = "{% url 'core:index' %}">Simntx</a>
 		</div>
-		<input id = "search" type = "text" placeholder = "Search">
+		<form id = "search-form" action = "{% url 'core:search' %}" method = "POST">
+			{% csrf_token %}
+			{% include 'searchbar.html' %}
+		</form>
 		<div class = "nav-section" id = "nav-right">
 			{% if request.user.is_authenticated %}
 				<div class = "nav-button">

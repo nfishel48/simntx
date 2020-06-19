@@ -4,6 +4,8 @@
 	<div class = "listing-item">
 		<div class = "listing-image">
 			<img src = "{{item.image.url}}">
+		</div>
+		<div class = "listing-info">
 			<div class = "listing-tags">
 				{% if vendor == True %}
 					{% for tag in item.tags %}
@@ -15,8 +17,6 @@
 					{% endfor %}
 				{% endif %}
 			</div>
-		</div>
-		<div class = "listing-info">
 			<div class = "listing-main">
 				<p class = "listing-title">{{ item.title }}</p>
 				{% if vendor == None %}

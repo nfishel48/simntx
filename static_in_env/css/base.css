@@ -69,8 +69,14 @@ body{
 	text-transform: uppercase;
 	color: white;
 }
+.tag.hollow{
+	background-color: white;
+	
+	border-width: 1px;
+	border-style: solid;
+}
 .tag:not(:first-child){
-	//margin-left: 4px;
+	margin-left: 4px;
 }
 .cart-button{
 	display: flex;

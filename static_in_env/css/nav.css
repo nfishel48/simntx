@@ -46,18 +46,46 @@ p{
 	border-radius: 3px;
 }
 
-#search{
-	width: 200px;
+#search-bar{
+	width: 300px;
 	height: 30px;
+	
+	display: flex;
+}
+#search{
+	height: 100%;
+	
+	flex: 1;
+	
+	padding: 0 7px;
 	
 	outline: none;
 	border: none;
-	border-bottom: 2px solid var(--primary);
+	border-color: var(--primary);
+	border-style: solid;
+	border-width: 1px 0 1px 1px;
+	
+	box-sizing: border-box;
 	
 	opacity: .7;
 }
 #search:focus{
 	opacity: 1;
+}
+#search-submit{
+	height: 100%;
+	
+	outline: none;
+	border: none;
+	
+	padding: 0 10px;
+	
+	background-color: var(--primary);
+	
+	font-family: Roboto-Medium;
+	color: white;
+	
+	cursor: pointer;
 }
 
 ::placeholder{

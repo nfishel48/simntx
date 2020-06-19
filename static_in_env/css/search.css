@@ -1,0 +1,49 @@
+#nav #search-bar{
+	display: none !important;
+}
+
+#search-options{
+	width: 100%;
+}
+#search-options form{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+#added-tags-container{
+	width: 400px;
+	
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	
+	margin-bottom: 10px;
+}
+#tags-container{
+	width: 400px;
+	
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	
+	margin-top: 6px;
+}
+.tag{
+	display: flex;
+	align-items: center;
+	
+	margin-top: 4px;
+	
+	cursor: pointer;
+}
+.tag img{
+	margin-left: 3px;
+
+	transform: scale(.8);
+}
+.tag:not(.hollow) img{
+	filter: invert(1);
+	transform: rotate(45deg);
+}

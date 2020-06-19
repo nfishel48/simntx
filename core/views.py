@@ -7,6 +7,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, View
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.db.models import Q
+
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import *
 
@@ -56,6 +58,74 @@ def product(request, slug):
     other_products = Item.objects.filter(vendor = product.vendor)
 
     return render(request, 'product.html', {'product': product, 'other_products': other_products})
+
+
+def search_tags(request, slug):
+    print("\n\n\n\n\nSEARCH_TAGS")
+
+    product_results = []
+
+    if len(slug) > 0:
+        tags = slug.split(' ')
+
+        for tag in tags:
+            tag = tag.lower()
+
+        product_results = Item.objects.filter(tags__name__in=tags)
+
+        print("TAGS RESULTS: " + str(product_results))
+
+    return render(request, 'search.html', {'product_results': product_results})
+
+
+def search(request):
+    product_results = []
+
+    if 'query' in request.POST and 'tags' in request.POST:
+        query = request.POST['query'].lower()
+        tags = request.POST.getlist('tags')
+
+        rquery = Q(title__contains=query)
+        rtags = Q(tags__name__in=tags)
+
+        product_results = Item.objects.filter(rquery & rtags)
+    elif 'query' in request.POST:
+        product_results = Item.objects.filter(title__contains=request.POST['query'].lower())
+
+        print(request.POST['query'])
+    elif 'tags' in request.POST:
+        tags = request.POST.getlist('tags')
+
+        product_results = Item.objects.filter(tags__name__in=tags)
+
+    print("QUERY RESULTS: " + str(product_results))
+    print(request.POST)
+
+    return render(request, 'search.html', {'product_results': product_results, 'tags': Tag.objects.all()})
+
+
+def search_all(request, query, slug):
+    print("\n\n\n\n\nSEARCH_ALL")
+
+    if len(slug) > 0:
+        tags = slug.split(' ')
+
+        for tag in tags:
+            tag = tag.lower()
+
+        rquery = Q(title__contains=query.lower())
+        rtags = Q(tags__name__in=tags)
+
+        print("QUERY RESULTS: " + str(rquery))
+        print("TAGS RESULTS: " + str(rtags))
+
+        product_results = Item.objects.filter(rquery & rtags)
+    else:
+        product_results = Item.objects.filter(Q(title__contains = query.lower()))
+
+    print(product_results)
+
+    return render(request, 'search.html', {'product_results': product_results})
 
 
 class CheckoutView(View):
