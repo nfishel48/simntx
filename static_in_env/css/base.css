@@ -90,16 +90,10 @@ body{
 	color: white;
 }
 
-.blue{
-	background-color: var(--blue);
-}
-.cart-blue{
-	background-color: #4285f4;
-}
-.gold{
-	background-color: gold;
-	color: black;
-}
+.primary{ background-color: var(--primary); }
+.blue{ background-color: var(--blue); }
+.cart-blue{ background-color: #4285f4; }
+.gold{ background-color: gold; color: black; }
 
 #content{
 	padding: 20px 0;

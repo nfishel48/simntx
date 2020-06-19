@@ -83,6 +83,7 @@ p{
 	background-color: var(--primary);
 	
 	font-family: Roboto-Medium;
+	font-size: 12px;
 	color: white;
 	
 	cursor: pointer;

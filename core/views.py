@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, View
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.db.models import Q
+from django.http import JsonResponse
 
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import *
@@ -60,52 +61,89 @@ def product(request, slug):
     return render(request, 'product.html', {'product': product, 'other_products': other_products})
 
 
-def search_tags(request, slug):
-    print("\n\n\n\n\nSEARCH_TAGS")
-
-    product_results = []
-
-    if len(slug) > 0:
-        tags = slug.split(' ')
-
-        for tag in tags:
-            tag = tag.lower()
-
-        product_results = Item.objects.filter(tags__name__in=tags)
-
-        print("TAGS RESULTS: " + str(product_results))
-
-    return render(request, 'search.html', {'product_results': product_results})
-
-
 def search(request):
     product_results = []
     selected_tags = []
 
-    if 'query' in request.POST and 'tags' in request.POST:
-        query = request.POST['query'].lower()
-        selected_tags = request.POST.getlist('tags')
+    increment = 10
+    start_index = 0
+    end_index = increment
+
+    if 'load_more' in request.GET:
+        start_index = request.session['start_index']
+        end_index = start_index + increment
+
+    print("START INDEX: " + str(start_index))
+
+    if ('query' in request.POST and 'tags' in request.POST) or ('query' in request.session and 'tags' in request.session):
+        if start_index > 0:
+            query = request.session['query']
+            selected_tags = request.session['tags']
+        else:
+            query = request.POST['query'].lower()
+            selected_tags = request.POST.getlist('tags')
+
+            request.session['query'] = query
 
         rquery = Q(title__contains=query)
         rtags = Q(tags__name__in=selected_tags)
 
         product_results = Item.objects.filter(rquery & rtags)
-    elif 'query' in request.POST:
-        product_results = Item.objects.filter(title__contains=request.POST['query'].lower())
+    elif 'query' in request.POST or 'query' in request.session:
+        if start_index > 0:
+            query = request.session['query']
+            print("QUERY: " + query)
+        else:
+            query = request.POST['query'].lower()
 
-        print(request.POST['query'])
-    elif 'tags' in request.POST:
-        selected_tags = request.POST.getlist('tags')
+            request.session['query'] = query
+
+        product_results = Item.objects.filter(title__contains=query)
+    elif 'tags' in request.POST or 'tags' in request.session:
+        if start_index > 0:
+            selected_tags = request.session['tags']
+        else:
+            selected_tags = request.POST.getlist('tags')
 
         product_results = Item.objects.filter(tags__name__in=selected_tags)
+
+    if start_index > 0:
+        request.session['start_index'] += increment
+
+        product_results = list(product_results[start_index:end_index])
+        product_json = []
+
+        print(product_results)
+
+        for item in product_results:
+            product_json.append({
+                'type': 'product',
+                'url': item.get_absolute_url(),
+                'image_url': item.image.url,
+                'title': item.title,
+                'vendor': {
+                    'title': item.vendor.title,
+                    'vendor_url': item.vendor.get_absolute_url(),
+                },
+                'price': item.price,
+                'tags': list(item.tags.all().values_list('name', 'color'))
+            })
+
+        print(product_json)
+
+        return JsonResponse({
+            'product_results': product_json
+        });
+
+    request.session['selected_tags'] = selected_tags
+    request.session['start_index'] = increment
 
     selected_tags = Tag.objects.filter(name__in = selected_tags)
     remaining_tags = Tag.objects.all().exclude(name__in = selected_tags.all().values('name'))
 
-    print("SELECTED TAGS: " + str(selected_tags))
-    print("REMAINING TAGS: " + str(remaining_tags))
+    print(len(product_results))
 
-    return render(request, 'search.html', {'product_results': product_results, 'selected_tags': selected_tags, 'remaining_tags': remaining_tags})
+    return render(request, 'search.html', {'product_results': product_results[start_index:end_index], 'selected_tags': selected_tags, 'remaining_tags': remaining_tags})
 
 
 class CheckoutView(View):

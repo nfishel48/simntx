@@ -47,11 +47,20 @@
 				{% include 'listing_item.html' with item=item vendor=None%}
 			{% endfor %}
 		</div>
+		{% if product_results.count >= 10 %}
+			<div id = "load-more" class = "cart-button primary">
+				LOAD MORE
+			</div>
+		{% endif %}
 	</div>
 
 {% endblock content %}
 
 {% block js %}
+
+	<script type = "text/javascript">
+		var listing_item = `{% include 'listing_item.html' with item=product_results.0 vendor=None %}`;
+	</script>
 
 	<script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
 	<script type = "text/javascript" src = "{% static 'js/search.js' %}"></script>
