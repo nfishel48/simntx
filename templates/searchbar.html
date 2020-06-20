@@ -1,4 +1,9 @@
+{% load staticfiles %}
+
 <div id = "search-bar">
+	<div id = "search-icon">
+		<img src = "{% static 'img/icons/search-15.png' %}">
+	</div>
 	<input id = "search" name = "query" type = "text" placeholder = "Search for Products & Vendors">
-	<input id = "search-submit" type = "submit" value = "SEARCH">
+	<!--<input id = "search-submit" type = "submit" value = "SEARCH">-->
 </div>

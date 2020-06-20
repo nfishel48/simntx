@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
 <a href = "{{ item.get_absolute_url }}">
-	<div class = "listing-item">
+	<div class = "listing-item {% if vendor == None %} product {% endif %}">
 		<div class = "listing-image">
 			<img src = "{{item.image.url}}">
 		</div>

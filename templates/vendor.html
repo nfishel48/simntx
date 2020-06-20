@@ -17,12 +17,17 @@
 {% block content %}
 
 	<div id = "vendor-info">
-		<p id = "vendor-name">{{ vendor.title }}</p>
+		<div class = "tags-container">
+			{% for tag in vendor.tags %}
+				<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
+			{% endfor %}
+		</div>
+		<p id = "vendor-name" class = "dark-text">{{ vendor.title }}</p>
 		<div id = "vendor-detail">
 			<div id = "vendor-image">
 				<img src = "{{ vendor.image.url }}">
 			</div>
-			<div id = "vendor-desc">
+			<div id = "vendor-desc" class = "dark-text">
 				<p id = "about-label">About us</p>
 				<p id = "vendor-about">{{ vendor.description }}</p>
 			</div>

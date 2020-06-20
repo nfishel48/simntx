@@ -30,7 +30,7 @@
 	
 	margin-top: 6px;
 }
-.tag{
+#search-options .tag{
 	display: flex;
 	align-items: center;
 	
@@ -38,12 +38,12 @@
 	
 	cursor: pointer;
 }
-.tag img{
+#search-options .tag img{
 	margin-left: 3px;
 
 	transform: scale(.8);
 }
-.tag:not(.hollow) img{
+#search-options .tag:not(.hollow) img{
 	filter: invert(1);
 	transform: rotate(45deg);
 }

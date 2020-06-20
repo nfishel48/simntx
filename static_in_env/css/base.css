@@ -14,8 +14,10 @@
 :root{
 	--safe: 100%;
 	
-	--primary: #ff6b6b;
-	--secondary: #2f3133;
+	//--primary: #ff6b6b;
+	--primary: #69a1ff;
+	--secondary: #404040;
+	--dark-text: #404040;
 	--price: #116d00;
 }
 *{
@@ -28,7 +30,9 @@ body{
 	
 	font-family: Roboto-Regular;
 	
-	border-top: 2px solid var(--primary);
+	background-color: #f9f9f9;
+	
+	//border-top: 2px solid var(--primary);
 }
 
 .safe-div{
@@ -95,7 +99,9 @@ body{
 .cart-blue{ background-color: #4285f4; }
 .gold{ background-color: gold; color: black; }
 
-#content{
+.dark-text{ color: var(--dark-text); }
+
+#content .safe-div{
 	padding: 20px 0;
 }
 

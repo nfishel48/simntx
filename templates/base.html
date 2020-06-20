@@ -25,6 +25,9 @@
 	{% include "messages.html" %}
 	
 	<div id = "content">
+		{% block before_content %}
+		{% endblock %}
+	
 		<div class = "safe-div">
 			{% block content %}
 			{% endblock %}
