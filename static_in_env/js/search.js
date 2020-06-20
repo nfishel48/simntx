@@ -28,23 +28,23 @@ $(document).ready(function(){
 	
 	$('#load-more').on('click', function(){
 		$.ajax({
-			url: '/search',
+			url: '/search_more',
 			data: {
-				'load_more': true
+				
 			},
 			error: function(e){
 				
 			},
 			success: function(data) {
-				if (data['product_results'].length < 10){
+				console.log(data);
+				
+				if (!data['show_load_button']){
 					$('#load-more').remove();
 				}
 				
-				for (var i = 0; i < data['product_results'].length; i++){
+				for (var i = 0; i < data['product_results'][0].length; i++){
 					var new_listing = $(listing_item),
-						item = data['product_results'][i];
-						
-					console.log(item);
+						item = data['product_results'][0][i];
 					
 					$(new_listing).attr('href', item['url']);
 					$(new_listing).find('img').attr('src', item['image_url']);
@@ -61,8 +61,6 @@ $(document).ready(function(){
 					}
 					
 					$('#listings').append(new_listing);
-					
-					console.log(new_listing);
 				}
 			}
 		});

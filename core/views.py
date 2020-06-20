@@ -19,6 +19,9 @@ import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
+load_amount = 10
+
+
 def index(request):
     vendors = Vendor.objects.all()[:10]
     items = Item.objects.all()[:10]
@@ -61,89 +64,95 @@ def product(request, slug):
     return render(request, 'product.html', {'product': product, 'other_products': other_products})
 
 
+def search_more(request):
+    data = {}
+
+    start_index = request.session['start_index']
+
+    print(start_index)
+
+    query = request.session['query']
+    tags = request.session['tags']
+
+    product_results, vendor_results = get_search_items(query, tags)
+
+    data['show_load_button'] = len(product_results) - start_index > load_amount
+
+    request.session['start_index'] += load_amount
+
+    product_json, vendor_json = serialize_items(product_results[start_index:start_index + load_amount], vendor_results[start_index:start_index + load_amount])
+
+    data['product_results'] = product_json,
+    data['vendor_results'] = vendor_json
+
+    return JsonResponse(data)
+
+
 def search(request):
-    product_results = []
-    selected_tags = []
+    data = {
+        'success': False,
+        'load_amount': load_amount
+    }
 
-    increment = 10
-    start_index = 0
-    end_index = increment
+    query = ''
+    tags = None
 
-    if 'load_more' in request.GET:
-        start_index = request.session['start_index']
-        end_index = start_index + increment
+    if 'query' in request.POST:
+        query = request.POST['query']
 
-    print("START INDEX: " + str(start_index))
+    if 'tags' in request.POST:
+        tags = request.POST['tags']
 
-    if ('query' in request.POST and 'tags' in request.POST) or ('query' in request.session and 'tags' in request.session):
-        if start_index > 0:
-            query = request.session['query']
-            selected_tags = request.session['tags']
-        else:
-            query = request.POST['query'].lower()
-            selected_tags = request.POST.getlist('tags')
+    product_results, vendor_results = get_search_items(query, tags)
 
-            request.session['query'] = query
+    request.session['start_index'] = load_amount
+    request.session['query'] = query
+    request.session['tags'] = tags
 
-        rquery = Q(title__contains=query)
-        rtags = Q(tags__name__in=selected_tags)
+    data['show_load_button'] = len(product_results) > load_amount
+    data['load_amount'] = load_amount
 
-        product_results = Item.objects.filter(rquery & rtags)
-    elif 'query' in request.POST or 'query' in request.session:
-        if start_index > 0:
-            query = request.session['query']
-            print("QUERY: " + query)
-        else:
-            query = request.POST['query'].lower()
+    data['product_results'] = product_results[:load_amount]
+    data['vendor_results'] = vendor_results
 
-            request.session['query'] = query
+    data['success'] = True
 
-        product_results = Item.objects.filter(title__contains=query)
-    elif 'tags' in request.POST or 'tags' in request.session:
-        if start_index > 0:
-            selected_tags = request.session['tags']
-        else:
-            selected_tags = request.POST.getlist('tags')
+    return render(request, 'search.html', data)
 
-        product_results = Item.objects.filter(tags__name__in=selected_tags)
 
-    if start_index > 0:
-        request.session['start_index'] += increment
+def get_search_items(query, tags):
+    q_query = Q(title__contains=query)
 
-        product_results = list(product_results[start_index:end_index])
-        product_json = []
+    if tags:
+        q_tags = Q(tags__name__in=tags)
 
-        print(product_results)
+        product_results = Item.objects.filter(q_query & q_tags)
+        vendor_results = Item.objects.filter(q_query & q_tags)
+    else:
+        product_results = Item.objects.filter(q_query)
+        vendor_results = Vendor.objects.filter(q_query)
 
-        for item in product_results:
-            product_json.append({
-                'type': 'product',
-                'url': item.get_absolute_url(),
-                'image_url': item.image.url,
-                'title': item.title,
-                'vendor': {
-                    'title': item.vendor.title,
-                    'vendor_url': item.vendor.get_absolute_url(),
-                },
-                'price': item.price,
-                'tags': list(item.tags.all().values_list('name', 'color'))
-            })
+    return product_results, vendor_results
 
-        print(product_json)
 
-        return JsonResponse({
-            'product_results': product_json
-        });
+def serialize_items(product_results, vendor_results):
+    product_json = []
+    vendor_json = []
 
-    request.session['selected_tags'] = selected_tags
-    request.session['start_index'] = increment
+    for item in product_results:
+        product_json.append({
+            'url': item.get_absolute_url(),
+            'image_url': item.image.url,
+            'title': item.title,
+            'vendor': {
+                'title': item.vendor.title,
+                'vendor_url': item.vendor.get_absolute_url(),
+            },
+            'price': item.price,
+            'tags': list(item.tags.all().values_list('name', 'color'))
+        })
 
-    selected_tags = Tag.objects.filter(name__in = selected_tags)
-    remaining_tags = Tag.objects.all().exclude(name__in = selected_tags.all().values('name'))
-
-    print(len(product_results))
-
-    return render(request, 'search.html', {'product_results': product_results[start_index:end_index], 'selected_tags': selected_tags, 'remaining_tags': remaining_tags})
+    return product_json, vendor_json
 
 
 class CheckoutView(View):

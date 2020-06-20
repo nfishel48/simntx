@@ -47,7 +47,7 @@
 				{% include 'listing_item.html' with item=item vendor=None%}
 			{% endfor %}
 		</div>
-		{% if product_results.count >= 10 %}
+		{% if show_load_button %}
 			<div id = "load-more" class = "cart-button primary">
 				LOAD MORE
 			</div>
@@ -60,6 +60,7 @@
 
 	<script type = "text/javascript">
 		var listing_item = `{% include 'listing_item.html' with item=product_results.0 vendor=None %}`;
+		var load_amount = {{ load_amount }};
 	</script>
 
 	<script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
