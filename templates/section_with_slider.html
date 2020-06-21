@@ -1,0 +1,24 @@
+{% load staticfiles %}
+
+<div class = "section">
+	<div class = "section-header">
+		<p class = "section-label"><a href>{{ title }}</a></p>
+		<div class = "slider-controls">
+			{% if items.count > 5 %}
+				<div class = "move-left">
+					<img src = "{% static 'img/icons/right-24.png' %}">
+				</div>
+				<div class = "move-right">
+					<img src = "{% static 'img/icons/right-24.png' %}">
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class = "section-slide">
+		<div class = "slider">
+			{% for item in items %}
+				{% include 'listing_item.html' with item=item vendor=vendor %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
