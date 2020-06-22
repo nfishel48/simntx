@@ -56,7 +56,7 @@ def vendor(request, slug):
 
 def drivers(request):
     context = {
-        'orders': Order.objects.filter(ordered=True)
+        'orders': Order.objects.filter(ordered=True),
     }
     return render(request, "drivers.html", context)
 
@@ -693,3 +693,16 @@ def is_valid_form(values):
         if field == '':
             valid = False
     return valid
+
+class OrderView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'object': order
+            }
+            return render(self.request, 'driver_summary.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You do not have an active order")
+            return redirect("/")
+
