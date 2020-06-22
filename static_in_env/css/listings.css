@@ -1,11 +1,11 @@
 #listings{
-	width: var(--safe);
+	width: 100%;
 	height: auto;
 	
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	grid-auto-rows: minmax(min-content, max-content);
-	grid-gap: 15px;
+	grid-gap: 10px;
 	
 	margin-top: 10px;
 	
@@ -24,8 +24,6 @@
 	display: flex;
 	align-items: baseline;
 	justify-content: space-between;
-	
-	margin-top: 30px;
 }
 .section-header:hover{
 	//opacity: .8;
@@ -143,12 +141,15 @@
 	font-size: 14px;
 }
 .listing-title{
+	position: relative;
+	
+	font-family: Roboto-Medium;
+	color: #444;
+	
 	box-sizing: border-box;
 	
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	
-	position: relative;
 	
 	overflow: hidden;
 }
@@ -183,8 +184,11 @@
 	float: right;
 }
 .listing-vendor{
+	font-family: Roboto-Medium;
 	font-size: 12px;
+	//color: var(--light-text);
 	color: #777;
+	color: #a1a1a1;
 }
 
 .slider-controls{

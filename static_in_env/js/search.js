@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var index = 5;
 	
-	$(document).on('click', '#tags-container .tag', function(){
+	/*$(document).on('click', '#tags-container .tag', function(){
 		$('#added-tags-container').append('<input checked style = "display: none;" type = "checkbox" name = "tags" value = "' + $(this).text().trim() + '">')
 		
 		$(this).removeClass('hollow');
@@ -24,6 +24,10 @@ $(document).ready(function(){
 		$('#tags-container').append(temp);
 		
 		$(this).remove();
+	});*/
+	
+	$('.decorated-tag').on('click', function(){
+		$(this).addClass('selected');
 	});
 	
 	$('#load-more').on('click', function(){

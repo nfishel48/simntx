@@ -20,7 +20,7 @@
 	
 	--dark-text: #404040;
 	--light-text: #8c8c8c;
-	--price: #116d00;
+	--price: #46b323;
 }
 *{
 	margin: 0;
@@ -34,7 +34,7 @@ body{
 	
 	background-color: #f9f9f9;
 	
-	//border-top: 2px solid var(--primary);
+	color: var(--dark-text);
 }
 
 .safe-div{
@@ -59,21 +59,21 @@ body{
 	align-items: center;
 	justify-content: center;
 }
+
 .tags-container{
 	display: flex;
 	flex-wrap: nowrap;
 }
 .tag{
-	padding: 2px 4px;
-	//margin-bottom: 2px;
+	display: flex;
+	align-items: center;
 	
-	//border-radius: 2px;
+	background-color: transparent;
 	
-	background-color: red;
-	
+	font-family: Roboto-Regular;
 	font-size: 10px;
 	text-transform: uppercase;
-	color: white;
+	color: var(--light-text);
 }
 .tag.hollow{
 	background-color: white;
@@ -82,8 +82,39 @@ body{
 	border-style: solid;
 }
 .tag:not(:first-child){
+	margin-left: 3px;
+}
+.tag:not(:first-child):before{
+	content: '•';
+	margin-right: 3px;
+}
+.decorated-tag{
+	padding: 7px 10px;
+	
+	color: var(--dark-text) !important;
+	
+	background-color: white !important;
+	
+	border: 1px solid #ccc;
+	
+	cursor: pointer;
+}
+.decorated-tag:before{
+	content: '' !important;
+}
+.decorated-tag img{
+	height: 15px;
+}
+.decorated-tag p{
 	margin-left: 4px;
 }
+.decorated-tag.selected{
+	font-family: Roboto-Medium;
+	color: var(--dark-text);
+	
+	border-color: black;
+}
+
 .cart-button{
 	display: flex;
 	align-items: center;
@@ -128,18 +159,23 @@ a:visited{
 
 @media (min-width: 768px) {
 	:root {
-		--safe: 600px;
+		--safe: 700px;
 	}
 }
 
 @media (min-width: 992px) {
 	:root {
-		--safe: 800px;
+		--safe: 900px;
 	}
 }
 
 @media (min-width: 1200px) {
 	:root {
 		--safe: 1100px;
+	}
+}
+@media (min-width: 1500px) {
+	:root {
+		--safe: 1300px;
 	}
 }

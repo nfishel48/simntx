@@ -11,47 +11,43 @@
 {% block content %}
 	
 	<div id = "search-options">
-		<form action = "/search" method = "POST">
+		<form action = "/search" method = "POST" id = "search-form">
 			{% csrf_token %}
 			
-			<div id = "added-tags-container">
-				{% for tag in selected_tags %}
-					<div class = "tag" style = "border-color: {{ tag.color }}; background-color: {{ tag.color }}; color: white;">
-						{{ tag.name }}
-						
-						<img src = "{% static 'img/icons/plus-13.png' %}">
-					</div>
-					<input checked style = "display: none;" type = "checkbox" name = "tags" value = "{{ tag.name }}">
-				{% endfor %}
-			</div>
-			
 			{% include 'searchbar.html' %}
-			
-			<div id = "tags-container">
-				{% for tag in remaining_tags %}
-					<div class = "tag hollow" style = "border-color: {{ tag.color }}; color: {{ tag.color }};">
-						{{ tag.name }}
-						
-						<img src = "{% static 'img/icons/plus-13.png' %}">
-					</div>
-				{% endfor %}
-			</div>
 		</form>
 	</div>
-	<div class = "section">
-		<div class = "section-header">
-			<p class = "section-label">Search Results</p>
-		</div>
-		<div id = "listings">
-			{% for item in product_results %}
-				{% include 'listing_item.html' with item=item vendor=None%}
-			{% endfor %}
-		</div>
-		{% if show_load_button %}
-			<div id = "load-more" class = "cart-button primary">
-				LOAD MORE
+	<div id = "search-body">
+		<div id = "search-filters">
+			<div class = "filter-group">
+				<p class = "filter-label">Tags</p>
+				<div class = "filter-options">
+					<div id = "search-tags">
+						{% for tag in selected_tags %}
+							<input class = "tag decorated-tag selected" form = "search-form" type = "submit" name = "tag" value = "{{ tag.name }}">
+						{% endfor %}
+						{% for tag in remaining_tags %}
+							<input class = "tag decorated-tag" form = "search-form" type = "submit" name = "tag" value = "{{ tag.name }}">
+						{% endfor %}
+					</div>
+				</div>
 			</div>
-		{% endif %}
+		</div>
+		<div id = "search-results">
+			<div class = "section-header">
+				<p class = "section-label">Search Results</p>
+			</div>
+			<div id = "listings">
+				{% for item in product_results %}
+					{% include 'listing_item.html' with item=item vendor=None%}
+				{% endfor %}
+			</div>
+			{% if show_load_button %}
+				<div id = "load-more" class = "cart-button primary">
+					LOAD MORE
+				</div>
+			{% endif %}
+		</div>
 	</div>
 
 {% endblock content %}

@@ -39,58 +39,6 @@
 	margin-top: 10px;
 }
 
-#search-options{
-	width: 100%;
-	height: 45px;
-	
-	font-size: 14px;
-	
-	margin: 20px 0 15px 0;
-}
-
-#search-left{
-	
-}
-.dropdown{
-	height: 100%;
-	
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	
-	position: relative;
-	
-	padding: 0 15px;
-	
-	background: #929fba;
-	
-	color: white;
-	
-	cursor: pointer;
-}
-.dropdown img{
-	
-}
-.dropdown ul{
-	width: 100%;
-	
-	display: none;
-	
-	position: absolute;
-	left: 0;
-	top: 0;
-	
-	background: #929fba;
-	
-	color: white;
-}
-.dropdown ul li{
-	width: 100%;
-	height: 45px;
-	
-	display: flex;
-	align-items: center;
-	
-	padding: 0 15px;
-	box-sizing: border-box;
+.section{
+	margin-top: 30px !important;
 }

@@ -6,14 +6,14 @@
 			<img src = "{{item.image.url}}">
 		</div>
 		<div class = "listing-info">
-			<div class = "listing-tags">
+			<div class = "tags-container">
 				{% if vendor == True %}
 					{% for tag in item.tags %}
-						<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
+						{% include 'tag.html' with tag=tag %}
 					{% endfor %}
 				{% else %}
 					{% for tag in item.tags.all %}
-						<div class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</div>
+						{% include 'tag.html' with tag=tag %}
 					{% endfor %}
 				{% endif %}
 			</div>

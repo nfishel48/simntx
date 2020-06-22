@@ -1,11 +1,11 @@
 $(document).ready(function(){
-	$('.slide-left').on('click', function(){
+	$('.slide-left img').on('click', function(){
 		$(this).closest('.section').find('.slider').css('margin-left', '0');
 		
-		$(this).siblings('.slide-right').css('display', 'flex');
-		$(this).css('display', 'none');
+		$(this).parent().siblings('.slide-right').css('display', 'flex');
+		$(this).parent().css('display', 'none');
 	});
-	$('.slide-right').on('click', function(){
+	$('.slide-right img').on('click', function(){
 		var outerDiv = $(this).closest('.section').find('.section-slide'),
 			innerDiv = $(this).closest('.section').find('.slider');
 		
@@ -18,7 +18,7 @@ $(document).ready(function(){
 		
 		$(innerDiv).css('margin-left', (0 - width) + 'px');
 		
-		$(this).siblings('.slide-left').css('display', 'flex');
-		$(this).css('display', 'none');
+		$(this).parent().siblings('.slide-left').css('display', 'flex');
+		$(this).parent().css('display', 'none');
 	});
 });

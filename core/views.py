@@ -92,6 +92,17 @@ def search_more(request):
     return JsonResponse(data)
 
 
+def search_alt(request):
+    data = {
+        'success': False,
+        'load_amount': load_amount
+    }
+
+
+
+    return render(request, 'search.html', data)
+
+
 def search(request):
     data = {
         'success': False,
@@ -104,11 +115,27 @@ def search(request):
     query = ''
     tags = None
 
+    print(request.POST)
+
     if 'query' in request.POST:
         query = request.POST['query']
 
-    if 'tags' in request.POST:
-        tags = request.POST.getlist('tags')
+    if 'tag' in request.POST:
+        tag = request.POST['tag']
+
+        print(tag)
+
+        if 'tags' in request.session and request.session['tags']:
+            tags = request.session['tags']
+
+            print(tags)
+
+            if tag in tags:
+                tags.remove(tag)
+            else:
+                tags.append(tag)
+        else:
+            tags = [tag]
 
         selected_tags = Tag.objects.filter(name__in=tags)
         remaining_tags = Tag.objects.all().exclude(name__in=tags)
@@ -127,6 +154,7 @@ def search(request):
     data['product_results'] = product_results[:load_amount]
     data['vendor_results'] = vendor_results
 
+    data['query'] = query
     data['selected_tags'] = list(selected_tags)
     data['remaining_tags'] = list(remaining_tags)
 
