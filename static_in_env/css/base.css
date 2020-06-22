@@ -14,10 +14,12 @@
 :root{
 	--safe: 100%;
 	
-	//--primary: #ff6b6b;
 	--primary: #69a1ff;
 	--secondary: #404040;
+	--light-red: #ff6b6b;
+	
 	--dark-text: #404040;
+	--light-text: #8c8c8c;
 	--price: #116d00;
 }
 *{
@@ -92,6 +94,10 @@ body{
 	font-size: 12px;
 	text-transform: uppercase;
 	color: white;
+}
+.price{
+	font-family: Roboto-Medium;
+	color: var(--price);
 }
 
 .primary{ background-color: var(--primary); }

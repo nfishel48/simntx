@@ -4,32 +4,50 @@
 <div id = "nav"><!--class = "shadow"-->
 	<div class = "safe-div divided" style = "align-items: center;">
 		<div class = "nav-section" id = "nav-left">
-			<a href = "{% url 'core:index' %}">Simntx</a>
+			<a href = "{% url 'core:index' %}">
+				<img src = "{% static 'img/logo.png' %}">
+			</a>
 		</div>
-		<form id = "search-form" action = "{% url 'core:search' %}" method = "POST">
-			{% csrf_token %}
-			{% include 'searchbar.html' %}
-		</form>
 		<div class = "nav-section" id = "nav-right">
-			{% if request.user.is_authenticated %}
+			<div class = "sub-section" id = "account-links">
 				<div class = "nav-button">
-					<a href = "{% url 'core:order-summary' %}">
-						<div id = "item-count-badge">{{ request.user|cart_item_count }}</div>
-						<img src = "{% static 'img/cart.png' %}">
-						<p>Cart</p>
-					</a>
+					<a href = "{% url 'account_logout' %}">Account</a>
 				</div>
-				<div class = "nav-button">
-					<a href = "{% url 'account_logout' %}">Logout</a>
-				</div>
-			{% else %}
-				<div class = "nav-button">
-					<a href = "{% url 'account_login' %}">Login</a>
-				</div>
-				<div class = "nav-button">
-					<a href = "{% url 'account_signup' %}">Sign Up</a>
-				</div>
-			{% endif %}
+				
+				{% if request.user.is_authenticated %}
+					<div class = "nav-button">
+						<a href = "{% url 'account_logout' %}">Logout</a>
+					</div>
+				{% else %}
+					<div class = "nav-button">
+						<a href = "{% url 'account_login' %}">Login</a>
+					</div>
+					<div class = "nav-button">
+						<a href = "{% url 'account_signup' %}">Sign Up</a>
+					</div>
+				{% endif %}
+			</div>
+			<div class = "sub-section">
+				<form action = "/search" method = "POST">
+					{% csrf_token %}
+					{% include 'searchbar.html' %}
+				</form>
+				{% if request.user.is_authenticated %}
+					<div class = "nav-button">
+						<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
+							<img src = "{% static 'img/cart.png' %}">
+							<div id = "item-count-badge">{{ request.user|cart_item_count }}</div>
+						</a>
+					</div>
+				{% else %}
+					<div class = "nav-button">
+						<a href = "{% url 'account_login' %}">Login</a>
+					</div>
+					<div class = "nav-button">
+						<a href = "{% url 'account_signup' %}">Sign Up</a>
+					</div>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 </div>
