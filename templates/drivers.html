@@ -61,8 +61,8 @@
                 <!--add city to checkout-->
                 {{ order.shipping_address.zip }}
                 </p>
-                <a href = "{{ order.add_to_delivery_url }}">
-                  <button class="btn btn-primary btn-lg btn-block" type="submit">Take this order</button>
+                <a href = "{{ order.get_absolute_url }}">
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
                 </a>
 
 

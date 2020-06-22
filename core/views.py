@@ -694,5 +694,15 @@ def is_valid_form(values):
             valid = False
     return valid
 
-def add_to_delivery(request):
-    return redirect("/")
+class OrderView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'object': order
+            }
+            return render(self.request, 'driver_summary.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You do not have an active order")
+            return redirect("/")
+
