@@ -56,7 +56,7 @@ def vendor(request, slug):
 
 def drivers(request):
     context = {
-        'orders': Order.objects.filter(ordered=True)
+        'orders': Order.objects.filter(ordered=True),
     }
     return render(request, "drivers.html", context)
 
@@ -693,3 +693,6 @@ def is_valid_form(values):
         if field == '':
             valid = False
     return valid
+
+def add_to_delivery(request):
+    return redirect("/")

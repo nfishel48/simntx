@@ -159,6 +159,11 @@ class Order(models.Model):
 
     def get_shipping(self):
         return self.shipping_address
+    
+    def add_to_delivery(self):
+        self.driver = self.user
+        return self.ref_code
+        
 
 
 class Address(models.Model):
