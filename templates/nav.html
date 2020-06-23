@@ -10,11 +10,14 @@
 		</div>
 		<div class = "nav-section" id = "nav-right">
 			<div class = "sub-section" id = "account-links">
-				<div class = "nav-button">
-					<a href = "{% url 'account_logout' %}">Account</a>
-				</div>
 				
 				{% if request.user.is_authenticated %}
+					<div class = "nav-button">
+					<a href = "/account">Account</a>
+					</div>
+					<div class = "nav-button">
+					<a href = "/">Orders</a>
+					</div>
 					<div class = "nav-button">
 						<a href = "{% url 'account_logout' %}">Logout</a>
 					</div>
@@ -24,7 +27,7 @@
 					</div>
 					<div class = "nav-button">
 						<a href = "{% url 'account_signup' %}">Sign Up</a>
-					</div>
+					</div> 
 				{% endif %}
 			</div>
 			<div class = "sub-section">
@@ -40,12 +43,12 @@
 						</a>
 					</div>
 				{% else %}
-					<div class = "nav-button">
+					{% comment %} <div class = "nav-button">
 						<a href = "{% url 'account_login' %}">Login</a>
 					</div>
 					<div class = "nav-button">
 						<a href = "{% url 'account_signup' %}">Sign Up</a>
-					</div>
+					</div> {% endcomment %}
 				{% endif %}
 			</div>
 		</div>

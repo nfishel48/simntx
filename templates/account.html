@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load account %}
+
+
+
+{% block title %}
+
+	<title>Account - Simntx</title>
+	
+{% endblock %}
+
+{% block css %}
+
+	{% include 'bootstrap_css.html' %}
+
+{% endblock %}
+
+{% block content %}
+
+    <h2>Username:  {% user_display user %}</h2>
+    <h2>Username:  {% user_display user %}</h2>
+  
+   
+
+{% endblock content %}

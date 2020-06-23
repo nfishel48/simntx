@@ -26,6 +26,7 @@ def index(request):
     vendors = Vendor.objects.all()[:10]
     items = Item.objects.all()[:10]
 
+
     for vendor in vendors:
         vendor.tags = get_tags(vendor.id)
 
@@ -668,6 +669,22 @@ class RequestRefundView(View):
                 messages.info(self.request, "This order does not exist.")
                 return redirect("core:request-refund")
 
+class OrderView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        order = Order.objects.get(ref_code = kwargs['ref_code'])
+        context = {
+                'object': order
+        }
+        return render(self.request, 'driver_summary.html', context)
+    
+    def post(self):
+        #here is where you change the driver for the order
+        return redirect("core:request-refund")
+        
+class AccountView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        return render(self.request, 'account.html')
+
 # FUNCTIONS
 
 def get_tags(target):
@@ -693,17 +710,4 @@ def is_valid_form(values):
         if field == '':
             valid = False
     return valid
-
-class OrderView(LoginRequiredMixin, View):
-    def get(self, *args, **kwargs):
-        order = Order.objects.get(ref_code = kwargs['ref_code'])
-        context = {
-                'object': order
-        }
-        return render(self.request, 'driver_summary.html', context)
-    
-    def post(self):
-        #here is where you change the driver for the order
-        return redirect("core:request-refund")
-        
 
