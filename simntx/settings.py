@@ -1,6 +1,4 @@
 import os
-import dj_database_url
-import psycopg2
 
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
