@@ -54,6 +54,9 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_user(self):
+        return self.user
+
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
@@ -216,3 +219,4 @@ def userprofile_receiver(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
+

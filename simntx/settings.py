@@ -5,7 +5,7 @@ ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
-ALLOWED_HOSTS = ['localhost', '10.0.0.53', 'simntx.herokuapp.com',  '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '10.0.0.53', 'simntxdev.herokuapp.com',  '127.0.0.1']
 
 # must make migrations and migrate after adding apps
 INSTALLED_APPS = [
@@ -70,6 +70,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -99,6 +100,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 
 ]
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
@@ -112,3 +114,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 STRIPE_PUBLIC_KEY = 'pk_test_51GtkimASycExiKjqwnRJpXJt8fySzvcRbeu14D7Ojazha64RDUuID9kVhCfeHlfOCFOJbKbZ9pOMFvVKelhY8jrV009FTiquzO'
 STRIPE_SECRET_KEY = 'sk_test_51GtkimASycExiKjqfWXiucyq8NjoCsBWmTUNxbRyp3zmK0PJQckKKLfF22dahOlFzbzqi0NfQsBXatHWyui2lEWG00j2W27877'
 # else:
+
+
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_HOST_USER= 'natefishel@gmail.com'
+EMAIL_HOST_PASSWORD= 'N@thaniel1'
+EMAIL_USE_TLS= True
+EMAIL_PORT= 587

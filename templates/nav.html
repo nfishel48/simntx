@@ -11,13 +11,21 @@
 		<div class = "nav-section" id = "nav-right">
 			<div class = "sub-section" id = "account-links">
 				{% if request.user.is_authenticated %}
+					{% if request.user.is_staff %}
+						<div class = "nav-button">
+						<a href = "/drivers">Delivery</a>
+						</div>
+					{% endif %}
+					<div class = "nav-button">
+					<a href = "/account">Account & Orders</a>
+					</div>
 					<div class = "nav-button">
 						<a href = "{% url 'account_logout' %}">Account</a>
 					</div>
 					<div class = "nav-button">
 						<form action = "{% url 'account_logout' %}" method = "POST">
 							{% csrf_token %}
-						
+
 							<input id = "logout" type = "submit" value = "Logout">
 						</form>
 					</div>

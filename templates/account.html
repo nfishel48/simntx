@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load account %}
+
+
+
+{% block title %}
+
+	<title>Account - Simntx</title>
+	
+{% endblock %}
+
+{% block css %}
+
+	{% include 'bootstrap_css.html' %}
+
+{% endblock %}
+
+{% block content %}
+    <h1>Personal Info</h1>
+    <h3>Username:  {% user_display user %}</h3>
+    <h3>First Name:  {{ request.user.first_name }}</h3>
+    <h3>Last Name:  {{ request.user.last_name }}</h3>
+    <h3>Email:  {{ request.user.email_address}}</h3>
+
+    <h1>Active orders</h1>
+    {% for orders in orders %}
+        <p> Order: {{ orders.ref_code }}</p>
+        {% for order_item in orders.items.all %}
+            <p> {{ order_item }} </p>
+        {% endfor %}
+    {% endfor %}
+
+  
+   
+
+{% endblock content %}
