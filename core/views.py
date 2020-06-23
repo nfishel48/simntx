@@ -684,7 +684,7 @@ class OrderView(LoginRequiredMixin, View):
 @login_required       
 def profile(request):
     user = request.user
-    orders = Order.objects.filter(user = user)  
+    orders = Order.objects.filter(user = user, ordered = True)  
     return render(request, 'account.html', {'orders': orders })
 
 # FUNCTIONS
