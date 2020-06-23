@@ -55,9 +55,7 @@ class UserProfile(models.Model):
         return self.user.username
 
     def get_user(self):
-        return reverse("core:account", kwargs={
-            'user': self.user
-        })
+        return self.user
 
 
 class Item(models.Model):

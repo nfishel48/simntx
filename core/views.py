@@ -680,10 +680,12 @@ class OrderView(LoginRequiredMixin, View):
     def post(self):
         #here is where you change the driver for the order
         return redirect("core:request-refund")
-        
-class AccountView(LoginRequiredMixin, View):
-    def get(self, *args, **kwargs):
-        return render(self.request, 'account.html')
+
+@login_required       
+def profile(request):
+    user = request.user
+    orders = Order.objects.filter(user = user)  
+    return render(request, 'account.html', {'orders': orders })
 
 # FUNCTIONS
 
