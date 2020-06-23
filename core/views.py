@@ -696,13 +696,14 @@ def is_valid_form(values):
 
 class OrderView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-            context = {
+        order = Order.objects.get(ref_code = kwargs['ref_code'])
+        context = {
                 'object': order
-            }
-            return render(self.request, 'driver_summary.html', context)
-        except ObjectDoesNotExist:
-            messages.warning(self.request, "You do not have an active order")
-            return redirect("/")
+        }
+        return render(self.request, 'driver_summary.html', context)
+    
+    def post(self):
+        #here is where you change the driver for the order
+        return redirect("core:request-refund")
+        
 
