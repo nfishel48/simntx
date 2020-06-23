@@ -1,4 +1,6 @@
 import os
+import dj_database_url
+import psycopg2
 
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
@@ -70,6 +72,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -112,3 +115,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 STRIPE_PUBLIC_KEY = 'pk_test_51GtkimASycExiKjqwnRJpXJt8fySzvcRbeu14D7Ojazha64RDUuID9kVhCfeHlfOCFOJbKbZ9pOMFvVKelhY8jrV009FTiquzO'
 STRIPE_SECRET_KEY = 'sk_test_51GtkimASycExiKjqfWXiucyq8NjoCsBWmTUNxbRyp3zmK0PJQckKKLfF22dahOlFzbzqi0NfQsBXatHWyui2lEWG00j2W27877'
 # else:
+
+
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_HOST_USER= 'natefishel@gmail.com'
+EMAIL_HOST_PASSWORD= 'N@thaniel1'
+EMAIL_USE_TLS= True
+EMAIL_PORT= 587
