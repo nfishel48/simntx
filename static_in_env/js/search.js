@@ -26,6 +26,19 @@ $(document).ready(function(){
 		$(this).remove();
 	});*/
 	
+	$('#search-tags .tag').on('click', function(){
+		console.log("TEST");
+		
+		$(this).attr('type', 'submit');
+		//$('#search-form').submit();
+	});
+	$('.filter-checkbox').on('click', function(){
+		console.log("checkbox");
+		
+		$(this).attr('type', 'submit');
+		$('#search-form').submit();
+	});
+	
 	$('.decorated-tag').on('click', function(){
 		$(this).addClass('selected');
 	});

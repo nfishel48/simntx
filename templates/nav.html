@@ -10,13 +10,16 @@
 		</div>
 		<div class = "nav-section" id = "nav-right">
 			<div class = "sub-section" id = "account-links">
-				<div class = "nav-button">
-					<a href = "{% url 'account_logout' %}">Account</a>
-				</div>
-				
 				{% if request.user.is_authenticated %}
 					<div class = "nav-button">
-						<a href = "{% url 'account_logout' %}">Logout</a>
+						<a href = "{% url 'account_logout' %}">Account</a>
+					</div>
+					<div class = "nav-button">
+						<form action = "{% url 'account_logout' %}" method = "POST">
+							{% csrf_token %}
+						
+							<input id = "logout" type = "submit" value = "Logout">
+						</form>
 					</div>
 				{% else %}
 					<div class = "nav-button">
@@ -38,13 +41,6 @@
 							<img src = "{% static 'img/cart.png' %}">
 							<div id = "item-count-badge">{{ request.user|cart_item_count }}</div>
 						</a>
-					</div>
-				{% else %}
-					<div class = "nav-button">
-						<a href = "{% url 'account_login' %}">Login</a>
-					</div>
-					<div class = "nav-button">
-						<a href = "{% url 'account_signup' %}">Sign Up</a>
 					</div>
 				{% endif %}
 			</div>

@@ -1,21 +1,62 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load staticfiles %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block title %}
+
+	<title>Sign Up - Simntx</title>
+
+{% endblock %}
+
+{% block css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/login.css' %}">
+
+{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
-
+	<div id = "account-container">
+		<img src = "{% static 'img/lock-64.png' %}" style = "border-radius: 100%;">
+		<p id = "title">Sign Up</p>
+		
+		<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+			{% csrf_token %}
+			
+			<div class = "form-field">
+				<p class = "field-label">
+					Username
+					<span class = "required">*</span>
+				</p>
+				<input id = "id_username" class = "field-input" type = "username" name = "username" placeholder = "Username">
+			</div>
+			<div class = "form-field">
+				<p class = "field-label">
+					Password
+					<span class = "required">*</span>
+				</p>
+				<input id = "id_password1" class = "field-input" type = "password" name = "password1" placeholder = "Password">
+				<p class = "field-label">
+					Password (again)
+					<span class = "required">*</span>
+				</p>
+				<input id = "id_password2" class = "field-input" type = "password" name = "password2" placeholder = "Password">
+			</div>
+		
+			{% if redirect_field_value %}
+				<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+			{% endif %}
+		
+			<div id = "form-end">
+				<input type = "submit" value = "Sign Up">
+				<div id = "form-options">
+					<p>
+						<a href="{{ login_url }}">Already have an account?</a>
+					</p>
+				</div>
+			</div>
+		</form>
+	</div>
+	
 {% endblock %}

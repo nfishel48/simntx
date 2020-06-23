@@ -29,7 +29,7 @@
 		<div id = "product-info">
 			<div class = "tags-container">
 				{% for tag in product.tags.all %}
-					<p class = "tag" style = "background-color: {{ tag.color }}">{{ tag.name }}</p>
+					{% include 'tag.html' with tag=tag %}
 				{% endfor %}
 			</div>
 			<p id = "product-name">{{ product.title }}</p>

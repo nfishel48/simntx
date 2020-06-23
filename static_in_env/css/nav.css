@@ -38,7 +38,16 @@ p{
 
 #account-links{
 	margin-bottom: 10px;
+}
+#logout{
+	outline: none;
+	border: none;
 	
+	background-color: transparent;
+	
+	cursor: pointer;
+}
+#account-links, #logout{
 	font-family: Roboto-Medium;
 	font-size: 12px;
 	color: var(--light-text);

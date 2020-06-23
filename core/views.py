@@ -18,7 +18,6 @@ import string
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-
 load_amount = 10
 
 
@@ -92,17 +91,6 @@ def search_more(request):
     return JsonResponse(data)
 
 
-def search_alt(request):
-    data = {
-        'success': False,
-        'load_amount': load_amount
-    }
-
-
-
-    return render(request, 'search.html', data)
-
-
 def search(request):
     data = {
         'success': False,
@@ -113,40 +101,74 @@ def search(request):
     remaining_tags = Tag.objects.all()
 
     query = ''
-    tags = None
+    tag_names = None
+    price_floor = 0
+    price_ceiling = 999999
 
     print(request.POST)
 
-    if 'query' in request.POST:
-        query = request.POST['query']
+    if 'price' in request.POST or 'tag' in request.POST:
+        if 'tag_names' in request.session and request.session['tag_names']:
+            tag_names = request.session['tag_names']
 
-    if 'tag' in request.POST:
-        tag = request.POST['tag']
+            print(tag_names)
 
-        print(tag)
+        query = request.session['query']
 
-        if 'tags' in request.session and request.session['tags']:
-            tags = request.session['tags']
+        if 'price' in request.POST:
+            price = request.POST['price']
 
-            print(tags)
+            if '-' in price:
+                price = price.replace('$', '')
 
-            if tag in tags:
-                tags.remove(tag)
+                parts = price.split('-')
+
+                price_floor = float(parts[0])
+                price_ceiling = float(parts[1])
+
+                print(str(price_floor) + " // " + str(price_ceiling))
+        elif 'tag' in request.POST:
+            print(tag_names)
+
+            tag = request.POST['tag']
+
+            if tag_names:
+                if tag in tag_names:
+                    tag_names.remove(tag)
+                else:
+                    tag_names.append(tag)
             else:
-                tags.append(tag)
+                tag_names = [tag]
+    else:
+        print('\nQUERY SEARCH\n')
+
+        new_query = request.POST['query']
+
+        if 'query' in request.session and request.session['query']:
+            if new_query != request.session['query']: # New query
+                query = new_query
+
+                request.session['tag_names'] = None
+            elif 'tag_names' in request.session and request.session['tag_names']:
+                print('SAME QUERY')
+
+                query = request.session['query']
+
+                tag_names = request.session['tag_names']
         else:
-            tags = [tag]
+            query = new_query
 
-        selected_tags = Tag.objects.filter(name__in=tags)
-        remaining_tags = Tag.objects.all().exclude(name__in=tags)
-    elif 'selected_tags' in request.session:
-        selected_tags = request.session['selected_tags']
+    if tag_names:
+        selected_tags = Tag.objects.filter(name__in=tag_names)
+        remaining_tags = Tag.objects.all().exclude(name__in=tag_names)
 
-    product_results, vendor_results = get_search_items(query, tags)
+    query = query.strip()
+
+    product_results, vendor_results = get_search_items(query, tag_names, price_floor, price_ceiling)
 
     request.session['start_index'] = load_amount
     request.session['query'] = query
-    request.session['tags'] = tags
+    request.session['tag_names'] = tag_names
 
     data['show_load_button'] = len(product_results) > load_amount
     data['load_amount'] = load_amount
@@ -163,16 +185,17 @@ def search(request):
     return render(request, 'search.html', data)
 
 
-def get_search_items(query, tags):
+def get_search_items(query, tags, price_floor, price_ceiling):
     q_query = Q(title__contains=query)
+    q_price = Q(price__range = (price_floor, price_ceiling))
 
     if tags:
         q_tags = Q(tags__name__in=tags)
 
-        product_results = Item.objects.filter(q_query & q_tags)
+        product_results = Item.objects.filter(q_query & q_tags & q_price)
         vendor_results = Item.objects.filter(q_query & q_tags)
     else:
-        product_results = Item.objects.filter(q_query)
+        product_results = Item.objects.filter(q_query & q_price)
         vendor_results = Vendor.objects.filter(q_query)
 
     return product_results, vendor_results
