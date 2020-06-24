@@ -9,6 +9,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.db.models import Q
 from django.http import JsonResponse
+from django.template.loader import get_template
 
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import *
@@ -16,12 +17,29 @@ from .models import *
 import random
 import string
 import stripe
+import arrow
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 load_amount = 10
 
 
 def index(request):
+    return redirect('/feed')
+
+
+def feed(request):
+    posts = Post.objects.all()
+
+    for post in posts:
+        post.posted = arrow.get(post.posted).humanize()
+
+    return render(request, 'feed.html', {
+        'posts': posts
+    })
+
+
+def store(request):
     vendors = Vendor.objects.all()[:10]
     items = Item.objects.all()[:10]
 
@@ -31,7 +49,7 @@ def index(request):
 
     print(vendors.all())
 
-    return render(request, 'home.html', {'vendors': vendors, 'items': items})
+    return render(request, 'store.html', {'vendors': vendors, 'items': items})
 
 
 def products(request):
@@ -705,10 +723,21 @@ class OrderView(LoginRequiredMixin, View):
         return redirect("core:request-refund")
 
 @login_required       
-def profile(request):
+def account(request):
     user = request.user
     orders = Order.objects.filter(user = user, ordered = True)  
+
     return render(request, 'account.html', {'orders': orders })
+
+def account_page(request, page):
+    try:
+        template = 'account/settings/' + page + '.html'
+
+        return render(request, template, {
+
+        })
+    except:
+        return redirect('/account')
 
 # FUNCTIONS
 

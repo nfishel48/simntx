@@ -17,10 +17,8 @@
 						</div>
 					{% endif %}
 					<div class = "nav-button">
-					<a href = "/account">Account & Orders</a>
-					</div>
-					<div class = "nav-button">
-						<a href = "{% url 'account_logout' %}">Account</a>
+<<<<<<< HEAD
+						<a href = "/account">Account & Orders</a>
 					</div>
 					<div class = "nav-button">
 						<form action = "{% url 'account_logout' %}" method = "POST">
@@ -28,6 +26,12 @@
 
 							<input id = "logout" type = "submit" value = "Logout">
 						</form>
+=======
+					<a href = "/account">Account & Orders</a>
+					</div>
+					<div class = "nav-button">
+						<a href = "{% url 'account_logout' %}">Logout</a>
+>>>>>>> 7e712e89c47f7dd5a947edcf5e60553610bdb66c
 					</div>
 				{% else %}
 					<div class = "nav-button">

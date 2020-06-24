@@ -1,0 +1,36 @@
+{% extends 'home.html' %}
+{% load staticfiles %}
+
+{% block title %}
+	
+	<title>Store - Simntx</title>
+	
+{% endblock %}
+
+{% block more_css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/store.css' %}">
+
+{% endblock %}
+
+{% block panel %}
+
+	<div id = "ad-div">
+		<div id = "ad-info">
+			<p class = "tag gold" style = "margin-right: 5px; align-self: center;">AD</p>
+			<p id = "ad-name">Vendor Name</p>
+			<a href>See more</a>
+		</div>
+		<div id = "ad-image"></div>
+	</div>
+	
+	{% include 'section_with_slider.html' with label='Vendors' items=vendors vendor=True %}
+	{% include 'section_with_slider.html' with label='Products' items=items vendor=None %}
+
+{% endblock %}
+
+{% block more_js %}
+
+	<script type = "text/javascript" src = "{% static 'js/store.js' %}"></script>
+
+{% endblock %}

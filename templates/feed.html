@@ -1,0 +1,28 @@
+{% extends 'home.html' %}
+{% load staticfiles %}
+
+{% block title %}
+	
+	<title>Feed - Simntx</title>
+	
+{% endblock %}
+
+{% block more_css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/feed.css' %}">
+
+{% endblock %}
+
+{% block panel %}
+
+	{% for post in posts %}
+		{% include 'post.html' with post=post %}
+	{% endfor %}
+
+{% endblock %}
+
+{% block more_js %}
+
+	<script type = "text/javascript" src = "{% static 'js/feed.js' %}"></script>
+
+{% endblock %}

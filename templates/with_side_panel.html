@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+	{% block extra_css %}
+	{% endblock %}
+
+{% endblock %}
+
+{% block content %}
+	
+	<div id = "panels">
+		<div id = "left-panel">
+			{% block left_panel %}
+			{% endblock %}
+		</div>
+		<div id = "right-panel">
+			{% block right_panel %}
+			{% endblock %}
+		</div>
+	</div>
+
+{% endblock content %}
+
+{% block js %}
+
+	{% block extra_js %}
+	{% endblock %}
+
+{% endblock %}

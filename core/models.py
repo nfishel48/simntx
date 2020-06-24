@@ -213,6 +213,25 @@ class Refund(models.Model):
         return f"{self.pk}"
 
 
+class Post(models.Model):
+    text = models.CharField(max_length = 500, null = False, blank = False)
+    vendor = models.ForeignKey('Vendor', on_delete = models.CASCADE, related_name = 'vendor', null = False, blank = False)
+    posted = models.DateTimeField(auto_now=True)
+    links = models.ManyToManyField('PostLink', null = True, blank = True)
+
+    def __str__(self):
+        return self.vendor.title + ": " + self.text[:50]
+
+
+class PostImage(models.Model):
+    image = models.ImageField()
+    post = models.ForeignKey('Post', on_delete = models.CASCADE, related_name = 'post')
+
+
+class PostLink(models.Model):
+    link = models.URLField()
+
+
 def userprofile_receiver(sender, instance, created, *args, **kwargs):
     if created:
         userprofile = UserProfile.objects.create(user=instance)

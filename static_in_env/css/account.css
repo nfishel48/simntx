@@ -1,0 +1,69 @@
+#panels{
+	--left-panel-width: 275px !important;
+}
+
+#account-groups{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+}
+.account-group{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	
+	background-color: white;
+	
+	border: 1px solid #ddd;
+}
+.account-group:not(:first-child){
+	margin-top: 10px;
+}
+.account-option{
+	padding: 10px;
+	
+	font-size: 14px;
+	color: var(--light-text);
+	
+	box-sizing: border-box;
+}
+.account-option.selected{
+	font-family: Roboto-Medium;
+	color: var(--dark-text);
+}
+.account-group a:not(:first-child){
+	border-top: 1px solid #ddd;
+}
+
+.setting-group{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	
+	background-color: white;
+	
+	border: 1px solid #ccc;
+}
+.setting-group > div{
+	padding: 20px;
+	
+	box-sizing: border-box;
+}
+.setting-group .header{
+	width: 100%;
+}
+.setting-group .name{
+	font-family: Roboto-Medium;
+	font-size: 22px;
+}
+.setting-group .section{
+	width: 100%;
+	border-top: 1px solid #ccc;
+}
+
+.delete{
+	color: red !important;
+}

@@ -14,13 +14,16 @@
 :root{
 	--safe: 100%;
 	
-	--primary: #69a1ff;
+	--primary: #BD20FF;
 	--secondary: #404040;
 	--light-red: #ff6b6b;
 	
 	--dark-text: #404040;
 	--light-text: #8c8c8c;
 	--price: #46b323;
+	
+	--left-panel-width: 220px;
+	--left-panel-margin: 30px;
 }
 *{
 	margin: 0;
@@ -129,6 +132,71 @@ body{
 .price{
 	font-family: Roboto-Medium;
 	color: var(--price);
+}
+
+#panels{
+	width: 100%;
+	
+	display: flex;
+	justify-content: space-between;
+}
+#left-panel{
+	width: var(--left-panel-width);
+	
+	display: flex;
+	flex-direction: column;
+	
+	margin-right: var(--left-panel-margin);
+	padding-right: var(--left-panel-margin);
+	
+	border-right: 1px solid #ddd;
+	
+	box-sizing: border-box;
+}
+#right-panel{
+	width: calc(100% - var(--left-panel-width) - var(--left-panel-margin));
+}
+
+.post{
+	width: 400px;
+	
+	display: flex;
+	flex-direction: column;
+	
+	padding: 20px;
+	
+	background-color: white;
+	
+	border: 1px solid #ddd;
+}
+.post:not(:first-child){
+	margin-top: 20px;
+}
+.post-header{
+	width: 100%;
+	
+	display: flex;
+}
+.post-vendor-image{
+	width: 50px;
+	height: 50px;
+}
+.post-info{
+	display: flex;
+	flex-direction: column;
+	
+	margin-left: 10px;
+}
+.post-vendor{
+	font-family: Roboto-Medium;
+	font-size: 18px;
+}
+.post-date{
+	font-size: 12px;
+	color: var(--light-text);
+}
+.post-text{
+	margin-top: 10px;
 }
 
 .primary{ background-color: var(--primary); }

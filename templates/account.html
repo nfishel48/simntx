@@ -1,7 +1,6 @@
-{% extends "base.html" %}
+{% extends "with_side_panel.html" %}
 {% load account %}
-
-
+{% load staticfiles %}
 
 {% block title %}
 
@@ -9,28 +8,57 @@
 	
 {% endblock %}
 
-{% block css %}
+{% block extra_css %}
 
-	{% include 'bootstrap_css.html' %}
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/account.css' %}">
 
 {% endblock %}
 
-{% block content %}
-    <h1>Personal Info</h1>
-    <h3>Username:  {% user_display user %}</h3>
-    <h3>First Name:  {{ request.user.first_name }}</h3>
-    <h3>Last Name:  {{ request.user.last_name }}</h3>
-    <h3>Email:  {{ request.user.email_address}}</h3>
+{% block left_panel %}
 
-    <h1>Active orders</h1>
-    {% for orders in orders %}
-        <p> Order: {{ orders.ref_code }}</p>
-        {% for order_item in orders.items.all %}
-            <p> {{ order_item }} </p>
-        {% endfor %}
-    {% endfor %}
+	<div id = "account-groups">
+		<div class = "account-group">
+			<a href = "/account">
+				<div class = "account-option {% block opt_account %}selected{% endblock %}">
+					<p class = "title">Account</p>
+				</div>
+			</a>
+			<a href = "password">
+				<div class = "account-option {% block opt_password %}{% endblock %}">
+					<p class = "title">Password</p>
+				</div>
+			</a>
+		</div>
+		<div class = "account-group">
+			<a href = "notifications">
+				<div class = "account-option {% block opt_notifications %}{% endblock %}">
+					<p class = "title">Notifications</p>
+				</div>
+			</a>
+		</div>
+		<div class = "account-group">
+			<a href = "delete">
+				<div class = "account-option delete {% block opt_delete %}{% endblock %}">
+					<p class = "title">Delete Account</p>
+				</div>
+			</a>
+		</div>
+	</div>
 
-  
-   
+{% endblock %}
 
-{% endblock content %}
+{% block right_panel %}
+
+    <div class = "setting-group">
+		<div class = "header">
+			<p class = "name">Account</p>
+		</div>
+		<div class = "section">
+			
+		</div>
+		<div class = "section">
+			
+		</div>
+	</div>
+
+{% endblock %}

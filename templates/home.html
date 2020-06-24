@@ -1,40 +1,45 @@
-{% extends "base.html" %}
+{% extends "with_side_panel.html" %}
 {% load staticfiles %}
 
-{% block css %}
+{% block extra_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/home.css' %}">
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
 
-{% endblock %}
-
-{% block before_content %}
-
-	<div id = "landing">
-		
-	</div>
+	{% block more_css %}
+	{% endblock %}
 
 {% endblock %}
-
-{% block content %}
-	<div id = "ad-div">
-		<div id = "ad-info">
-			<p class = "tag gold" style = "margin-right: 5px; align-self: center;">AD</p>
-			<p id = "ad-name">Vendor Name</p>
-			<a href>See more</a>
-		</div>
-		<div id = "ad-image"></div>
-	</div>
 	
-	{% include 'section_with_slider.html' with label='Vendors' items=vendors vendor=True %}
-	{% include 'section_with_slider.html' with label='Products' items=items vendor=None %}
+{% block left_panel %}
+	<a href = "{% url 'core:feed' %}">
+		<div id = "feed-link" class = "view-link">
+			<img src = "{% static 'img/icons/home-48.png' %}">
+			<p>Feed</p>
+		</div>
+	</a>
+	<a href = "{% url 'core:store' %}">
+		<div id = "store-link" class = "view-link">
+			<img src = "{% static 'img/icons/store-48.png' %}">
+			<p>Store</p>
+		</div>
+	</a>
+	
+{% endblock %}
 
+{% block right_panel %}
+	
+	{% block panel %}
+	{% endblock %}
 
-{% endblock content %}
+{% endblock %}
 
-{% block js %}
+{% block extra_js %}
 
 	<script type = "text/javascript" src = "{% static 'js/home.js' %}"></script>
 	<script type = "text/javascript" src = "{% static 'js/listings.js' %}"></script>
+
+	{% block more_js %}
+	{% endblock %}
 
 {% endblock %}
