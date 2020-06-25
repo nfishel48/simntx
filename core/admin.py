@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, OrderItem, Order, Vendor, UserProfile, Post
+from .models import Item, OrderItem, Order, Vendor, UserProfile, Post, Tag
 
 admin.site.register(Item)
 admin.site.register(OrderItem)
@@ -7,3 +7,4 @@ admin.site.register(Order)
 admin.site.register(Vendor)
 admin.site.register(UserProfile)
 admin.site.register(Post)
+admin.site.register(Tag)

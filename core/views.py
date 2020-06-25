@@ -729,6 +729,7 @@ def account(request):
 
     return render(request, 'account.html', {'orders': orders })
 
+@login_required
 def account_page(request, page):
     try:
         template = 'account/settings/' + page + '.html'
@@ -738,6 +739,16 @@ def account_page(request, page):
         })
     except:
         return redirect('/account')
+        
+@login_required  
+def orders_page(request,**kwargs):
+    
+    user = request.user.id
+    order = Order.objects.filter( user_id = user, ordered = True )
+   
+    return render(request, 'orders.html', {'orders': order,})
+    
+  
 
 # FUNCTIONS
 
