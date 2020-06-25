@@ -1,10 +1,12 @@
 import os
 
+from . import local_settings
+
 from django.contrib.admin import sites
 
 #set your own enviroment for what you want
 #ENVIRONMENT = os.getenv('ENVIRONMENT', 'developmentLocalNate', 'developmentLocalNick', 'devlomentLiveHeroku')
-ENVIRONMENT = 'devlomentLiveHeroku'
+ENVIRONMENT = local_settings.ENVIRONMENT
 
 DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,7 +96,7 @@ if ENVIRONMENT == 'developmentLocalNate':
             }
     }
 
-if ENVIRONMENT == 'devlomentLiveHeroku':
+if ENVIRONMENT == 'developmentLiveHeroku':
      DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
