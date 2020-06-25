@@ -1,6 +1,7 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load crispy_forms_tags %}
 {% load staticfiles %}
 
 {% block title %}
@@ -26,22 +27,22 @@
 			
 			<div class = "form-field">
 				<p class = "field-label">
-					Username
+					Email
 					<span class = "required">*</span>
 				</p>
-				<input id = "id_username" class = "field-input" type = "username" name = "username" placeholder = "Username">
+				<input id = "id_email" class = "field-input" type = "email" name = "email" placeholder = "Email" required>
 			</div>
 			<div class = "form-field">
 				<p class = "field-label">
 					Password
 					<span class = "required">*</span>
 				</p>
-				<input id = "id_password1" class = "field-input" type = "password" name = "password1" placeholder = "Password">
+				<input id = "id_password1" class = "field-input" type = "password" name = "password1" placeholder = "Password" required>
 				<p class = "field-label">
 					Password (again)
 					<span class = "required">*</span>
 				</p>
-				<input id = "id_password2" class = "field-input" type = "password" name = "password2" placeholder = "Password">
+				<input id = "id_password2" class = "field-input" type = "password" name = "password2" placeholder = "Password" required>
 			</div>
 		
 			{% if redirect_field_value %}

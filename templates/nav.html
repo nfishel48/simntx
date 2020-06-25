@@ -43,7 +43,7 @@
 				{% if request.user.is_authenticated %}
 					<div class = "nav-button">
 						<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
-							<img src = "{% static 'img/cart.png' %}">
+							<img src = "{% static 'img/icons/cart.png' %}">
 							<div id = "item-count-badge">{{ request.user|cart_item_count }}</div>
 						</a>
 					</div>

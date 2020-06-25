@@ -22,6 +22,12 @@
 	margin-top: 10px;
 }
 .account-option{
+	width: 100%;
+	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
 	padding: 10px;
 	
 	font-size: 14px;
@@ -29,9 +35,15 @@
 	
 	box-sizing: border-box;
 }
+.account-option:hover{
+	color: var(--dark-text);
+}
 .account-option.selected{
 	font-family: Roboto-Medium;
 	color: var(--dark-text);
+}
+.account-option img{
+	height: 12px;
 }
 .account-group a:not(:first-child){
 	border-top: 1px solid #ddd;
