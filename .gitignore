@@ -138,3 +138,6 @@ dmypy.json
 cython_debug/
 db.sqlite3
 *.sqlite3
+
+# Custom
+simntx/local_settings.py
