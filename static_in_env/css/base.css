@@ -134,6 +134,21 @@ body{
 	color: var(--price);
 }
 
+#message-container{
+	width: 100%;
+	
+	display: flex;
+	
+	color: white;
+	
+	background-color: var(--primary);
+}
+.message{
+	padding: 5px 0;
+	
+	box-sizing: border-box;
+}
+
 #panels{
 	width: 100%;
 	

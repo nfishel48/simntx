@@ -1,5 +1,7 @@
 import os
 
+from django.contrib.admin import sites
+
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
 DEBUG = True
@@ -119,6 +121,7 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
 
+ACCOUNT_FORMS = {'signup': 'core.forms.UserSignUpForm'}
 
 # STRIPE SETTINGS
 # if DEBUG:

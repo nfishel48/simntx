@@ -22,9 +22,19 @@
 		<img src = "{% static 'img/lock-64.png' %}" style = "border-radius: 100%;">
 		<p id = "title">Sign Up</p>
 		
-		<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-			{% csrf_token %}
+		<form class = "signup" id = "signup_form" method = "post" action = "{% url 'account_signup' %}">
+			{% csrf_token %} 
 			
+			<div class = "form-field">
+				<p class = "field-label">
+					Name
+					<span class = "required">*</span>
+				</p>
+				<div class = "field-inputs">
+					<input id = "first_name" class = "field-input half" type = "text" name = "first_name" placeholder = "First Name" required>
+					<input id = "last_name" class = "field-input half" type = "text" name = "last_name" placeholder = "Last Name" required>
+				</div>
+			</div>
 			<div class = "form-field">
 				<p class = "field-label">
 					Email

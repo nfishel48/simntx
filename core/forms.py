@@ -2,6 +2,7 @@ from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 
+from allauth.account.forms import SignupForm
 
 PAYMENT_CHOICES = (
     ('S', 'Credit card/Debit Card'),
@@ -59,3 +60,19 @@ class PaymentForm(forms.Form):
     stripeToken = forms.CharField(required=False)
     save = forms.BooleanField(required=False)
     use_default = forms.BooleanField(required=False)
+
+class UserSignUpForm(SignupForm):
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+    
+    def save(self, request):
+        user = super(UserSignUpForm, self).save(request)
+        
+        print(self.cleaned_data)
+        
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.username = self.cleaned_data['email']
+        user.save()
+
+        return user
