@@ -1,12 +1,12 @@
 import os
 
-from . import local_settings
+#from . import local_settings
 
 from django.contrib.admin import sites
 
 #set your own enviroment for what you want
 #ENVIRONMENT = os.getenv('ENVIRONMENT', 'developmentLocalNate', 'developmentLocalNick', 'devlomentLiveHeroku')
-ENVIRONMENT = local_settings.ENVIRONMENT
+ENVIRONMENT = 'developmentLiveHeroku'
 
 DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
