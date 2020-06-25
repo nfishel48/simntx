@@ -74,7 +74,7 @@ def vendor(request, slug):
 
 def drivers(request):
     context = {
-        'orders': Order.objects.filter(ordered=True),
+        'orders': Order.objects.filter(ordered=True, received=False),
     }
     return render(request, "drivers.html", context)
 
@@ -739,7 +739,7 @@ def account_page(request, page):
         })
     except:
         return redirect('/account')
-        
+
 @login_required  
 def orders_page(request,**kwargs):
     
