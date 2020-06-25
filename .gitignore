@@ -139,4 +139,6 @@ db.sqlite3
 *.sqlite3
 
 # Custom
-# simntx/local_settings.py
+/simntx/local_settings.py
+simntx/local_settings.py
+local_settings.py
