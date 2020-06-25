@@ -1,14 +1,15 @@
 import os
 
-#from . import local_settings
+from . import local_settings
 
 from django.contrib.admin import sites
 
 #set your own enviroment for what you want
 #ENVIRONMENT = os.getenv('ENVIRONMENT', 'developmentLocalNate', 'developmentLocalNick', 'devlomentLiveHeroku')
-ENVIRONMENT = 'developmentLiveHeroku'
 
-DEBUG = True
+ENVIRONMENT = local_settings.ENVIRONMENT
+DEBUG = local_settings.DEBUG
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
 ALLOWED_HOSTS = ['localhost', '10.0.0.53', 'simntxdev.herokuapp.com', 'simntx.herokuapp.com', '127.0.0.1']

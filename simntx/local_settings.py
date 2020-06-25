@@ -1,0 +1,3 @@
+ENVIRONMENT = 'developmentLiveHeroku'
+
+DEBUG = True
