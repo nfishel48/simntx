@@ -1,0 +1,33 @@
+{% extends 'account.html' %}
+
+{% block opt_account %}{% endblock %}
+{% block opt_notifications %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "setting-group">
+		<div class = "header">
+			<p class = "name">Orders</p>
+		</div>
+        
+		{% for order in orders %}
+			<div class = "section">
+				<h4>Refrence code: {{ order.ref_code }}</h4>
+			</div>
+			<div class = "section">
+				<h4>Order placed: {{ order.ordered }}</h4>
+				
+				{% if order.received %}
+					<h4>Order status: Delivered</h4>
+				{% elif order.being_delivered %}
+					<h4>Order status: Out for delivery</h4>
+					<h4>Your driver is: {{ order.driver }}</h4>
+				{% else %}
+					<h4>Order status: Order is awaiting driver</h4>
+				{% endif %}
+			</div>
+			<div class = "section"></div>
+        {% endfor %}
+	</div>
+
+{% endblock %}
