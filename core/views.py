@@ -732,22 +732,18 @@ def account(request):
 @login_required
 def account_page(request, page):
     try:
+        data = {}
+
         template = 'account/settings/' + page + '.html'
 
-        return render(request, template, {
+        if page == 'orders':
+            orders = Order.objects.filter(user_id = request.user, ordered = True)
 
-        })
+            data['orders'] = orders
+
+        return render(request, template, data)
     except:
         return redirect('/account')
-        
-@login_required  
-def orders_page(request,**kwargs):
-    
-    user = request.user.id
-    order = Order.objects.filter( user_id = user, ordered = True )
-   
-    return render(request, 'orders.html', {'orders': order,})
-    
   
 
 # FUNCTIONS
