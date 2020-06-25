@@ -2,7 +2,9 @@ import os
 
 from django.contrib.admin import sites
 
-ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
+#set your own enviroment for what you want
+#ENVIRONMENT = os.getenv('ENVIRONMENT', 'developmentLocalNate', 'developmentLocalNick', 'devlomentLiveHeroku')
+ENVIRONMENT = 'devlomentLiveHeroku'
 
 DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -72,13 +74,38 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, 'db.sqlite3')
+if ENVIRONMENT == 'developmentLocalNick':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, 'db.sqlite3')
+        }
     }
-}
+
+if ENVIRONMENT == 'developmentLocalNate':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "psql",
+            "USER": "nfishel",
+            "PASSWORD": "",
+            "HOST": "localhost",
+            "PORT": "5432",
+            }
+    }
+
+if ENVIRONMENT == 'devlomentLiveHeroku':
+     DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "dai1klnpvfaja0",
+            "USER": "cgovsgkihvelvu",
+            "PASSWORD": "991cb9de5f5b9ca3a4d0dbf51d48a17862735567d0994a3441161ea7898c0e6f",
+            "HOST": "ec2-52-72-65-76.compute-1.amazonaws.com",
+            "PORT": "5432",
+            }
+    }
+
 
 if ENVIRONMENT == 'production':
     DEBUG = False
