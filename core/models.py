@@ -218,7 +218,7 @@ class Post(models.Model):
     text = models.CharField(max_length = 500, null = False, blank = False)
     vendor = models.ForeignKey('Vendor', on_delete = models.CASCADE, related_name = 'vendor', null = False, blank = False)
     posted = models.DateTimeField(auto_now=True)
-    links = models.ManyToManyField('PostLink', null = True, blank = True)
+    links = models.ManyToManyField('PostLink', blank = True)
 
     def __str__(self):
         return self.vendor.title + ": " + self.text[:50]
