@@ -12,7 +12,13 @@ DEBUG = local_settings.DEBUG
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
-ALLOWED_HOSTS = ['localhost', '10.0.0.53', 'simntxdev.herokuapp.com', 'simntx.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'localhost', 'vendor.localhost',
+    '10.0.0.53', 'vendor.10.0.0.53',
+    'simntxdev.herokuapp.com', 'vendor.simntxdev.herokuapp.com',
+    'simntx.herokuapp.com', 'vendor.simntx.herokuapp.com',
+    '127.0.0.1', 'vendor.127.0.0.1',
+]
 
 # must make migrations and migrate after adding apps
 INSTALLED_APPS = [
@@ -31,23 +37,24 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_countries',
     'stripe',
+    'django_hosts',
 
     # Custom
-    'core'
-    
+    'core',
+    'vendor',
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
-
-ROOT_URLCONF = 'simntx.urls'
 
 TEMPLATES = [
     {
@@ -61,6 +68,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'builtins': [
+                'core.templatetags.tags',
+            ]
         },
     },
 ]
@@ -124,16 +134,9 @@ if ENVIRONMENT == 'production':
 
 # AUTH
 AUTHENTICATION_BACKENDS = [
-
-    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
-
 ]
-
-AUTH_USER_MODELS = 'core.UserProfile'
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
@@ -152,6 +155,11 @@ ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
 
 ACCOUNT_FORMS = {'signup': 'core.forms.UserSignUpForm'}
+
+ROOT_URLCONF = 'simntx.urls'
+ROOT_HOSTCONF = 'simntx.hosts'
+
+DEFAULT_HOST = 'simntx'
 
 # STRIPE SETTINGS
 # if DEBUG:

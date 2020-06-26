@@ -1,5 +1,11 @@
 {% load staticfiles %}
 {% load cart_template_tags %}
+{% load tags %}
+{% load hosts %}
+
+{% if request.user.is_authenticated %}
+	{% get_profile user as profile %}
+{% endif %}
 
 <div id = "nav"><!--class = "shadow"-->
 	<div class = "safe-div divided" style = "align-items: center;">
@@ -11,6 +17,12 @@
 		<div class = "nav-section" id = "nav-right">
 			<div class = "sub-section" id = "account-links">
 				{% if request.user.is_authenticated %}
+					{% if profile.vendor_owner %}
+						<div class = "nav-button">
+							<a href = "/drivers">Vendor Dashboard</a>
+						</div>
+					{% endif %}
+					
 					{% if request.user.is_staff %}
 						<div class = "nav-button">
 						<a href = "/drivers">Delivery</a>
@@ -42,7 +54,7 @@
 				</form>
 				{% if request.user.is_authenticated %}
 					<div class = "nav-button">
-						<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
+						<a href = "{% host_url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
 							<img src = "{% static 'img/icons/cart.png' %}">
 							<div id = "item-count-badge">{{ request.user|cart_item_count }}</div>
 						</a>

@@ -724,10 +724,13 @@ class OrderView(LoginRequiredMixin, View):
 
 @login_required       
 def account(request):
-    user = request.user
-    orders = Order.objects.filter(user = user, ordered = True)  
+    data = {}
 
-    return render(request, 'account.html', {'orders': orders })
+    print(UserProfile.objects.get(user = request.user).one_click_purchasing)
+
+    data['vendor'] = get_vendors(UserProfile.objects.get(user = request.user))
+
+    return render(request, 'account.html', data)
 
 @login_required
 def account_page(request, page):
@@ -740,6 +743,8 @@ def account_page(request, page):
             orders = Order.objects.filter(user_id = request.user, ordered = True)
 
             data['orders'] = orders
+
+        data['vendor'] = get_vendors(UserProfile.objects.get(user=request.user))
 
         return render(request, template, data)
     except:
@@ -772,3 +777,8 @@ def is_valid_form(values):
             valid = False
     return valid
 
+def get_vendors(owner):
+    return Vendor.objects.get(owner = owner)
+
+def get_user(request):
+    return UserProfile.objects.get(user = request.user)
