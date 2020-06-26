@@ -726,9 +726,12 @@ class OrderView(LoginRequiredMixin, View):
 def account(request):
     data = {}
 
+    profile = UserProfile.objects.get(user=request.user)
+
     print(UserProfile.objects.get(user = request.user).one_click_purchasing)
 
-    data['vendor'] = get_vendors(UserProfile.objects.get(user = request.user))
+    if profile.vendor_owner:
+        data['vendor'] = get_vendors(profile)
 
     return render(request, 'account.html', data)
 
@@ -737,6 +740,8 @@ def account_page(request, page):
     try:
         data = {}
 
+        profile = UserProfile.objects.get(user=request.user)
+
         template = 'account/settings/' + page + '.html'
 
         if page == 'orders':
@@ -744,7 +749,8 @@ def account_page(request, page):
 
             data['orders'] = orders
 
-        data['vendor'] = get_vendors(UserProfile.objects.get(user=request.user))
+        if profile.vendor_owner:
+            data['vendor'] = get_vendors(profile)
 
         return render(request, template, data)
     except:
