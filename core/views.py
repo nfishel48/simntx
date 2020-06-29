@@ -719,11 +719,11 @@ class OrderView(LoginRequiredMixin, View):
         return render(self.request, 'driver_summary.html', context)
     
     
-def set_driver(self, *args, **kwargs):
-    order = Order.objects.get(ref_code = kwargs['ref_code'])
-    order.driver = user.username
+def set_driver(request, ref_code):
+    order = Order.objects.get(ref_code = ref_code)
+    order.driver = request.user.userprofile
     order.being_delivered = True
-    return render(self.request, 'home.html')
+    return render(request, 'home.html')
 
 @login_required       
 def account(request):
@@ -753,7 +753,7 @@ def account_page(request, page):
             data['orders'] = orders
 
         if page == 'deliveries':
-            orders = Order.objects.filter(driver = request.user.username, ordered = True, being_delivered = True, received = False)
+            orders = Order.objects.filter(driver = request.user, ordered = True, being_delivered = True, received = False)
             data['orders'] = orders
 
         if profile.vendor_owner:
