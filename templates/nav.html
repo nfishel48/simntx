@@ -1,7 +1,6 @@
 {% load staticfiles %}
 {% load cart_template_tags %}
 {% load tags %}
-{% load hosts %}
 
 {% if request.user.is_authenticated %}
 	{% get_profile user as profile %}
@@ -19,17 +18,17 @@
 				{% if request.user.is_authenticated %}
 					{% if profile.vendor_owner %}
 						<div class = "nav-button">
-							<a href = "/drivers">Vendor Dashboard</a>
+							<a href = "{% url 'core:index'%}">Vendor Dashboard</a>
 						</div>
 					{% endif %}
 					
 					{% if request.user.is_staff %}
 						<div class = "nav-button">
-						<a href = "/drivers">Delivery</a>
+							<a href = "{% url 'core:drivers' %}">Delivery</a>
 						</div>
 					{% endif %}
 					<div class = "nav-button">
-						<a href = "/account">Account & Orders</a>
+						<a href = "{% url 'core:account' %}">Account & Orders</a>
 					</div>
 					<div class = "nav-button">
 						<form action = "{% url 'account_logout' %}" method = "POST">

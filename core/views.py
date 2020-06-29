@@ -35,7 +35,7 @@ def feed(request):
         post.posted = arrow.get(post.posted).humanize()
 
     return render(request, 'feed.html', {
-        'posts': posts
+        'posts': posts,
     })
 
 
