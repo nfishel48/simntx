@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_countries',
     'stripe',
-    'django_hosts',
 
     # Custom
     'core',
@@ -46,7 +45,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,7 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
 TEMPLATES = [
@@ -109,7 +106,7 @@ if ENVIRONMENT == 'developmentLocalNate':
     }
 
 if ENVIRONMENT == 'developmentLiveHeroku':
-     DATABASES = {
+    DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
             "NAME": "dai1klnpvfaja0",
@@ -158,11 +155,6 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
 ACCOUNT_FORMS = {'signup': 'core.forms.UserSignUpForm'}
 
 ROOT_URLCONF = 'simntx.urls'
-ROOT_HOSTCONF = 'simntx.hosts'
-
-DEFAULT_HOST = 'simntx'
-
-PARENT_HOST = 'localhost:8000'
 
 # STRIPE SETTINGS
 # if DEBUG:
