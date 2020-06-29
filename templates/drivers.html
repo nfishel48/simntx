@@ -59,7 +59,7 @@
                 <p>Deliver too: {{ order.shipping_address.street_address }}
                 {% if order.shipping_address.apartment_address != '' %}, {{ order.shipping_address.apartment_address }} {% endif %}
                 <!--add city to checkout-->
-                {{ order.shipping_address.zip }}
+                {{ order.shipping_address.zip }} 
                 </p>
                 <a href = "{{ order.get_absolute_url }}">
                   <button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
