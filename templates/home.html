@@ -1,5 +1,6 @@
 {% extends "with_side_panel.html" %}
 {% load staticfiles %}
+{% load hosts %}
 
 {% block extra_css %}
 
@@ -12,7 +13,7 @@
 {% endblock %}
 	
 {% block left_panel %}
-	<a href = "{% url 'core:feed' %}">
+	<a href = "{% host_url 'core:feed' host 'simntx' %}">
 		<div id = "feed-link" class = "view-link">
 			<div class = "link-inner">
 				<img src = "{% static 'img/icons/home-filled-48.png' %}">
@@ -20,7 +21,7 @@
 			</div>
 		</div>
 	</a>
-	<a href = "{% url 'core:store' %}">
+	<a href = "{% host_url 'core:store' host 'simntx' %}">
 		<div id = "store-link" class = "view-link">
 			<div class = "link-inner">
 				<img src = "{% static 'img/icons/store-filled-48.png' %}">

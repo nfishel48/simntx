@@ -10,7 +10,7 @@
 <div id = "nav"><!--class = "shadow"-->
 	<div class = "safe-div divided" style = "align-items: center;">
 		<div class = "nav-section" id = "nav-left">
-			<a href = "{% url 'core:index' %}">
+			<a href = "{% host_url 'core:index' host 'simntx' %}">
 				<img src = "{% static 'img/logo.png' %}">
 			</a>
 		</div>
@@ -19,20 +19,20 @@
 				{% if request.user.is_authenticated %}
 					{% if profile.vendor_owner %}
 						<div class = "nav-button">
-							<a href = "/drivers">Vendor Dashboard</a>
+							<a href = "{% host_url 'index' host 'vendor' %}">Vendor Dashboard</a>
 						</div>
 					{% endif %}
 					
 					{% if request.user.is_staff %}
 						<div class = "nav-button">
-						<a href = "/drivers">Delivery</a>
+							<a href = "{% host_url 'core:drivers' host 'simntx' %}">Delivery</a>
 						</div>
 					{% endif %}
 					<div class = "nav-button">
-						<a href = "/account">Account & Orders</a>
+						<a href = "{% host_url 'core:account' host 'simntx' %}">Account & Orders</a>
 					</div>
 					<div class = "nav-button">
-						<form action = "{% url 'account_logout' %}" method = "POST">
+						<form action = "{% host_url 'account_logout' host 'simntx' %}" method = "POST">
 							{% csrf_token %}
 
 							<input id = "logout" type = "submit" value = "Logout">
@@ -40,10 +40,10 @@
 					</div>
 				{% else %}
 					<div class = "nav-button">
-						<a href = "{% url 'account_login' %}">Login</a>
+						<a href = "{% host_url 'account_login' host 'simntx' %}">Login</a>
 					</div>
 					<div class = "nav-button">
-						<a href = "{% url 'account_signup' %}">Sign Up</a>
+						<a href = "{% host_url 'account_signup' host 'simntx' %}">Sign Up</a>
 					</div>
 				{% endif %}
 			</div>
@@ -54,7 +54,7 @@
 				</form>
 				{% if request.user.is_authenticated %}
 					<div class = "nav-button">
-						<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
+						<a href = "{% host_url 'core:order-summary' host 'simntx' %}" style = "display: flex; align-items: flex-end;">
 							<img src = "{% static 'img/icons/cart.png' %}">
 							<div id = "item-count-badge">{{ request.user|cart_item_count }}</div>
 						</a>

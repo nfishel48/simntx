@@ -13,6 +13,7 @@ DEBUG = local_settings.DEBUG
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
 ALLOWED_HOSTS = [
+    '.localhost',
     'localhost', 'vendor.localhost',
     '10.0.0.53', 'vendor.10.0.0.53',
     'simntxdev.herokuapp.com', 'vendor.simntxdev.herokuapp.com',
@@ -160,6 +161,8 @@ ROOT_URLCONF = 'simntx.urls'
 ROOT_HOSTCONF = 'simntx.hosts'
 
 DEFAULT_HOST = 'simntx'
+
+PARENT_HOST = 'localhost:8000'
 
 # STRIPE SETTINGS
 # if DEBUG:

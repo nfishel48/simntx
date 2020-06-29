@@ -11,6 +11,8 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.template.loader import get_template
 
+from django_hosts.resolvers import reverse as host_reverse
+
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import *
 
@@ -34,8 +36,11 @@ def feed(request):
     for post in posts:
         post.posted = arrow.get(post.posted).humanize()
 
+    print(request.META['HTTP_HOST'])
+
     return render(request, 'feed.html', {
-        'posts': posts
+        'posts': posts,
+        'vendor_url': host_reverse('index', host='vendor', scheme='http', port='8000')
     })
 
 
