@@ -723,6 +723,8 @@ def set_driver(request, ref_code):
     order = Order.objects.get(ref_code = ref_code)
     order.driver = request.user.userprofile
     order.being_delivered = True
+    order.save()
+
     return render(request, 'home.html')
 
 @login_required       
@@ -753,7 +755,7 @@ def account_page(request, page):
             data['orders'] = orders
 
         if page == 'deliveries':
-            orders = Order.objects.filter(driver = request.user, ordered = True, being_delivered = True, received = False)
+            orders = Order.objects.filter(driver = request.user.id , ordered = True, being_delivered = True, received = False)
             data['orders'] = orders
 
         if profile.vendor_owner:
