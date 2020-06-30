@@ -1,5 +1,6 @@
 {% extends 'account.html' %}
 
+
 {% block opt_account %}{% endblock %}
 {% block opt_deliveries %}selected{% endblock %}
 
@@ -22,7 +23,9 @@
 				{% elif order.being_delivered %}
 					<h4>Order status: Out for delivery</h4>
                     <h4>Deliver too: {{ order.shipping_address.street_address }}
-                {% if order.shipping_address.apartment_address != '' %}, {{ order.shipping_address.apartment_address }} {% endif %}
+                {% if order.shipping_address.apartment_address != '' %}, 
+					{{ order.shipping_address.apartment_address }} 
+				{% endif %}
                 <!--add city to checkout-->
                 {{ order.shipping_address.zip }} </h4>
 					<h4>Driver assigned to deliver: {{ order.driver }}</h4>
@@ -30,7 +33,9 @@
 					<h4>Order status: Order is awaiting driver if you are a driver somthing went wrong, please select the delivery again</h4>
 				{% endif %}
 			</div>
-			<div class = "section"></div>
+			<div class = "section">
+				<button style='float: right;' type="button" href=''>Delivered</button>
+			</div>
         {% endfor %}
 	</div>
 

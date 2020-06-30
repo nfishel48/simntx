@@ -26,6 +26,7 @@ urlpatterns = [
     path('drivers/', views.drivers, name='drivers'),
     path('order/<ref_code>', views.OrderView.as_view(), name='order'),
     path('set-driver/<ref_code>', views.set_driver, name='set-driver'),
+    path('set-received/<ref_code>', views.set_received, name='set-received'),
     path('account/', views.account, name='account'),
     path('account/<str:page>', views.account_page, name='account_page'),
 ]

@@ -724,8 +724,13 @@ def set_driver(request, ref_code):
     order.driver = request.user.userprofile
     order.being_delivered = True
     order.save()
+    return render(request, 'account.html')
 
-    return render(request, 'home.html')
+def set_received(request, ref_code):
+    order = Order.objects.get(ref_code = ref_code)
+    order.received = True
+    order.save()
+    return render(request, 'account.html')
 
 @login_required       
 def account(request):
