@@ -18,7 +18,7 @@
 				{% if request.user.is_authenticated %}
 					{% if profile.vendor_owner %}
 						<div class = "nav-button">
-							<a href = "{% url 'core:index'%}">Vendor Dashboard</a>
+							<a href = "{% url 'dashboards:vendor'%}">Vendor Dashboard</a>
 						</div>
 					{% endif %}
 					

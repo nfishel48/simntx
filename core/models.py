@@ -226,6 +226,9 @@ class Post(models.Model):
     def __str__(self):
         return self.vendor.title + ": " + self.text[:50]
 
+    def get_title(self):
+        return self.text[:50]
+
 
 class PostImage(models.Model):
     image = models.ImageField()

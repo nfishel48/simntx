@@ -1,0 +1,46 @@
+{% extends 'dashboards/vendor.html' %}
+
+{% load staticfiles %}
+
+{% block opt_vendor %}{% endblock %}
+{% block opt_posts %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group">
+		<div class = "header">
+			<p class = "name">Posts</p>
+		</div>
+		<div class = "section table">
+			<table class = "data-table">
+				<tbody>
+					<tr class = "header-row">
+						<th>Title</th>
+						<th>Date Posted</th>
+						<th>Action</th>
+					</tr>
+					
+					{% for post in posts %}
+						<tr>
+							<td><a class = "link underline" href>{{ post.get_title }}</a></td>
+							<td>{{ post.posted }}</td>
+							<td class = "action-col">
+								<a href = "{% url 'dashboards:edit_page' 'posts' post.id %}">
+									<div class = "action" title = "Edit Post">
+										<img src = "{% static 'img/icons/edit-24.png' %}">
+									</div>
+								</a>
+								<a href = "{% url 'dashboards:delete_page' 'posts' post.id %}">
+									<div id = "delete-post" class = "action" style = "--background-color: var(--light-red);" title = "Delete Post" >
+										<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
+									</div>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

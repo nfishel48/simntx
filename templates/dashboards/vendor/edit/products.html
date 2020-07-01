@@ -1,0 +1,49 @@
+{% extends 'dashboards/vendor.html' %}
+
+{% load staticfiles %}
+
+{% block opt_vendor %}{% endblock %}
+{% block opt_products %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group">
+		<div class = "header">
+			<p class = "name">Edit Product</p>
+		</div>
+		<div class = "section">
+			<form method = 'POST'>
+				{% csrf_token %}
+			
+				<div class = "form-field">
+					<p class = "field-label">Title</p>
+					<input class = "field-input" type = "text" name = 'title' value = "{{ product.title }}">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Description</p>
+					<textarea class = "field-input" name = "description" required>{{ product.description }}</textarea>
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Price</p>
+					<input class = "field-input ten" type = "number" name = 'price' value = "{{ product.price }}">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Discount Price</p>
+					<input class = "field-input ten" type = "number" name = 'discount_price' value = "{{ product.discount_price }}">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Tags</p>
+					<select class = "field-input fifteen" name = "tags" multiple>
+						{% for tag in all_tags.all %}
+							<option value = "{{ tag.id }}" {% if tag in product.tags.all %}selected{% endif %}>{{ tag.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class = "form-end">
+					<input class = "form-submit" type = "submit" value = "Save">
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

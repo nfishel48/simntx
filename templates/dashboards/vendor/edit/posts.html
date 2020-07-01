@@ -1,0 +1,28 @@
+{% extends 'dashboards/vendor.html' %}
+
+{% load staticfiles %}
+
+{% block opt_vendor %}{% endblock %}
+{% block opt_posts %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group">
+		<div class = "header">
+			<p class = "name">Edit Post</p>
+		</div>
+		<div class = "section">
+			<form method = 'POST'>
+				{% csrf_token %}
+			
+				<div class = "form-field">
+					<textarea class = "field-input" name = "text" required>{{ post.text }}</textarea>
+				</div>
+				<div class = "form-end">
+					<input class = "form-submit" type = "submit" value = "Save">
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

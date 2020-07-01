@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 
     # Custom
     'core',
-    'vendor',
+    'dashboards',
 ]
 
 MIDDLEWARE = [

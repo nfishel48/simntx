@@ -743,7 +743,8 @@ def account_page(request, page):
     try:
         data = {}
 
-        profile = UserProfile.objects.get(user=request.user)
+        #profile = UserProfile.objects.get(user=request.user)
+        profile = request.user.userprofile
 
         template = 'account/settings/' + page + '.html'
 
@@ -751,8 +752,7 @@ def account_page(request, page):
             orders = Order.objects.filter(user_id = request.user, ordered = True)
 
             data['orders'] = orders
-
-        if page == 'deliveries':
+        elif page == 'deliveries':
             orders = Order.objects.filter(driver = request.user.username, ordered = True, being_delivered = True, received = False)
             data['orders'] = orders
 
@@ -761,7 +761,7 @@ def account_page(request, page):
 
         return render(request, template, data)
     except:
-        return redirect('/account')
+        return redirect('core:account')
 
     
   

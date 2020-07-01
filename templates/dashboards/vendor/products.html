@@ -1,0 +1,53 @@
+{% extends 'dashboards/vendor.html' %}
+{% load staticfiles %}
+
+{% block opt_vendor %}{% endblock %}
+{% block opt_products %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group">
+		<div class = "header">
+			<p class = "name">Products</p>
+		</div>
+		<div class = "section table">
+			<table class = "data-table">
+				<tbody>
+					<tr class = "header-row">
+						<th>Title</th>
+						<th>Price</th>
+						<th>Tags</th>
+						<th>Action</th>
+					</tr>
+					
+					{% for product in products %}
+						<tr>
+							<td><a class = "link underline" href = "{{ product.get_absolute_url }}">{{ product.title }}</a></td>
+							<td>${{ product.price }}</td>
+							<td>
+								<div class = "tags-container">
+									{% for tag in product.tags.all %}
+										{{ tag.name }}
+									{% endfor %}
+								</div>
+							</td>
+							<td class = "action-col">
+								<a href = "{% url 'dashboards:edit_page' 'products' product.id %}">
+									<div class = "action" title = "Edit Post">
+										<img src = "{% static 'img/icons/edit-24.png' %}">
+									</div>
+								</a>
+								<a href = "{% url 'dashboards:delete_page' 'products' product.id %}">
+									<div id = "delete-post" class = "action" style = "--background-color: var(--light-red);" title = "Delete Post" >
+										<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
+									</div>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}
