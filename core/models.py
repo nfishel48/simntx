@@ -53,7 +53,7 @@ class UserProfile(models.Model):
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
     vendor_owner = models.BooleanField(default = False)
-    driver = models.BooleanField(default = False)
+    #driver = models.BooleanField(default = False)
 
     def __str__(self):
         return self.user.username
@@ -137,7 +137,8 @@ class Order(models.Model):
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
-    driver = models.CharField(default="None", max_length=20)
+    #driver = models.CharField(default="None", max_length=20)
+    driver = models.ForeignKey('UserProfile', related_name='driver', on_delete=models.SET_NULL, blank=True, null=True)
 
     '''
     1. Item added to cart
@@ -166,11 +167,15 @@ class Order(models.Model):
 
     def get_shipping(self):
         return self.shipping_address
-    
+
     def get_absolute_url(self):
         return reverse("core:order", kwargs={
             'ref_code': self.ref_code
         })
+
+    def set_driver(self, username):
+        self.driver = str(username)
+        self.being_delivered = True
 
 
 class Address(models.Model):

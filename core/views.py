@@ -717,15 +717,22 @@ class OrderView(LoginRequiredMixin, View):
                 'object': order
         }
         return render(self.request, 'driver_summary.html', context)
-    
-    
-def set_driver(self, *args, **kwargs):
-    order = Order.objects.get(ref_code = kwargs['ref_code'])
-    order.driver = user.username
-    order.being_delivered = True
-    return render(self.request, 'home.html')
 
-@login_required       
+
+def set_driver(request, ref_code):
+    order = Order.objects.get(ref_code = ref_code)
+    order.driver = request.user.userprofile
+    order.being_delivered = True
+    order.save()
+    return render(request, 'account.html')
+
+def set_received(request, ref_code):
+    order = Order.objects.get(ref_code = ref_code)
+    order.received = True
+    order.save()
+    return render(request, 'account.html')
+
+@login_required
 def account(request):
     data = {}
 
@@ -753,7 +760,7 @@ def account_page(request, page):
 
             data['orders'] = orders
         elif page == 'deliveries':
-            orders = Order.objects.filter(driver = request.user.username, ordered = True, being_delivered = True, received = False)
+            orders = Order.objects.filter(driver = request.user.id, ordered = True, being_delivered = True, received = False)
             data['orders'] = orders
 
         if profile.vendor_owner:
@@ -763,8 +770,8 @@ def account_page(request, page):
     except:
         return redirect('core:account')
 
-    
-  
+
+
 
 # FUNCTIONS
 
