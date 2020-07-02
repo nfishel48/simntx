@@ -33,6 +33,7 @@ class Vendor(models.Model):
     description = models.TextField()
     image = models.ImageField(max_length=100)
     owner = models.ForeignKey('UserProfile', on_delete = models.CASCADE)
+    zip_code = models.IntegerField()
 
     def __str__(self):
         return self.title
@@ -53,7 +54,6 @@ class UserProfile(models.Model):
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
     vendor_owner = models.BooleanField(default = False)
-    #driver = models.BooleanField(default = False)
 
     def __str__(self):
         return self.user.username
