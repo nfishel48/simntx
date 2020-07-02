@@ -173,9 +173,6 @@ class Order(models.Model):
             'ref_code': self.ref_code
         })
 
-    def set_driver(self, username):
-        self.driver = str(username)
-        self.being_delivered = True
 
 
 class Address(models.Model):
