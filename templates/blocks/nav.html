@@ -26,16 +26,19 @@
 					<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
 						<img src = "{% static 'img/icons/cart-white-48.png' %}">
 					</a>
-					<div class = "item-count-badge">{% get_cart_count user %}</div>
+					{% get_cart_count user as cart_count %}
+					{% if cart_count > 0 %}
+						<div class = "item-count-badge">{{ cart_count }}</div>
+					{% endif %}
 				</div>
 				<div class = "nav-button user-button">
-					<p class = "user-initial">{{ user.userprofile.first_name.0 }}</p>
+					<p class = "user-initial">{{ user.first_name.0 }}</p>
 					<div class = "dropdown-container">
 						<div id = "user-info">
 							<div class = "nav-button user-button">
-								<p class = "user-initial">{{ user.userprofile.first_name.0 }}</p>
+								<p class = "user-initial">{{ user.first_name.0 }}</p>
 							</div>
-							<p id = "user-name">{{ user.userprofile.first_name }} {{ user.userprofile.last_name }}</p>
+							<p id = "user-name">{{ user.first_name }} {{ user.last_name }}</p>
 						</div>
 						<div class = "left-panel-group">
 							<div class = "links">
