@@ -561,16 +561,18 @@ class OrderSummaryView(LoginRequiredMixin, View):
 @login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_item, created = OrderItem.objects.get_or_create(
-        item=item
-    )
+    order_item, created = OrderItem.objects.get_or_create(item=item)
 
     order_qs = Order.objects.filter(user=request.user, ordered=False)
 
     if order_qs.exists():
         order = order_qs[0]
-        # check if the order item is in the order
-        if order.get_items(order).filter(item__slug=item.slug).exists():
+
+        order_item = order.get_items(order).filter(item__slug=item.slug)
+
+        if order_item.exists():
+            order_item = order_item[0]
+
             order_item.quantity += 1
             order_item.save()
 
@@ -589,7 +591,7 @@ def add_to_cart(request, slug):
 
         order = Order.objects.create(user=request.user, ordered_date=ordered_date)
 
-        order_item.order = order
+        order_item = OrderItem(item=item, order=order)
         order_item.save()
 
         messages.info(request, "This item was added to your cart.")
