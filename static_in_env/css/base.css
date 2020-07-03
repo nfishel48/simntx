@@ -66,8 +66,6 @@ body{
 	display: flex;
 	align-items: center;
 	
-	border-right: 1px solid #ddd;
-	
 	box-sizing: border-box;
 }
 #nav-right-panel{
@@ -90,13 +88,6 @@ body{
 	display: flex;
 	align-items: center;
 }
-#user-info{
-	margin-left: 15px;
-	
-	font-family: Roboto-Medium;
-	font-size: 15px;
-	color: var(--dark-text);
-}
 
 #container{
 	width: 100%;
@@ -112,7 +103,7 @@ body{
 	padding-right: var(--spacing);
 }
 #left-panel, #right-panel{
-	padding-bottom: var(--spacing);
+	padding-bottom: calc(var(--spacing) / 2);
 }
 #right-panel{
 	height: fit-content;
@@ -181,34 +172,137 @@ body{
 	color: #aaa;
 }
 
-.nav-button *{
+.nav-button{
+	width: 32px;
+	height: 32px;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	
+	background-color: #ccc;
+	
+	border-radius: 100%;
+	
+	box-sizing: border-box;
+	
 	transition: all .1s ease;
+	
+	cursor: pointer;
 }
-.nav-button:hover img{
-	filter: invert(.5);
+.nav-button img{
+	width: 22px;
+	height: 22px;
+}
+.nav-button:hover{
+	background-color: var(--primary);
 }
 .nav-button:not(:first-child){
-	margin-left: 5px;
+	margin-left: 8px;
 }
 .nav-button a{
 	display: flex;
 	align-items: center;
+	
+	position: relative;
 }
 .item-count-badge{
-	position: relative;
-	top: 5px;
-	left: -2px;
+	width: 5px;
+	height: 5px;
 	
-	background: var(--light-red);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	
+	padding: 6px;
 	
 	font-size: 10px;
 	font-weight: bold;
 	color: white;
+	padding: 5px;
 	
-	padding: 1px 3px;
+	background: var(--light-blue);
 	
-	border-radius: 3px;
+	border: 2px solid white;
+	
+	border-radius: 100%;
 }
+.user-button{
+	width: 36px;
+	height: 36px;
+	
+	margin-left: 12px !important;
+	
+	background-color: var(--primary);
+}
+.user-initial{
+	font-family: Roboto-Medium;
+	font-size: 14px;
+	color: white;
+}
+
+.dropdown-container{
+	width: 250px;
+	
+	display: none;
+	flex-direction: column;
+	
+	position: absolute;
+	top: calc(100% + 5px);
+	right: 0;
+	
+	padding: 15px;
+	
+	background-color: white;
+	
+	border: 1px solid #ddd;
+	
+	box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+	
+	box-sizing: border-box;
+	
+	cursor: auto;
+}
+.dropdown-container .link p{
+	font-family: Roboto-Regular;
+	font-size: 14px !important;
+}
+.dropdown-container .left-panel-group{
+	margin: 0 !important;
+}
+
+#user-info{
+	width: 100%;
+	
+	display: flex;
+	align-items: center;
+	
+	margin-bottom: 20px;
+}
+#user-info .user-button{
+	width: 40px;
+	height: 40px;
+	
+	margin-left: 0 !important;
+}
+#user-name{
+	margin-left: 10px;
+	
+	font-family: Roboto-Medium;
+	font-size: 16px;
+	color: var(--dark-text);
+}
+
+#logout-form{
+	cursor: pointer;
+}
+
 .cart-button{
 	display: flex;
 	align-items: center;
@@ -222,6 +316,7 @@ body{
 	text-transform: uppercase;
 	color: white;
 }
+
 #account-links{
 	display: flex;
 	align-items: baseline;
@@ -343,11 +438,19 @@ body{
 	margin-right: 3px;
 }
 
+.form-group:not(:first-child){
+	margin-top: 10px;
+}
 .form-field{
 	width: 100%;
 	
 	display: flex;
 	flex-direction: column;	
+}
+.form-field.row{
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
 }
 .form-field.half{ width: 50%; }
 .form-field.quarter{ width: 25%; }
@@ -358,8 +461,12 @@ body{
 	flex-direction: row;
 }
 .field-label{
+	font-family: Roboto-Medium;
 	font-size: 14px;
 	color: var(--dark-text);
+}
+.form-field.row .field-label{
+	flex: 1;
 }
 .field-label:not(:first-child){
 	margin-top: 10px;
@@ -374,8 +481,18 @@ body{
 	color: red;
 }
 .field-inputs{
+	width: 100%;
+	
 	display: flex;
 	justify-content: space-between;
+}
+.form-field.row .field-inputs{
+	flex: 3;
+	
+	margin-left: 20px;
+}
+.form-field.row .field-input:not(:first-child){
+	margin-left: 20px;
 }
 .field-input{
 	width: 100%;
@@ -414,6 +531,9 @@ textarea.field-input{
 .form-field:not(:first-child):not(#extra-options){
 	margin-top: 15px;
 }
+.form-group .form-field:not(:first-child):not(#extra-options){
+	margin-top: 5px;
+}
 .form-end{
 	width: 100%;
 	
@@ -423,6 +543,8 @@ textarea.field-input{
 	
 	margin-top: 15px;
 }
+.form-end.start{ align-items: flex-start; }
+.form-end.end{ align-items: flex-end; }
 .form-options{
 	display: flex;
 	flex-direction: column;
@@ -451,6 +573,9 @@ textarea.field-input{
 	cursor: pointer;
 	
 	box-sizing: border-box;
+}
+.form-submit.small{
+	width: auto;
 }
 
 a:visited, a:hover, a:link{

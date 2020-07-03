@@ -1,8 +1,10 @@
 from django import forms
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 
-from allauth.account.forms import SignupForm
+from allauth.account.forms import SignupForm, ChangePasswordForm
 
 PAYMENT_CHOICES = (
     ('S', 'Credit card/Debit Card'),
@@ -76,3 +78,12 @@ class UserSignUpForm(SignupForm):
         user.save()
 
         return user
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+class EditPasswordForm(ChangePasswordForm):
+    def save(self):
+        super(EditPasswordForm, self).save()

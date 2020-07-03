@@ -14,7 +14,7 @@
 	
 	<div id = "container">
 		<div id = "left-panel">
-			{% block left_panel %}
+			{% block left_base_panel %}
 			{% endblock %}
 		</div>
 		<div id = "right-panel">
@@ -26,6 +26,7 @@
 	{% include 'blocks/footer.html' %}
 	
 	<script type = "text/javascript" src = "{% static 'js/jquery.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/base.js' %}"></script>
 	<script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
 	
 	{% block js %}

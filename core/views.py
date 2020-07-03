@@ -10,8 +10,13 @@ from django.utils import timezone
 from django.db.models import Q
 from django.http import JsonResponse
 from django.template.loader import get_template
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
+from allauth.account.views import PasswordChangeView
+from allauth.account.forms import ChangePasswordForm
+
+from .forms import *
 from .models import *
 
 import random
@@ -29,8 +34,6 @@ def index(request):
 
 
 def feed(request):
-    print(request.user.userprofile.get_cart_count(request.user))
-
     posts = Post.objects.all()
 
     for post in posts:
@@ -48,8 +51,6 @@ def store(request):
 
     for vendor in vendors:
         vendor.tags = get_tags(vendor.id)
-
-    print(vendors.all())
 
     return render(request, 'store.html', {
         'vendors': vendors,
@@ -751,12 +752,23 @@ def set_received(request, ref_code):
 def account(request):
     data = {}
 
-    profile = UserProfile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = EditUserForm(request.POST)
 
-    print(UserProfile.objects.get(user = request.user).one_click_purchasing)
+        if form.is_valid():
+            request.user.userprofile.first_name = form.cleaned_data['first_name']
+            request.user.userprofile.last_name = form.cleaned_data['last_name']
+            request.user.email = form.cleaned_data['email']
 
-    if profile.vendor_owner:
-        data['vendor'] = get_vendors(profile)
+            request.user.save()
+            request.user.userprofile.save()
+        else:
+            print(form.errors)
+
+        return redirect('core:account')
+
+    if request.user.userprofile.vendor_owner:
+        data['vendor'] = get_vendors(request.user.userprofile)
 
     return render(request, 'account.html', data)
 
@@ -770,7 +782,20 @@ def account_page(request, page):
 
         template = 'account/settings/' + page + '.html'
 
-        if page == 'orders':
+        if page == 'password':
+            print('PASSWORD PAGE')
+            if request.method == 'POST':
+                print('SUBMITTED FORM')
+                form = ChangePasswordForm(request.POST)
+                print('CREATED FORM VARIABLE')
+                if form.is_valid():
+                    print('trying to change password')
+                    print('password changed')
+                else:
+                    print(form.errors)
+
+                return redirect('core:account')
+        elif page == 'orders':
             orders = Order.objects.filter(user_id = request.user, ordered = True)
 
             data['orders'] = orders
@@ -786,6 +811,10 @@ def account_page(request, page):
         return redirect('core:account')
 
 
+class ChangePassView(PasswordChangeView):
+    success_url = reverse_lazy('core:account')
+
+change_password = login_required(ChangePassView.as_view())
 
 
 # FUNCTIONS

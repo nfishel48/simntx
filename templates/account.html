@@ -8,57 +8,51 @@
 	
 {% endblock %}
 
-{% block extra_css %}
+{% block with_side_panel_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/account.css' %}">
 
 {% endblock %}
 
 {% block left_panel %}
-
-	<div id = "left-panel-groups">
-		<div class = "left-panel-group">
+	
+	<div class = "left-panel-group">
+		<p class = "title">Account</p>
+		<div class = "links">
 			<a href = "{% url 'core:account' %}">
-				<div class = "left-panel-option {% block opt_account %}selected{% endblock %}">
-					<p class = "title">Account</p>
-					<img src = "{% static 'img/icons/right-caret-24.png' %}">
+				<div class = "link {% block select_account %}selected{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_account_img %}"{% static 'img/icons/home-filled-48.png' %}"{% endblock %}>
+					</div>
+					<p>Account</p>
 				</div>
 			</a>
-			<a href = "{% url 'core:account_page' 'orders' %}">
-				<div class = "left-panel-option {% block opt_orders %}{% endblock %}">
-					<p class = "title">Orders</p>
-					<img src = "{% static 'img/icons/right-caret-24.png' %}">
-				</div>
-			</a>
-			{% if user.is_staff %}
-			<a href = "{% url 'core:account_page' 'deliveries' %}">
-				<div class = "left-panel-option {% block opt_deliveries %}{% endblock %}">
-					<p class = "title">Deliveries</p>
-					<img src = "{% static 'img/icons/right-caret-24.png' %}">
-				</div>
-			</a>
-			{% endif %}
 			<a href = "{% url 'core:account_page' 'password' %}">
-				<div class = "left-panel-option {% block opt_password %}{% endblock %}">
-					<p class = "title">Password</p>
-					<img src = "{% static 'img/icons/right-caret-24.png' %}">
+				<div class = "link {% block select_password %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_password_img %}"{% static 'img/icons/lock-48.png' %}"{% endblock %}>
+					</div>
+					<p>Password</p>
 				</div>
 			</a>
-		</div>
-		<div class = "left-panel-group">
 			<a href = "{% url 'core:account_page' 'notifications' %}">
-				<div class = "left-panel-option {% block opt_notifications %}{% endblock %}">
-					<p class = "title">Notifications</p>
-					<img src = "{% static 'img/icons/right-caret-24.png' %}">
+				<div class = "link {% block select_notifications %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_notifications_img %}"{% static 'img/icons/bell-24.png' %}"{% endblock %}>
+					</div>
+					<p>Notifications</p>
 				</div>
 			</a>
 		</div>
-		
-		<div class = "left-panel-group">
+	</div>
+	<div class = "left-panel-group">
+		<div class = "links">
 			<a href = "{% url 'core:account_page' 'delete' %}">
-				<div class = "left-panel-option delete {% block opt_delete %}{% endblock %}">
-					<p class = "title">Delete Account</p>
-					<img src = "{% static 'img/icons/right-caret-24.png' %}">
+				<div id = "delete" class = "link {% block select_delete %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_delete_img %}"{% static 'img/icons/trash-24.png' %}"{% endblock %}>
+					</div>
+					<p style = "color: red;">Delete Account</p>
 				</div>
 			</a>
 		</div>
@@ -68,19 +62,31 @@
 
 {% block right_panel %}
 
-    <div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Account</p>
 		</div>
 		<div class = "section">
-			<h4>Username: {{ user.username }}</h4>
-		</div>
-		<div class = "section">
-			<h4>First Name: {{ user.first_name }}</h4>
-			<h4>Last Name: {{ user.last_name }}</h4>
-		</div>
-		<div class = "section">
-			<h4>Email: {{ user.email }}</h4>
+			<form method = 'POST'>
+				{% csrf_token %}
+			
+				<div class = "form-field row">
+					<p class = "field-label">Name</p>
+					<div class = "field-inputs">
+						<input class = "field-input" type = "text" name = "first_name" placeholder = "First Name" value = "{{ user.userprofile.first_name }}" required>
+						<input class = "field-input" type = "text" name = "last_name" placeholder = "Last Name" value = "{{ user.userprofile.last_name }}" required>
+					</div>
+				</div>
+				<div class = "form-field row">
+					<p class = "field-label">Email</p>
+					<div class = "field-inputs">
+						<input class = "field-input" type = "email" name = "email" placeholder = "Email" value = "{{ user.email }}" required>
+					</div>
+				</div>
+				<div class = "form-end end">
+					<input class = "form-submit small" type = "submit" value = "Save">
+				</div>
+			</form>
 		</div>
 	</div>
 

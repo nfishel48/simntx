@@ -11,7 +11,22 @@
 
 {% endblock %}
 
-{% block left_panel %}
+{% block left_base_panel %}
+	
+	{% block home_button %}
+		
+		<a href = "{% url 'core:index' %}">
+			<div class = "left-panel-group back">
+				<img src = "{% static 'img/icons/back-24.png' %}">
+				<p class = "back-title">Back</p>
+			</div>
+		</a>
+	
+	{% endblock %}
+
+	{% block left_panel %}
+	{% endblock %}
+
 {% endblock %}
 
 {% block right_panel %}

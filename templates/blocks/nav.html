@@ -16,34 +16,63 @@
 		<div id = "nav-right">
 			{% if user.is_authenticated %}
 				<div class = "nav-button">
-					<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
-						<img src = "{% static 'img/icons/bell-dark-20.png' %}">
-						<div class = "item-count-badge" style = "background-color: var(--primary);">{{ 1 }}</div>
-					</a>
+					<img src = "{% static 'img/icons/bell-white-48.png' %}">
+					<div class = "item-count-badge" style = "background-color: var(--light-red);">{{ 1 }}</div>
+					<div class = "dropdown-container">
+						
+					</div>
 				</div>
 				<div class = "nav-button">
 					<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
-						<img src = "{% static 'img/icons/cart-dark-20.png' %}">
-						<div class = "item-count-badge">{% get_cart_count user %}</div>
+						<img src = "{% static 'img/icons/cart-white-48.png' %}">
 					</a>
+					<div class = "item-count-badge">{% get_cart_count user %}</div>
 				</div>
-				<div id = "account-links">
-					<div class = "nav-button">
-						<form action = "{% url 'account_logout' %}" method = "POST">
-							{% csrf_token %}
-
-							<input id = "logout" type = "submit" value = "Logout">
-						</form>
+				<div class = "nav-button user-button">
+					<p class = "user-initial">{{ user.userprofile.first_name.0 }}</p>
+					<div class = "dropdown-container">
+						<div id = "user-info">
+							<div class = "nav-button user-button">
+								<p class = "user-initial">{{ user.userprofile.first_name.0 }}</p>
+							</div>
+							<p id = "user-name">{{ user.userprofile.first_name }} {{ user.userprofile.last_name }}</p>
+						</div>
+						<div class = "left-panel-group">
+							<div class = "links">
+								<a href = "{% url 'core:feed' %}">
+									<div class = "link">
+										<div class = "link-image">
+											<img src = "{% static 'img/icons/products-48.png' %}">
+										</div>
+										<p>Orders</p>
+									</div>
+								</a>
+								<a href = "{% url 'core:account' %}">
+									<div class = "link">
+										<div class = "link-image">
+											<img src = "{% static 'img/icons/settings-48.png' %}">
+										</div>
+										<p>Setings</p>
+									</div>
+								</a>
+								<form id = "logout-form" action = "{% url 'account_logout' %}" method = "POST">
+									{% csrf_token %}
+									
+									<div class = "link">
+										<div class = "link-image">
+											<img src = "{% static 'img/icons/logout-32.png' %}">
+										</div>
+										<p>Logout</p>
+									</div>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 			{% else %}
 				<div id = "account-links">
-					<div class = "nav-button">
-						<a href = "{% url 'account_login' %}">Login</a>
-					</div>
-					<div class = "nav-button" style = "margin-left: 10px;">
-						<a href = "{% url 'account_signup' %}">Sign Up</a>
-					</div>
+					<a href = "{% url 'account_login' %}" style = "margin-right: 10px;">Login</a>
+					<a href = "{% url 'account_signup' %}">Sign Up</a>
 				</div>
 			{% endif %}
 		</div>

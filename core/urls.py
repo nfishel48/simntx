@@ -32,4 +32,5 @@ urlpatterns = [
 
     path('account/', views.account, name='account'),
     path('account/<str:page>', views.account_page, name='account_page'),
+    path('change_password', views.change_password, name='change_password'),
 ]
