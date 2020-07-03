@@ -29,6 +29,8 @@ def index(request):
 
 
 def feed(request):
+    print(request.user.userprofile.get_cart_count(request.user))
+
     posts = Post.objects.all()
 
     for post in posts:
@@ -412,35 +414,38 @@ class CheckoutView(View):
 class PaymentView(View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
+
         if order.billing_address:
             context = {
                 'order': order,
                 'DISPLAY_COUPON_FORM': False
             }
+
             userprofile = self.request.user.userprofile
+
             if userprofile.one_click_purchasing:
                 # fetch the users card list
-                cards = stripe.Customer.list_sources(
-                    userprofile.stripe_customer_id,
-                    limit=3,
-                    object='card'
-                )
+                cards = stripe.Customer.list_sources(userprofile.stripe_customer_id, limit=3, object='card')
+
                 card_list = cards['data']
+
                 if len(card_list) > 0:
                     # update the context with the default card
                     context.update({
                         'card': card_list[0]
                     })
+
             return render(self.request, "payment.html", context)
         else:
-            messages.warning(
-                self.request, "You have not added a billing address")
+            messages.warning(self.request, "You have not added a billing address")
+
             return redirect("core:checkout")
 
     def post(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
         form = PaymentForm(self.request.POST)
         userprofile = UserProfile.objects.get(user=self.request.user)
+
         if form.is_valid():
             token = form.cleaned_data.get('stripeToken')
             save = form.cleaned_data.get('save')
@@ -448,15 +453,12 @@ class PaymentView(View):
 
             if save:
                 if userprofile.stripe_customer_id != '' and userprofile.stripe_customer_id is not None:
-                    customer = stripe.Customer.retrieve(
-                        userprofile.stripe_customer_id)
+                    customer = stripe.Customer.retrieve(userprofile.stripe_customer_id)
+                    customer.sources.create(source=token)
+                else:
+                    customer = stripe.Customer.create(email=self.request.user.email)
                     customer.sources.create(source=token)
 
-                else:
-                    customer = stripe.Customer.create(
-                        email=self.request.user.email,
-                    )
-                    customer.sources.create(source=token)
                     userprofile.stripe_customer_id = customer['id']
                     userprofile.one_click_purchasing = True
                     userprofile.save()
@@ -464,21 +466,12 @@ class PaymentView(View):
             amount = int(order.get_total() * 100)
 
             try:
-
                 if use_default or save:
                     # charge the customer because we cannot charge the token more than once
-                    charge = stripe.Charge.create(
-                        amount=amount,  # cents
-                        currency="usd",
-                        customer=userprofile.stripe_customer_id
-                    )
+                    charge = stripe.Charge.create(amount=amount, currency="usd", customer=userprofile.stripe_customer_id)
                 else:
                     # charge once off on the token
-                    charge = stripe.Charge.create(
-                        amount=amount,  # cents
-                        currency="usd",
-                        source=token
-                    )
+                    charge = stripe.Charge.create(amount=amount, currency="usd", source=token)
 
                 # create the payment
                 payment = Payment()
@@ -488,164 +481,179 @@ class PaymentView(View):
                 payment.save()
 
                 # assign the payment to the order
-
-                order_items = order.items.all()
-                order_items.update(ordered=True)
-                for item in order_items:
-                    item.save()
-
                 order.ordered = True
                 order.payment = payment
                 order.ref_code = create_ref_code()
                 order.save()
 
                 messages.success(self.request, "Your order was successful!")
+
                 return redirect("/")
 
             except stripe.error.CardError as e:
                 body = e.json_body
+
                 err = body.get('error', {})
+
                 messages.warning(self.request, f"{err.get('message')}")
+
                 return redirect("/")
 
             except stripe.error.RateLimitError as e:
                 # Too many requests made to the API too quickly
                 messages.warning(self.request, "Rate limit error")
+
                 return redirect("/")
 
             except stripe.error.InvalidRequestError as e:
                 # Invalid parameters were supplied to Stripe's API
                 print(e)
+
                 messages.warning(self.request, "Invalid parameters")
+
                 return redirect("/")
 
             except stripe.error.AuthenticationError as e:
                 # Authentication with Stripe's API failed
                 # (maybe you changed API keys recently)
                 messages.warning(self.request, "Not authenticated")
+
                 return redirect("/")
 
             except stripe.error.APIConnectionError as e:
                 # Network communication with Stripe failed
                 messages.warning(self.request, "Network error")
+
                 return redirect("/")
 
             except stripe.error.StripeError as e:
                 # Display a very generic error to the user, and maybe send
                 # yourself an email
-                messages.warning(
-                    self.request, "Something went wrong. You were not charged. Please try again.")
+                messages.warning(self.request, "Something went wrong. You were not charged. Please try again.")
+
                 return redirect("/")
 
             except Exception as e:
                 # send an email to ourselves
-                messages.warning(
-                    self.request, "A serious error occurred. We have been notifed.")
+                messages.warning(self.request, "A serious error occurred. We have been notifed.")
+
                 return redirect("/")
 
         messages.warning(self.request, "Invalid data received")
+
         return redirect("/payment/stripe/")
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
+        data = {}
+
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
-            context = {
-                'object': order
-            }
-            return render(self.request, 'order_summary.html', context)
+
+            data['order'] = order
         except ObjectDoesNotExist:
-            messages.warning(self.request, "You do not have an active order")
-            return redirect("/")
+            pass
+
+        return render(self.request, 'order_summary.html', data)
 
 
 @login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_item, created = OrderItem.objects.get_or_create(
-        item=item,
-        user=request.user,
-        ordered=False
+        item=item
     )
+
     order_qs = Order.objects.filter(user=request.user, ordered=False)
+
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
+        if order.get_items(order).filter(item__slug=item.slug).exists():
             order_item.quantity += 1
             order_item.save()
+
             messages.info(request, "This item quantity was updated.")
+
             return redirect("core:order-summary")
         else:
-            order.items.add(order_item)
+            order_item.order = order
+            order_item.save()
+
             messages.info(request, "This item was added to your cart.")
+
             return redirect("core:order-summary")
     else:
         ordered_date = timezone.now()
-        order = Order.objects.create(
-            user=request.user, ordered_date=ordered_date)
-        order.items.add(order_item)
+
+        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+
+        order_item.order = order
+        order_item.save()
+
         messages.info(request, "This item was added to your cart.")
+
         return redirect("core:order-summary")
 
 
 @login_required
 def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
+
     order_qs = Order.objects.filter(
         user=request.user,
         ordered=False
     )
+
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            order.items.remove(order_item)
+        if order.get_items(order).filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(item=item, order=order, order__ordered=False)[0]
             order_item.delete()
+
             messages.info(request, "This item was removed from your cart.")
+
             return redirect("core:order-summary")
         else:
             messages.info(request, "This item was not in your cart")
+
             return redirect("core:product", slug=slug)
     else:
         messages.info(request, "You do not have an active order")
+
         return redirect("core:product", slug=slug)
 
 
 @login_required
 def remove_single_item_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
+
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
+        if order.get_items(order).filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(item=item, order=order, order__ordered=False)[0]
+
             if order_item.quantity > 1:
                 order_item.quantity -= 1
                 order_item.save()
             else:
-                order.items.remove(order_item)
+                order_item.delete()
+
             messages.info(request, "This item quantity was updated.")
+
             return redirect("core:order-summary")
         else:
             messages.info(request, "This item was not in your cart")
+
             return redirect("core:product", slug=slug)
     else:
         messages.info(request, "You do not have an active order")
+
         return redirect("core:product", slug=slug)
 
 
@@ -664,14 +672,17 @@ class AddCouponView(View):
         if form.is_valid():
             try:
                 code = form.cleaned_data.get('code')
-                order = Order.objects.get(
-                    user=self.request.user, ordered=False)
+
+                order = Order.objects.get(user=self.request.user, ordered=False)
                 order.coupon = get_coupon(self.request, code)
                 order.save()
+
                 messages.success(self.request, "Successfully added coupon")
+
                 return redirect("core:checkout")
             except ObjectDoesNotExist:
                 messages.info(self.request, "You do not have an active order")
+
                 return redirect("core:checkout")
 
 
@@ -712,9 +723,11 @@ class RequestRefundView(View):
 class OrderView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(ref_code = kwargs['ref_code'])
+
         context = {
-                'object': order
+            'object': order
         }
+
         return render(self.request, 'driver_summary.html', context)
 
 
@@ -723,12 +736,14 @@ def set_driver(request, ref_code):
     order.driver = request.user.userprofile
     order.being_delivered = True
     order.save()
+
     return render(request, 'account.html')
 
 def set_received(request, ref_code):
     order = Order.objects.get(ref_code = ref_code)
     order.received = True
     order.save()
+
     return render(request, 'account.html')
 
 @login_required

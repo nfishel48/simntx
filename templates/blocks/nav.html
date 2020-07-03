@@ -1,5 +1,6 @@
 {% load staticfiles %}
-{% load cart_template_tags %}
+
+{% load tags %}
 
 <div id = "nav">
 	<div id = "nav-left-panel">
@@ -23,7 +24,7 @@
 				<div class = "nav-button">
 					<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
 						<img src = "{% static 'img/icons/cart-dark-20.png' %}">
-						<div class = "item-count-badge">{{ user|cart_item_count }}</div>
+						<div class = "item-count-badge">{% get_cart_count user %}</div>
 					</a>
 				</div>
 				<div id = "account-links">

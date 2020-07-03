@@ -61,6 +61,15 @@ class UserProfile(models.Model):
     def get_user(self):
         return self.user
 
+    @classmethod
+    def get_cart_count(cls, user):
+        order = Order.objects.filter(user = user)
+
+        if order.exists():
+            return OrderItem.objects.filter(order = order[0]).count()
+
+        return 0
+
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
@@ -95,6 +104,7 @@ class Item(models.Model):
 class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name = 'item')
     quantity = models.IntegerField(default=1)
+    order = models.ForeignKey('Order', null = True, on_delete = models.CASCADE, related_name = 'order')
 
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
@@ -118,7 +128,6 @@ class OrderItem(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     driver = models.ForeignKey('UserProfile', related_name='driver', on_delete=models.SET_NULL, default=1, blank=True, null=True)
-    items = models.ManyToManyField(OrderItem)
 
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -153,7 +162,7 @@ class Order(models.Model):
 
     def get_total(self):
         total = 0
-        for order_item in self.items.all():
+        for order_item in self.get_items(self):
             total += order_item.get_final_price()
         if self.coupon:
             total -= self.coupon.amount
@@ -170,6 +179,9 @@ class Order(models.Model):
             'ref_code': self.ref_code
         })
 
+    @classmethod
+    def get_items(cls, order):
+        return OrderItem.objects.filter(order = order)
 
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

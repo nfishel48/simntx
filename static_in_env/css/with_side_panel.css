@@ -97,6 +97,8 @@
 	
 	position: relative;
 	left: calc(var(--left-panel-width) / -2);
+	
+	color: var(--dark-text);
 }
 .content-panel{
 	width: 100%;

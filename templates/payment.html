@@ -1,12 +1,8 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 
-{% block title %}
+{% block title %}Payment{% endblock %}
 
-	<title>Payment - Simntx</title>
-	
-{% endblock %}
-
-{% block css %}
+{% block home_css %}
 
 	{% include 'bootstrap_css.html' %}
 
@@ -108,9 +104,10 @@
 
 {% endblock %}
 
-{% block content %}
-
-  <main >
+{% block right_panel %}
+	
+	<div class = "content-panel-container">
+  <main class = "content-panel">
     <div class="container wow fadeIn">
 
       <h2 class="my-5 h2 text-center">Payment</h2>
@@ -174,8 +171,9 @@
 
     </div>
   </main>
+  </div>
 
-{% endblock content %}
+{% endblock %}
 
 {% block js %}
 

@@ -1,21 +1,18 @@
-{% extends "base.html" %}
+{% extends "home.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}
+{% block title %}Checkout{% endblock %}
 
-	<title>Checkout - Simntx</title>
-	
-{% endblock %}
-
-{% block css %}
+{% block home_css %}
 
 	{% include 'bootstrap_css.html' %}
 
 {% endblock %}
 
-{% block content %}
+{% block right_panel %}
 
-  <main >
+	<div id = "content-panel-container">
+  <main class = "content-panel">
     <div class="container wow fadeIn">
       <h2 class="my-5 h2 text-center">Checkout form</h2>
       <div class="row">
@@ -150,10 +147,11 @@
 
     </div>
   </main>
+  </div>
 
-{% endblock content %}
+{% endblock %}
 
-{% block extra_scripts %}
+{% block js %}
 <script>
 var hideable_shipping_form = $('.hideable_shipping_form');
 var hideable_billing_form = $('.hideable_billing_form');
@@ -178,4 +176,4 @@ use_default_billing.addEventListener('change', function() {
 })
 
 </script>
-{% endblock extra_scripts %}
+{% endblock %}
