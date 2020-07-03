@@ -5,14 +5,15 @@ from . import views
 app_name = 'core'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.feed, name='index'),
     path('feed', views.feed, name='feed'),
     path('store', views.store, name='store'),
-
     path('product/<slug>', views.product, name='product'),
     path('vendor/<slug>', views.vendor, name='vendor'),
+    path('vendor/<slug>/feed', views.vendor_feed, name='vendor_feed'),
+    path('vendor/<slug>/store', views.vendor_store, name='vendor_store'),
+    path('search', views.search_view, name='search'),
 
-    path('search', views.search, name = 'search'),
     path('search_more', views.search_more, name = 'search_more'),
 
     path('checkout/', views.CheckoutView.as_view(), name='checkout'),
@@ -28,6 +29,7 @@ urlpatterns = [
     path('order/<ref_code>', views.OrderView.as_view(), name='order'),
     path('set-driver/<ref_code>', views.set_driver, name='set-driver'),
     path('set-received/<ref_code>', views.set_received, name='set-received'),
+
     path('account/', views.account, name='account'),
     path('account/<str:page>', views.account_page, name='account_page'),
 ]

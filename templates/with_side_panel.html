@@ -1,33 +1,18 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% load staticfiles %}
 
 {% block css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/with_side_panel.css' %}">
 
-	{% block extra_css %}
+	{% block with_side_panel_css %}
 	{% endblock %}
 
 {% endblock %}
 
-{% block content %}
-	
-	<div id = "panels">
-		<div id = "left-panel">
-			{% block left_panel %}
-			{% endblock %}
-		</div>
-		<div id = "right-panel">
-			{% block right_panel %}
-			{% endblock %}
-		</div>
-	</div>
+{% block left_panel %}
+{% endblock %}
 
-{% endblock content %}
-
-{% block js %}
-
-	{% block extra_js %}
-	{% endblock %}
-
+{% block right_panel %}
 {% endblock %}

@@ -1,49 +1,78 @@
-{% extends "with_side_panel.html" %}
+{% extends 'with_side_panel.html' %}
+
 {% load staticfiles %}
 
-{% block extra_css %}
+{% block with_side_panel_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/home.css' %}">
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
 
-	{% block more_css %}
+	{% block home_css %}
 	{% endblock %}
 
 {% endblock %}
-	
+
 {% block left_panel %}
-	<a href = "{% url 'core:feed' %}">
-		<div id = "feed-link" class = "view-link">
-			<div class = "link-inner">
-				<img src = "{% static 'img/icons/home-filled-48.png' %}">
-				<p>Feed</p>
-			</div>
+
+	<div class = "left-panel-group">
+		<p class = "title">General</p>
+		<div class = "links">
+			<a href = "{% url 'core:feed' %}">
+				<div class = "link {% block select_feed %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_feed_img %}"{% static 'img/icons/home-48.png' %}"{% endblock %}>
+					</div>
+					<p>Feed</p>
+				</div>
+			</a>
+			<a href = "{% url 'core:store' %}">
+				<div class = "link {% block select_store %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_store_img %}"{% static 'img/icons/store-48.png' %}"{% endblock %}>
+					</div>
+					<p>Store</p>
+				</div>
+			</a>
 		</div>
-	</a>
-	<a href = "{% url 'core:store' %}">
-		<div id = "store-link" class = "view-link">
-			<div class = "link-inner">
-				<img src = "{% static 'img/icons/store-filled-48.png' %}">
-				<p>Store</p>
-			</div>
+	</div>
+	<div class = "left-panel-group">
+		<p class = "title">Account</p>
+		<div class = "links">
+			{% if user.userprofile.vendor_owner %}
+				<a href = "{% url 'dashboards:vendor' %}">
+					<div class = "link {% block select_vendor %}{% endblock %}">
+						<div class = "link-image">
+							<img src = {% block select_vendor_img %}"{% static 'img/icons/dashboard-48.png' %}"{% endblock %}>
+						</div>
+						<p>Vendor Dashboard</p>
+					</div>
+				</a>
+			{% endif %}
+			{% if user.is_staff %}
+				<a href = "{% url 'core:drivers' %}">
+					<div class = "link {% block select_drivers %}{% endblock %}">
+						<div class = "link-image">
+							<img src = {% block select_drivers_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>
+						</div>
+						<p>Drivers</p>
+					</div>
+				</a>
+			{% endif %}
+			
+			<a href = "{% url 'core:account' %}">
+				<div class = "link {% block select_account %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_account_img %}"{% static 'img/icons/settings-48.png' %}"{% endblock %}>
+					</div>
+					<p>Settings</p>
+				</div>
+			</a>
 		</div>
-	</a>
-	
+	</div>
+
 {% endblock %}
 
 {% block right_panel %}
+
 	
-	{% block panel %}
-	{% endblock %}
-
-{% endblock %}
-
-{% block extra_js %}
-
-	<script type = "text/javascript" src = "{% static 'js/home.js' %}"></script>
-	<script type = "text/javascript" src = "{% static 'js/listings.js' %}"></script>
-
-	{% block more_js %}
-	{% endblock %}
 
 {% endblock %}

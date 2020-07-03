@@ -9,11 +9,11 @@
 			<div class = "tags-container">
 				{% if vendor == True %}
 					{% for tag in item.tags %}
-						{% include 'tag.html' with tag=tag %}
+						{% include 'blocks/tag.html' with tag=tag %}
 					{% endfor %}
 				{% else %}
 					{% for tag in item.tags.all %}
-						{% include 'tag.html' with tag=tag %}
+						{% include 'blocks/tag.html' with tag=tag %}
 					{% endfor %}
 				{% endif %}
 			</div>

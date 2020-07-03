@@ -1,0 +1,28 @@
+{% extends 'vendor.html' %}
+
+{% load staticfiles %}
+
+{% block select_vendor_feed %}selected{% endblock %}
+
+{% block vendor_content %}
+
+	<div class = "content-container">
+		<div class = "content-panel">
+			<p class = "content-title">About</p>
+			<p id = "vendor-desc">{{ vendor.description }}</p>
+		</div>
+	</div>
+	<div class = "content-container">
+		<div id = "vendor-posts">
+			{% for post in posts %}
+				{% include 'blocks/post.html' with post=post %}
+			{% endfor %}
+		</div>
+	</div>
+	<div class = "content-container">
+		<div class = "content-panel">
+			<p class = "content-title">Similar Vendors</p>
+		</div>
+	</div>
+
+{% endblock %}

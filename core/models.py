@@ -138,7 +138,7 @@ class Order(models.Model):
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
     #driver = models.CharField(default="None", max_length=20)
-    driver = models.ForeignKey('UserProfile', related_name='driver', on_delete=models.SET_NULL, blank=True, null=True)
+    driver = models.ForeignKey('UserProfile', related_name='driver', on_delete=models.SET_NULL, default = 1, blank=True, null=True)
 
     '''
     1. Item added to cart

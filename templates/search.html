@@ -1,89 +1,41 @@
-{% extends "base.html" %}
+{% extends 'home.html' %}
+
 {% load staticfiles %}
 
-{% block css %}
+{% block home_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/search.css' %}">
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
 
 {% endblock %}
 
-{% block content %}
-	
-	<div id = "search-options">
-		<form action = "/search" method = "POST" id = "search-form">
-			{% csrf_token %}
+{% block right_panel %}
+
+	<div class = "content-panel-container">
+		<div id = "search-bar-container" class = "content-panel">
 			
-			{% include 'searchbar.html' %}
-		</form>
-	</div>
-	<div id = "search-body">
-		<div id = "search-filters">
-			<div class = "section-header">
-				<p class = "section-label">Filters</p>
-			</div>
-			<div class = "filter-group">
-				<p class = "filter-label">Tags</p>
-				<div class = "filter-options">
-					<div id = "search-tags">
-						{% for tag in selected_tags %}
-							<input class = "tag decorated-tag selected" form = "search-form" type = "button" name = "tag" value = "{{ tag.name }}">
-						{% endfor %}
-						{% for tag in remaining_tags %}
-							<input class = "tag decorated-tag" form = "search-form" type = "button" name = "tag" value = "{{ tag.name }}">
-						{% endfor %}
-					</div>
-				</div>
-			</div>
-			<div class = "filter-group">
-				<p class = "filter-label">Price</p>
-				<div class = "filter-options">
-					<div class = "filter-checkbox">
-						<input form = "search-form" type = "radio" name = "price" value = "$0-5" id = "$0-5">
-						<label for = "$0-5">$0-5</label>
-					</div>
-					<div class = "filter-checkbox">
-						<input form = "search-form" type = "radio" name = "price" value = "$5-10" id = "$5-10">
-						<label for = "$5-10">$5-10</label>
-					</div>
-					<div class = "filter-checkbox">
-						<input form = "search-form" type = "radio" name = "price" value = "$10-20" id = "$10-20">
-						<label for = "$10-20">$10-20</label>
-					</div>
-					<div class = "filter-checkbox">
-						<input form = "search-form" type = "radio" name = "price" value = "$20-50" id = "$20-50">
-						<label for = "$20-50">$20-50</label>
-					</div>
-				</div>
-			</div>
+			{% url 'core:search' as page %}
+			{% include 'blocks/searchbar.html' with query=query page=page search_bar=True form_id='search-form' %}
 		</div>
-		<div id = "search-results">
-			<div class = "section-header">
-				<p class = "section-label">Search Results</p>
-			</div>
-			<div id = "listings">
-				{% for item in product_results %}
-					{% include 'listing_item.html' with item=item vendor=None%}
-				{% endfor %}
-			</div>
-			{% if show_load_button %}
-				<div id = "load-more" class = "cart-button primary">
-					LOAD MORE
+		<div id = "search-details-container">
+			{% include 'blocks/content_panels/filters.html' with form_id='search-form' %}
+			
+			<div id = "results-container" class = "content-panel">
+				<p class = "content-title">Results</p>
+				<div class = "products-container">
+					{% for item in product_results %}
+						{% include 'blocks/listing_item.html' with item=item vendor=None%}
+					{% endfor %}
 				</div>
-			{% endif %}
+			</div>
 		</div>
 	</div>
 
-{% endblock content %}
+{% endblock %}
 
 {% block js %}
-
-	<script type = "text/javascript">
-		var listing_item = `{% include 'listing_item.html' with item=product_results.0 vendor=None %}`;
-		var load_amount = {{ load_amount }};
-	</script>
-
-	<script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
+	
 	<script type = "text/javascript" src = "{% static 'js/search.js' %}"></script>
-
+	<script type = "text/javascript" src = "{% static 'js/search_helper.js' %}"></script>
+	
 {% endblock %}

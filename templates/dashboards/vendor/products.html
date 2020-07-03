@@ -1,12 +1,15 @@
 {% extends 'dashboards/vendor.html' %}
+
 {% load staticfiles %}
 
-{% block opt_vendor %}{% endblock %}
-{% block opt_products %}selected{% endblock %}
+{% block select_home %} f{% endblock %}
+{% block select_home_img %}"{% static 'img/icons/home-48.png' %}"{% endblock %}
+{% block select_products %}selected{% endblock %}
+{% block select_products_img %}"{% static 'img/icons/products-filled-48.png' %}"{% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Products</p>
 		</div>

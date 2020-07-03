@@ -1,46 +1,32 @@
 {% load static %}
 
-<!DOCTYPE html>
-<html lang = "en">
+<html>
 <head>
-	<meta charset = "utf-8">
-	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta http-equiv = "x-ua-compatible" content = "ie=edge">
-
-	{% block title %}
+	<title>{% block title %}Home{% endblock %} - Simntx</title>
 	
-		<title>Simntx</title>
-		
-	{% endblock %}
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/base.css' %}">
 	
 	{% block css %}
 	{% endblock %}
-	
-	<link rel = "shortcut icon" type = "image/png" href = "{% static 'img/favicon.png' %}"/>
-	
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/base.css' %}">
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/nav.css' %}">
-	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/footer.css' %}">
 </head>
 <body>
-	{% include "nav.html" %}
-	{% include "messages.html" %}
+	{% include 'blocks/nav.html' %}
 	
-	<div id = "content">
-		{% block before_content %}
-		{% endblock %}
-	
-		<div class = "safe-div">
-			{% block content %}
+	<div id = "container">
+		<div id = "left-panel">
+			{% block left_panel %}
+			{% endblock %}
+		</div>
+		<div id = "right-panel">
+			{% block right_panel %}
 			{% endblock %}
 		</div>
 	</div>
 	
-	{% include "footer.html" %}
+	{% include 'blocks/footer.html' %}
 	
 	<script type = "text/javascript" src = "{% static 'js/jquery.js' %}"></script>
 	<script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
-	<script type = "text/javascript" src = "{% static 'js/nav.js' %}"></script>
 	
 	{% block js %}
 	{% endblock %}

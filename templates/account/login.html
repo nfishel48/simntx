@@ -17,7 +17,7 @@
 
 {% endblock %}
 
-{% block content %}
+{% block right_panel %}
     <div id = "account-container">
 		<img src = "{% static 'img/lock-64.png' %}" style = "border-radius: 100%;">
 		<p id = "title">Login</p>
@@ -54,7 +54,7 @@
 				<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
 			{% endif %}
 		
-			<div id = "form-end">
+			<div class = "form-end">
 				<input class = "form-submit" type = "submit" value = "Login">
 				<div class = "form-options">
 					<p>

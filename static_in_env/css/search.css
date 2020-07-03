@@ -1,95 +1,33 @@
-#nav #search-bar{
-	display: none !important;
-}
-
-#search-options{
-	width: 100%;
-}
-#search-options form{
-	width: 100%;
-	
-	display: flex;
+.content-panel-container{
 	flex-direction: column;
-	align-items: center;
 }
 
-#search-body{
+#search-bar-container{
+	flex-direction: column;
+}
+#search-bar{
+	width: 100%;
+	
+	border-bottom: 1px solid #ddd;
+}
+
+#search-details-container{
 	width: 100%;
 	
 	display: flex;
-	justify-content: space-between;
 	
 	margin-top: 20px;
 }
 
-#search-filters{
-	display: flex;
-	flex-direction: column;
-	flex: 2;
+#filters-container{
+	height: fit-content;
 	
-	margin-right: 25px;
-}
-#search-filters .section-header{
-	margin-bottom: 10px;
-}
-.filter-group{
-	display: flex;
-	flex-direction: column;
-	
-	font-size: 14px;
-	color: var(--dark-text);
-}
-.filter-group:not(:first-child){
-	margin-top: 10px;
-}
-.filter-label{
-	padding: 5px 0;
-	margin-bottom: 7px;
-	
-	border-bottom: 1px solid #ccc;
-	
-	font-family: Roboto-Medium;
-	font-size: 12px;
-	color: var(--light-text);
-	
-	text-transform: uppercase;
-}
-.filter-options{
-	display: flex;
-	flex-direction: column;
-}
-.filter-checkbox{
-	display: flex;
-	align-items: center;
-}
-.filter-checkbox label{
-	margin-left: 4px;
-}
-.filter-checkbox label:not(:first-child){
-	margin-top: 3px;
+	flex: 1;
 }
 
-#search-tags{
-	display: flex;
-	flex-wrap: wrap;
-}
-#search-tags .tag{
-	margin-top: 3px;
-	margin-right: 3px;
-	margin-left: 0 !important;
-}
-
-#search-results{
-	flex: 7;
-}
-
-#load-more{
-	//padding: 5px 10px;
-	margin: auto;
-	margin-top: 20px;
+#results-container{
+	flex: 3;
 	
-	font-family: Roboto-Medium;
-	font-size: 14px;
-	
-	cursor: pointer;
+	margin: 0;
+	margin-left: 20px;
 }

@@ -1,36 +1,30 @@
 {% extends 'home.html' %}
+
 {% load staticfiles %}
 
-{% block title %}
-	
-	<title>Store - Simntx</title>
-	
-{% endblock %}
+{% block select_store %}selected{% endblock %}
+{% block select_store_img %} "{% static 'img/icons/store-filled-48.png' %}" {% endblock %}
 
-{% block more_css %}
+{% block home_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/store.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/product-row.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
 
 {% endblock %}
 
-{% block panel %}
+{% block right_panel %}
 
-	<div id = "ad-div">
-		<div id = "ad-info">
-			<p class = "tag gold" style = "margin-right: 5px; align-self: center;">AD</p>
-			<p id = "ad-name">Vendor Name</p>
-			<a href>See more</a>
-		</div>
-		<div id = "ad-image"></div>
+	<div id = "store-container">
+		{% include 'blocks/product_row.html' with label='All Vendors' items=vendors vendor=True %}
+		{% include 'blocks/product_row.html' with label='All Products' items=products vendor=None %}
+		{% include 'blocks/product_row.html' with label='Food' items=food vendor=None %}
 	</div>
-	
-	{% include 'section_with_slider.html' with label='Vendors' items=vendors vendor=True %}
-	{% include 'section_with_slider.html' with label='Products' items=items vendor=None %}
 
 {% endblock %}
 
-{% block more_js %}
+{% block js %}
 
-	<script type = "text/javascript" src = "{% static 'js/store.js' %}"></script>
+	<script src = "{% static 'js/listings.js' %}"></script>
 
 {% endblock %}

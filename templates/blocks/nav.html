@@ -1,0 +1,50 @@
+{% load staticfiles %}
+{% load cart_template_tags %}
+
+<div id = "nav">
+	<div id = "nav-left-panel">
+		<a href = "{% url 'core:index' %}">
+			<img src = "{% static 'img/logo.png' %}">
+		</a>
+	</div>
+	<div id = "nav-right-panel">
+		<div id = "nav-mid">
+			{% url 'core:search' as page %}
+			{% include 'blocks/searchbar.html' with page=page search_bar=True form_id='search-form' %}
+		</div>
+		<div id = "nav-right">
+			{% if user.is_authenticated %}
+				<div class = "nav-button">
+					<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
+						<img src = "{% static 'img/icons/bell-dark-20.png' %}">
+						<div class = "item-count-badge" style = "background-color: var(--primary);">{{ 1 }}</div>
+					</a>
+				</div>
+				<div class = "nav-button">
+					<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
+						<img src = "{% static 'img/icons/cart-dark-20.png' %}">
+						<div class = "item-count-badge">{{ user|cart_item_count }}</div>
+					</a>
+				</div>
+				<div id = "account-links">
+					<div class = "nav-button">
+						<form action = "{% url 'account_logout' %}" method = "POST">
+							{% csrf_token %}
+
+							<input id = "logout" type = "submit" value = "Logout">
+						</form>
+					</div>
+				</div>
+			{% else %}
+				<div id = "account-links">
+					<div class = "nav-button">
+						<a href = "{% url 'account_login' %}">Login</a>
+					</div>
+					<div class = "nav-button" style = "margin-left: 10px;">
+						<a href = "{% url 'account_signup' %}">Sign Up</a>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

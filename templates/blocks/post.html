@@ -1,0 +1,14 @@
+{% load staticfiles %}
+
+<div class = "post">
+	<a href = "{{ post.vendor.get_absolute_url }}">
+		<div class = "post-header">
+			<img class = "post-vendor-image" src = "{{ post.vendor.image.url }}">
+			<div class = "post-info">
+				<p class = "post-vendor">{{ post.vendor.title }}</p>
+				<p class = "post-date">{{ post.posted }}</p>
+			</div>
+		</div>
+	</a>
+	<p class = "post-text">{{ post.text }}</p>
+</div>

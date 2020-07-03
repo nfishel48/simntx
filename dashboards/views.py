@@ -8,6 +8,7 @@ from core.views import get_tags
 
 from . import forms
 
+
 def vendor(request):
     data = {}
 
@@ -20,7 +21,6 @@ def vendor(request):
     return render(request, 'dashboards/vendor.html', data)
 
 
-@login_required
 def vendor_page(request, page):
     data = {}
 

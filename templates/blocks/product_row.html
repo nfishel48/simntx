@@ -1,0 +1,18 @@
+{% load staticfiles %}
+
+<div class = "product-row content-panel">
+	<p class = "content-title">{{ label }}</p>
+	<div class = "slider-container">
+		<div class = "slider">
+			{% for item in items %}
+				{% include 'blocks/listing_item.html' with item=item vendor=vendor %}
+			{% endfor %}
+		</div>
+	</div>
+	<div class = "slide-left">
+		<img src = "{% static 'img/icons/right-filled-48.png' %}">
+	</div>
+	<div class = "slide-right">
+		<img src = "{% static 'img/icons/right-filled-48.png' %}">
+	</div>
+</div>

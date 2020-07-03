@@ -1,122 +1,140 @@
-{% extends "base.html" %}
+{% extends "with_side_panel.html" %}
 
-{% block title %}
+{% load staticfiles %}
 
-	<title>Orders - Simntx</title>
-	
-{% endblock %}
+{% block title %}Orders{% endblock %}
 
-{% block css %}
+{% block with_side_panel_css %}
 
-	{% include 'bootstrap_css.html' %}
+	<!--{% include 'bootstrap_css.html' %}-->
 
 {% endblock %}
 
-{% block content %}
+{% block left_panel %}
 
-  <!--Main layout-->
-  <main>
-    <div class="container">
+	<div class = "left-panel-group">
+		<p class = "title">Orders</p>
+		<div class = "links">
+			<a href = "{% url 'core:feed' %}">
+				<div class = "link {% block select_outstanding %}selected{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_outstanding_img %}"{% static 'img/icons/home-filled-48.png' %}"{% endblock %}>
+					</div>
+					<p>Outstanding</p>
+				</div>
+			</a>
+			<a href = "{% url 'core:feed' %}">
+				<div class = "link {% block select_past %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_past_img %}"{% static 'img/icons/dashboard-48.png' %}"{% endblock %}>
+					</div>
+					<p>Completed</p>
+				</div>
+			</a>
+		</div>
+	</div>
 
-      
+{% endblock %}
 
-      <!--Section: Vendors v.3-->
-      <section class="text-center mb-4">
-      <h2>Orders to be delivered</h2>
+{% block right_panel %}
 
-        <!--Grid row-->
-        <div class="row wow fadeIn">
-            
-          <!--Grid column-->
-          {% for order in orders %}
-          <div class="col-lg-3 col-md-6 mb-4">
+	<div class = "right-panel-group content-panel-container">
+	<div class = "header">
+			<p class = "name">Orders</p>
+		</div>
+		<div class = "section table">
+			<table class = "data-table">
+				<tbody>
+					<tr class = "header-row">
+						<th>#</th>
+						<th>Products</th>
+						<th>Ordered</th>
+						<th>Address</th>
+					</tr>
+					
+					{% for order in orders %}
+						<tr>
+							<td>{{ order.id }}</td>
+							<td>
+								{% for item in order.items.all %}
+									{{ item.item.title }} 
+								{% endfor %}
+							</td>
+							<td>{{ order.ordered_date }}</td>
+							<td>{{ order.shipping_address }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
-            <!--Card-->
-            <div class="card">
+    <!--<div class = "content-panel-container">
+		<div class="text-center mb-4 content-panel">
+			<h2>Orders to be delivered</h2>
+			<div class="row wow fadeIn">
+				{% for order in orders %}
+				
+					<div class="col-lg-3 col-md-6 mb-4">
+						<div class="card">
+							<div class="view overlay">
+								<img src="" class="card-img-top"> 
+								<a href="" >
+									<div class="mask rgba-white-slight"></div>
+								</a>
+							</div>
+							<div class="card-body text-center">
+								{% comment %} 
+									<a href="" class="grey-text">
+										<h5>{{ vendor.category }}</h5>
+									</a> 
+								{% endcomment %}
+								<p>
+									<strong><a href="" class="dark-grey-text">Order: {{ order.get_ref_code}}</a></strong>
+								</p>
+								<p>Ordered at:{{ order.ordered_date }}</p>
+								<p>Deliver too: {{ order.shipping_address.street_address }} {% if order.shipping_address.apartment_address != '' %}, {{ order.shipping_address.apartment_address }} {% endif %}
+										{{ order.shipping_address.zip }} 
+								</p>
+								<a href = "{{ order.get_absolute_url }}">
+									<button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
+								</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		
+		{% if is_paginated %}
+			<nav class="d-flex justify-content-center wow fadeIn">
+				<ul class="pagination pg-blue">
+					{% if page_obj.has_previous %}
+						<li class="page-item ">
+							<a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+								<span class="sr-only">Previous</span>
+							</a>
+						</li>
+					{% endif %}
 
-              <!--Card image-->
-              <div class="view overlay">
-                 <img src="" class="card-img-top"> 
-                <a href="" >
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center">
-                <!--Category & Title-->
-                {% comment %} <a href="" class="grey-text">
-                  <h5>{{ vendor.category }}</h5>
-                </a> {% endcomment %}
-                <p>
-                  <strong>
-                    <a href="" class="dark-grey-text">Order: {{ order.get_ref_code}}
-                    </a>
-                  </strong>
-                </p>
-                <p>Ordered at:{{ order.ordered_date }}</p>
-                <p>Deliver too: {{ order.shipping_address.street_address }}
-                {% if order.shipping_address.apartment_address != '' %}, {{ order.shipping_address.apartment_address }} {% endif %}
-                <!--add city to checkout-->
-                {{ order.shipping_address.zip }} 
-                </p>
-                <a href = "{{ order.get_absolute_url }}">
-                  <button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
-                </a>
-
-
-              </div>
-              <!--Card content-->
-
-            </div>
-            <!--Card-->
-
-          </div>
-          {% endfor %}
-          <!--Grid column-->
-
-        </div>
-        <!--Grid row-->
-
-      </section>
-      <!--Section: Products v.3-->
-
-      <!--Pagination-->
-      {% if is_paginated %}
-      <nav class="d-flex justify-content-center wow fadeIn">
-        <ul class="pagination pg-blue">
-
-          {% if page_obj.has_previous %}
-          <!--Arrow left-->
-          <li class="page-item ">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-          {% endif %}
-
-          <li class="page-item active">
-            <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
+					<li class="page-item active">
+						<a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
           
-          {% if page_obj.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
-      <!--Pagination-->
-      {% endif %}
+					{% if page_obj.has_next %}
+						<li class="page-item">
+							<a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+								<span class="sr-only">Next</span>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</nav>
+		{% endif %}
+    </div>-->
 
-    </div>
-  </main>
-
-{% endblock content %}
+{% endblock %}

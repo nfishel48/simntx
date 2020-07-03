@@ -1,54 +1,47 @@
-{% extends "base.html" %}
+{% extends 'home.html' %}
+
 {% load staticfiles %}
 
-{% block title %}
+{% block select_store %}selected{% endblock %}
+{% block select_store_img %} "{% static 'img/icons/store-filled-48.png' %}" {% endblock %}
 
-	<title>{{ vendor.title }} - Simntx</title>
-	
-{% endblock %}
-
-{% block css %}
+{% block home_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/vendor.css' %}">
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
 
 {% endblock %}
 
-{% block content %}
+{% block right_panel %}
 
-	<div id = "vendor-info">
-		<div class = "tags-container">
-			{% for tag in vendor.tags %}
-				{% include 'tag.html' with tag=tag %}
-			{% endfor %}
+	<div class = "content-panel-container">
+		<div id = "vendor-header">
+			<div id = "vendor-cover" style = "background-image: url({{ vendor.image.url }});">
+				
+			</div>
+			<div id = "vendor-details">
+				<div id = "vendor-image" style = "background-image: url({{ vendor.image.url }});">
+					
+				</div>
+				<div id = "vendor-main">
+					<div id = "vendor-info">
+						<p id = "vendor-title">{{ vendor.title }}</p>
+					</div>
+					<div id = "vendor-links">
+						<a href = "{% url 'core:vendor_store' vendor.slug %}">
+							<div class = "vendor-link {% block select_vendor_store %}{% endblock %}">Store</div>
+						</a>
+						<a href = "{% url 'core:vendor_feed' vendor.slug %}">
+							<div class = "vendor-link {% block select_vendor_feed %}{% endblock %}">Feed</div>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
-		<p id = "vendor-name" class = "dark-text">{{ vendor.title }}</p>
-		<div id = "vendor-detail">
-			<div id = "vendor-image">
-				<img src = "{{ vendor.image.url }}">
-			</div>
-			<div id = "vendor-desc" class = "dark-text">
-				<p id = "about-label">About us</p>
-				<p id = "vendor-about">{{ vendor.description }}</p>
-			</div>
+		<div id = "vendor-content">
+			{% block vendor_content %}
+			{% endblock %}
 		</div>
 	</div>
-	<div class = "section">
-		<div class = "section-header">
-				<p class = "section-label">Products</p>
-			</div>
-		<div id = "listings">
-			{% for item in products %}
-				{% include 'listing_item.html' with item=item vendor=None %}
-			{% endfor %}
-		</div>
-	</div>
-
-{% endblock %}
-
-{% block js %}
-
-	<script type = "text/javascript" src = "{% static 'js/vendor.js' %}"></script>
-	<script type = "text/javascript" src = "{% static 'js/listings.js' %}"></script>
 
 {% endblock %}

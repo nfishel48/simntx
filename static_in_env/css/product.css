@@ -1,11 +1,33 @@
+#product-container{
+	width: 1200px;
+	height: fit-content;
+	
+	display: flex;
+	flex-direction: column;
+	
+	position: relative;
+	left: calc(var(--left-panel-width) / -2);
+}
+
+#product-main{
+	display: flex;
+	flex-direction: column;
+}
+#product-details{
+	display: flex;
+}
+#product-directory{
+	margin-bottom: 20px;
+	
+	font-size: 12px;
+	color: var(--light-text);
+}
 #image-gallery{
 	max-width: 50%;
 	
 	display: flex;
 	flex-direction: column;
 	flex: 3;
-	
-	//border: 1px solid #ddd;
 	
 	margin-right: 50px;
 	
@@ -70,7 +92,7 @@
 }
 
 #product-info{
-	flex: 4;
+	flex: 3;
 }
 #product-name{
 	font-family: Roboto-Regular;
@@ -98,19 +120,4 @@
 	display: flex;
 	
 	margin-top: 20px;
-}
-
-#more-info{
-	display: flex;
-	flex-direction: column;
-	
-	padding-top: 30px;
-}
-#info-label{
-	font-family: Roboto-Medium;
-	font-size: 20px;
-}
-
-.section-slide{
-	margin-top: 20px !important;
 }

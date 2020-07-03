@@ -1,0 +1,12 @@
+{% load staticfiles %}
+
+<form id = "{{ form_id }}" action = "{{ page }}" method = "GET">
+	{% if search_bar %}
+		<div id = "search-bar">
+			<div id = "search-icon">
+				<img src = "{% static 'img/icons/search-60.png' %}">
+			</div>
+			<input id = "search" form = "{{ form_id }}" name = "q" type = "text" placeholder = "Search for Products & Vendors" value = "{% if query is not None %}{{ query }}{% endif %}">
+		</div>
+	{% endif %}
+</form>

@@ -1,0 +1,33 @@
+{% extends 'vendor.html' %}
+
+{% load staticfiles %}
+
+{% block select_vendor_store %}selected{% endblock %}
+
+{% block vendor_content %}
+
+	<div class = "content-container">
+		<div class = "content-panel">
+			{% url 'core:vendor_store' as page %}
+			{% include 'blocks/searchbar.html' with page=page search_bar=None form_id='vendor_search' %}
+			
+			<p class = "content-title">About</p>
+			<p id = "vendor-desc">{{ vendor.description }}</p>
+		</div>
+		{% include 'blocks/content_panels/filters.html' with form_id="vendor_search" %}
+	</div>
+	<div class = "content-container">
+		<div class = "products-container content-panel">
+			{% for product in product_results %}
+				{% include 'blocks/listing_item.html' with item=product vendor=None %}
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block js %}
+
+	<script type = "text/javascript" src = "{% static 'js/search_helper.js' %}"></script>
+
+{% endblock %}

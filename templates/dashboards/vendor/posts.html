@@ -2,12 +2,14 @@
 
 {% load staticfiles %}
 
-{% block opt_vendor %}{% endblock %}
-{% block opt_posts %}selected{% endblock %}
+{% block select_home %} f{% endblock %}
+{% block select_home_img %}"{% static 'img/icons/home-48.png' %}"{% endblock %}
+{% block select_posts %}selected{% endblock %}
+{% block select_posts_img %}"{% static 'img/icons/posts-filled-48.png' %}"{% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Posts</p>
 		</div>

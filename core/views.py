@@ -41,15 +41,19 @@ def feed(request):
 
 def store(request):
     vendors = Vendor.objects.all()[:10]
-    items = Item.objects.all()[:10]
-
+    products = Item.objects.all()[:10]
+    food = Item.objects.filter(tags = Tag.objects.get(name = 'food'))[:10]
 
     for vendor in vendors:
         vendor.tags = get_tags(vendor.id)
 
     print(vendors.all())
 
-    return render(request, 'store.html', {'vendors': vendors, 'items': items})
+    return render(request, 'store.html', {
+        'vendors': vendors,
+        'products': products,
+        'food': food,
+    })
 
 
 def products(request):
@@ -60,16 +64,35 @@ def products(request):
 
 
 def vendor(request, slug):
-    vendor = Vendor.objects.get(slug = slug)
-    products = Item.objects.filter(vendor = vendor)
+    return redirect('core:vendor_store', slug=slug)
+
+
+def vendor_feed(request, slug):
+    vendor = Vendor.objects.get(slug=slug)
+
+    posts = Post.objects.all()
+
+    for post in posts:
+        post.posted = arrow.get(post.posted).humanize()
+
+    return render(request, 'vendor_feed.html', {
+        'vendor': vendor,
+        'posts': posts,
+    })
+
+
+def vendor_store(request, slug):
+    vendor = Vendor.objects.get(slug=slug)
+    products = Item.objects.filter(vendor=vendor)
 
     vendor.tags = get_tags(vendor.id)
 
-    print(vendor.tags)
+    data = search(request, [Q(vendor=vendor)])
 
-    print("TEST")
+    data['vendor'] = vendor
+    data['products'] = products
 
-    return render(request, 'vendor.html', {'vendor': vendor, 'products': products})
+    return render(request, 'vendor_store.html', data)
 
 
 def drivers(request):
@@ -83,7 +106,10 @@ def product(request, slug):
     product = Item.objects.get(slug = slug)
     other_products = Item.objects.filter(vendor = product.vendor)
 
-    return render(request, 'product.html', {'product': product, 'other_products': other_products})
+    return render(request, 'product.html', {
+        'product': product,
+        'other_products': other_products
+    })
 
 
 def search_more(request):
@@ -110,112 +136,85 @@ def search_more(request):
     return JsonResponse(data)
 
 
-def search(request):
-    data = {
-        'success': False,
-        'load_amount': load_amount
-    }
-
-    selected_tags = []
-    remaining_tags = Tag.objects.all()
-
-    query = ''
-    tag_names = None
-    price_floor = 0
-    price_ceiling = 999999
-
-    print(request.POST)
-
-    if 'price' in request.POST or 'tag' in request.POST:
-        if 'tag_names' in request.session and request.session['tag_names']:
-            tag_names = request.session['tag_names']
-
-            print(tag_names)
-
-        query = request.session['query']
-
-        if 'price' in request.POST:
-            price = request.POST['price']
-
-            if '-' in price:
-                price = price.replace('$', '')
-
-                parts = price.split('-')
-
-                price_floor = float(parts[0])
-                price_ceiling = float(parts[1])
-
-                print(str(price_floor) + " // " + str(price_ceiling))
-        elif 'tag' in request.POST:
-            print(tag_names)
-
-            tag = request.POST['tag']
-
-            if tag_names:
-                if tag in tag_names:
-                    tag_names.remove(tag)
-                else:
-                    tag_names.append(tag)
-            else:
-                tag_names = [tag]
-    else:
-        print('\nQUERY SEARCH\n')
-
-        new_query = request.POST['query']
-
-        if 'query' in request.session and request.session['query']:
-            if new_query != request.session['query']: # New query
-                query = new_query
-
-                request.session['tag_names'] = None
-            elif 'tag_names' in request.session and request.session['tag_names']:
-                print('SAME QUERY')
-
-                query = request.session['query']
-
-                tag_names = request.session['tag_names']
-        else:
-            query = new_query
-
-    if tag_names:
-        selected_tags = Tag.objects.filter(name__in=tag_names)
-        remaining_tags = Tag.objects.all().exclude(name__in=tag_names)
-
-    query = query.strip()
-
-    product_results, vendor_results = get_search_items(query, tag_names, price_floor, price_ceiling)
-
-    request.session['start_index'] = load_amount
-    request.session['query'] = query
-    request.session['tag_names'] = tag_names
-
-    data['show_load_button'] = len(product_results) > load_amount
-    data['load_amount'] = load_amount
-
-    data['product_results'] = product_results[:load_amount]
-    data['vendor_results'] = vendor_results
-
-    data['query'] = query
-    data['selected_tags'] = list(selected_tags)
-    data['remaining_tags'] = list(remaining_tags)
-
-    data['success'] = True
+def search_view(request):
+    data = search(request, None)
 
     return render(request, 'search.html', data)
 
 
-def get_search_items(query, tags, price_floor, price_ceiling):
+def search(request, optional_qs):
+    data = {}
+
+    query = ''
+    price = None
+    price_floor = 0
+    price_ceiling = 9999999
+    tags = []
+
+    if request.method == 'GET':
+        print(request.GET)
+
+        if 'q' in request.GET:
+            query = request.GET['q']
+
+        if 't' in request.GET:
+            tags = request.GET.getlist('t')
+
+        if 'p' in request.GET:
+            price = request.GET['p']
+
+            if '-' in price:
+                parts = price.replace('$', '').split('-')
+
+                price_floor = float(parts[0])
+                price_ceiling = float(parts[1])
+
+        print('QUERY: ' + query)
+        print('TAGS: ' + str(tags))
+        print('PRICE: ' + str(price))
+        print('PRICE FLOOR: ' + str(price_floor))
+        print('PRICE FLOOR: ' + str(price_ceiling))
+
+        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, None)
+
+    if optional_qs:
+        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, optional_qs)
+
+    data['query'] = query
+    data['price'] = price
+    data['all_tags'] = Tag.objects.all()
+    data['selected_tags'] = tags
+
+    data['product_results'] = product_results[:load_amount]
+    data['vendor_results'] = vendor_results[:load_amount]
+
+    print(query)
+
+    return data
+
+
+def get_search_items(query, tags, price_floor, price_ceiling, optional_qs):
     q_query = Q(title__contains=query)
     q_price = Q(price__range = (price_floor, price_ceiling))
+
+    qs_products = None
+    qs_vendors = None
 
     if tags:
         q_tags = Q(tags__name__in=tags)
 
-        product_results = Item.objects.filter(q_query & q_tags & q_price)
-        vendor_results = Item.objects.filter(q_query & q_tags)
+        qs_products = Q(q_query & q_tags & q_price)
+        qs_vendors = Q(q_query) # TODO: fix this
     else:
-        product_results = Item.objects.filter(q_query & q_price)
-        vendor_results = Vendor.objects.filter(q_query)
+        qs_products = Q(q_query & q_price)
+        qs_vendors = Q(q_query)
+
+    if optional_qs:
+        for q in optional_qs:
+            qs_products = Q(qs_products & q)
+
+    product_results = Item.objects.filter(qs_products)
+    vendor_results = Vendor.objects.filter(qs_vendors)
 
     return product_results, vendor_results
 
