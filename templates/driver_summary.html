@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% block js %}
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+{% endblock %}
 
 {% block title %}
 
@@ -63,10 +70,30 @@
             <td colspan="5"><b>Order Total</b></td>
             <td><b >${{ object.get_total }}</b></td>
         </tr>
-        <tr>
+        {% endif %}
+       
+        {% if request.user.is_staff %}
+        {% comment %} Driver sees this {% endcomment %}
+        <tr>   
             <td colspan="6">
+            {% if object.driver.id == request.user.id %}
+            <a class='btn btn-success float-right ml-2' type="submit" href="{% url 'core:set-received' object.get_ref_code %}">Mark Delivered</a>
+            {% else %}
             <a class='btn btn-warning float-right ml-2' type="submit" href="{% url 'core:set-driver' object.get_ref_code %}">Deliver this order</a>
-            <a class='btn btn-primary float-right' href='/drivers'>Go back</a>
+            {% endif %}
+            <a class='btn btn-primary float-right' onclick="goBack()">Go back</a>
+            </td>
+        </tr>
+        
+        {% else %}
+        {% comment %}Customer sees this {% endcomment %}
+        <tr>   
+            <td colspan="6">
+            {% if object.received %}
+            <a class='btn btn-warning float-right ml-2' type="submit" href="/request-refund">Request Refund</a>
+            <a class='btn btn-success float-right ml-2' type="submit" href="/tip">Tip your driver</a>
+            {% endif %}
+            <a class='btn btn-primary float-right' onclick="goBack()" >Go back</a>
             </td>
         </tr>
         {% endif %}

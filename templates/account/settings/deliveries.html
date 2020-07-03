@@ -28,13 +28,16 @@
 				{% endif %}
                 <!--add city to checkout-->
                 {{ order.shipping_address.zip }} </h4>
+					{% comment %} <h4>Ordered by: </h4> {% endcomment %}
 					<h4>Driver assigned to deliver: {{ order.driver }}</h4>
 				{% else %}
 					<h4>Order status: Order is awaiting driver if you are a driver somthing went wrong, please select the delivery again</h4>
 				{% endif %}
 			</div>
 			<div class = "section">
-				<button style='float: right;' type="button" href=''>Delivered</button>
+				<a href = "{{ order.get_absolute_url }}">
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
+                </a>
 			</div>
         {% endfor %}
 	</div>

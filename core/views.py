@@ -97,7 +97,7 @@ def vendor_store(request, slug):
 
 def drivers(request):
     context = {
-        'orders': Order.objects.filter(ordered=True, received=False),
+        'orders': Order.objects.filter(ordered=True, received=False, being_delivered=False),
     }
     return render(request, "drivers.html", context)
 
