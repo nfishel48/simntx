@@ -579,7 +579,7 @@ def add_to_cart(request, slug):
 
             return redirect("core:order-summary")
         else:
-            order_item.order = order
+            order_item = OrderItem(item=item, order=order)
             order_item.save()
 
             messages.info(request, "This item was added to your cart.")
