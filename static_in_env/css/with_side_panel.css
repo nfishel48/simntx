@@ -7,9 +7,9 @@
 	
 	position: fixed;
 	top: 0;
-	left: 0;
+	left: var(--left-panel-margin);
 	
-	padding-top: calc(var(--nav-height) + var(--spacing));
+	padding-top: calc(var(--nav-height) + var(--left-panel-spacing));
 	
 	background-color: white;
 	
@@ -21,14 +21,18 @@
 }
 
 #right-panel{
-	width: calc(100% - var(--left-panel-width));
+	width: 100%;
 	
 	display: flex;
 	justify-content: center;
 	
-	margin-left: var(--left-panel-width);
-	padding-top: var(--spacing);
-	padding-bottom: var(--spacing);
+	padding-left: calc(var(--left-panel-margin) + var(--left-panel-width) + var(--content-container-spacing));
+	padding-top: var(--content-container-spacing);
+	padding-bottom: var(--content-container-spacing);
+	
+	box-sizing: border-box;
+	
+	transition: all .2s ease;
 }
 
 .left-panel-group{
@@ -38,7 +42,7 @@
 	flex-direction: column;
 }
 .left-panel-group:not(:first-child):not(#user-info){
-	margin-top: var(--spacing);
+	margin-top: var(--left-panel-spacing);
 }
 .left-panel-group .title{	
 	margin-bottom: 10px;
@@ -111,15 +115,15 @@
 }
 
 .content-panel-container{
-	width: 1200px;
+	width: var(--content-container-width);
 	height: fit-content;
 	
 	display: flex;
 	
-	position: relative;
-	left: calc(var(--left-panel-width) / -2);
-	
 	color: var(--dark-text);
+}
+.content-panel-container.column{
+	flex-direction: column;
 }
 .content-panel{
 	width: 100%;

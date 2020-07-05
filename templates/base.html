@@ -1,10 +1,14 @@
 {% load static %}
 
+<!DOCTYPE html>
 <html>
 <head>
 	<title>{% block title %}Home{% endblock %} - Simntx</title>
 	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/base.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/media_queries.css' %}">
 	
 	{% block css %}
 	{% endblock %}
@@ -26,8 +30,9 @@
 	{% include 'blocks/footer.html' %}
 	
 	<script type = "text/javascript" src = "{% static 'js/jquery.js' %}"></script>
-	<script type = "text/javascript" src = "{% static 'js/base.js' %}"></script>
 	<script type = "text/javascript" src = "{% static 'js/ajax.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/base.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/nav.js' %}"></script>
 	
 	{% block js %}
 	{% endblock %}

@@ -15,7 +15,7 @@
 
 {% block right_panel %}
 
-	<div id = "store-container">
+	<div class = "content-panel-container column">
 		{% include 'blocks/product_row.html' with label='All Vendors' items=vendors vendor=True %}
 		{% include 'blocks/product_row.html' with label='All Products' items=products vendor=None %}
 		{% include 'blocks/product_row.html' with label='Food' items=food vendor=None %}
