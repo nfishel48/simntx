@@ -1,39 +1,37 @@
 {% extends 'account.html' %}
 
-
-{% block select_account %}{% endblock %}
-{% block select_account_img %}"{% static 'img/icons/home-48.png' %}"{% endblock %}
-{% block select_deliveries %}selected{% endblock %}
-{% block select_deliveries_img %}{% endblock %}
+{% block opt_account %}{% endblock %}
+{% block opt_orders %}selected{% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Deliveries</p>
 		</div>
         
 		{% for order in orders %}
 			<div class = "section">
-				<h4>Refrence code: {{ order.ref_code }}</h4>
+			<div class = "form-field row">
+				<h4 class = "field-label">Refrence code: {{ order.ref_code }}</h4>
 			</div>
 			<div class = "section">
-				<h4>Order placed: {{ order.ordered }}</h4>
+				<h4 class = "field-label">Order placed: {{ order.ordered }}</h4>
 				
 				{% if order.received %}
-					<h4>Order status: Delivered</h4>
+					<h4 class = "field-label" >Order status: Delivered</h4>
 				{% elif order.being_delivered %}
-					<h4>Order status: Out for delivery</h4>
-                    <h4>Deliver too: {{ order.shipping_address.street_address }}
+					<h4 class = "field-label" >Order status: Out for delivery</h4>
+                    <h4 class = "field-label">Deliver too: {{ order.shipping_address.street_address }}
                 {% if order.shipping_address.apartment_address != '' %}, 
 					{{ order.shipping_address.apartment_address }} 
 				{% endif %}
                 <!--add city to checkout-->
                 {{ order.shipping_address.zip }} </h4>
 					{% comment %} <h4>Ordered by: </h4> {% endcomment %}
-					<h4>Driver assigned to deliver: {{ order.driver }}</h4>
+					<h4 class = "field-label">Driver assigned to deliver: {{ order.driver }}</h4>
 				{% else %}
-					<h4>Order status: Order is awaiting driver if you are a driver somthing went wrong, please select the delivery again</h4>
+					<h4 class = "field-label">Order status: Order is awaiting driver if you are a driver somthing went wrong, please select the delivery again</h4>
 				{% endif %}
 			</div>
 			<div class = "section">

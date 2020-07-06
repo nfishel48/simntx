@@ -5,38 +5,42 @@
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Orders</p>
 		</div>
         
 		{% for order in orders %}
 			<div class = "section">
-				<h4>Refrence code: {{ order.ref_code }}</h4>
+				<div class = "form-field row">
+				<h4 class = "field-label">Refrence code: {{ order.ref_code }}</h4>
+				</div>
 			</div>
 			<div class = "section">
-				<h4>Order placed: {{ order.ordered }}</h4>
+			<div class = "form-field row">
+				<h4 class = "field-label">Order placed: {{ order.ordered }}</h4>
 				
 				{% if order.received %}
-					<h4>Order status: Delivered</h4>
+					<h4 class = "field-label">Order status: Delivered</h4>
 					<a href = "{{ order.get_absolute_url }}">
                   		<button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
                 	</a>
 				{% elif order.being_delivered %}
-					<h4>Order status: Out for delivery</h4>
-					<h4>Your driver is: {{ order.driver }}</h4>
+					<h4 class = "field-label" >Order status: Out for delivery</h4>
+					<h4 class = "field-label" >Your driver is: {{ order.driver }}</h4>
 					<a href = "{{ order.get_absolute_url }}">
                   		<button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
                 	</a>
 				{% else %}
-					<h4>Order status: Order is awaiting driver</h4>
+					<h4 class = "field-label" >Order status: Order is awaiting driver</h4>
 					<a href = "{{ order.get_absolute_url }}">
                   		<button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
                 	</a>
 				{% endif %}
+				</div>
+			</div>
 			</div>
 			<div class = "section"></div>
         {% endfor %}
-	</div>
 
 {% endblock %}

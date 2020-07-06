@@ -23,6 +23,14 @@
 					<p>Outstanding</p>
 				</div>
 			</a>
+			<a href = "{% url 'core:account_page' 'deliveries' %}">
+				<div class = "link {% block select_deliveries%}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_deliveries_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>
+					</div>
+					<p>Current Deliveries</p>
+				</div>
+			</a>
 			<a href = "{% url 'core:feed' %}">
 				<div class = "link {% block select_past %}{% endblock %}">
 					<div class = "link-image">
@@ -47,21 +55,21 @@
 				<tbody>
 					<tr class = "header-row">
 						<th>#</th>
-						<th>Products</th>
 						<th>Ordered</th>
 						<th>Address</th>
+						<th>Summary</th>
 					</tr>
 					
 					{% for order in orders %}
 						<tr>
-							<td>{{ order.id }}</td>
-							<td>
-								{% for item in order.items.all %}
-									{{ item.item.title }} 
-								{% endfor %}
-							</td>
+							<td>{{ order.ref_code }}</td>
 							<td>{{ order.ordered_date }}</td>
 							<td>{{ order.shipping_address }}</td>
+							<td>
+								<a href = "{{ order.get_absolute_url }}">
+									<button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
+								</a>
+							</td>
 						</tr>
 					{% endfor %}
 				</tbody>

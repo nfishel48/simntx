@@ -4,7 +4,7 @@
 
 {% block title %}
 
-	<title>Account - Simntx</title>
+	Account - Simntx
 	
 {% endblock %}
 
@@ -33,6 +33,22 @@
 						<img src = {% block select_password_img %}"{% static 'img/icons/lock-48.png' %}"{% endblock %}>
 					</div>
 					<p>Password</p>
+				</div>
+			</a>
+			<a href = "{% url 'core:account_page' 'orders' %}">
+				<div class = "link {% block select_orders %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_orders_img %}"{% static 'img/icons/products-48.png' %}"{% endblock %}>
+					</div>
+					<p>Orders</p>
+				</div>
+			</a>
+			<a href = "{% url 'core:account_page' 'deliveries' %}">
+				<div class = "link {% block select_deliveries %}{% endblock %}">
+					<div class = "link-image">
+						<img src = {% block select_deliveries_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>
+					</div>
+					<p>Deliveries</p>
 				</div>
 			</a>
 			<a href = "{% url 'core:account_page' 'notifications' %}">
