@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}{% endblock %} - Simntx</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/base.css' %}">
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/landing.css' %}">
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/bootstrap.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/media_queries.css' %}">
+	
+	{% block css %}
+	{% endblock %}
+</head>
+<body>
+    <div class = "padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <div id="main-text">
+                        <h1>Welcome to Simntx!</h1>
+                        <h2>Please enter your zip code to view vendors in your area</h2>
+                    </div>
+                </div>
+
+
+                <div class="col-sm">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="zipcode" aria-label="zipcode" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <a href="/store"><button type="submit" class="btn btn-secondary">Enter</button></a>
+                        </div>
+                    </div>
+                    <p><a href="/accounts/login/">Have an account with us already?</a> <a>Looking to drive for us?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

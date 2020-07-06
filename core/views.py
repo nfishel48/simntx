@@ -816,6 +816,9 @@ class ChangePassView(PasswordChangeView):
 
 change_password = login_required(ChangePassView.as_view())
 
+def landing(request):
+    return render(request, "landing.html")
+
 
 # FUNCTIONS
 
