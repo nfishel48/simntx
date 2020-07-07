@@ -142,3 +142,4 @@ db.sqlite3
 /simntx/local_settings.py
 simntx/local_settings.py
 local_settings.py
+/media

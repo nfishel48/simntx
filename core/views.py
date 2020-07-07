@@ -11,7 +11,8 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+
 
 from allauth.account.views import PasswordChangeView
 from allauth.account.forms import ChangePasswordForm
@@ -445,7 +446,7 @@ class PaymentView(View):
     def post(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
         form = PaymentForm(self.request.POST)
-        userprofile = UserProfile.objects.get(user=self.request.user)
+        userprofile = self.request.user.userprofile
 
         if form.is_valid():
             token = form.cleaned_data.get('stripeToken')
@@ -477,7 +478,7 @@ class PaymentView(View):
                 # create the payment
                 payment = Payment()
                 payment.stripe_charge_id = charge['id']
-                payment.user = self.request.user
+                payment.user = userprofile.user
                 payment.amount = order.get_total()
                 payment.save()
 
@@ -486,6 +487,9 @@ class PaymentView(View):
                 order.payment = payment
                 order.ref_code = create_ref_code()
                 order.save()
+
+                noti = Notification(user = userprofile, text = 'Order #' + str(order.ref_code) + ' has been created and is waiting for a driver.', link = reverse('core:order', args = (order.ref_code,)))
+                noti.save()
 
                 messages.success(self.request, "Your order was successful!")
 
@@ -537,6 +541,8 @@ class PaymentView(View):
             except Exception as e:
                 # send an email to ourselves
                 messages.warning(self.request, "A serious error occurred. We have been notifed.")
+
+                print(e)
 
                 return redirect("/")
 
@@ -820,6 +826,15 @@ def landing(request):
     return render(request, "landing.html")
 
 
+def clear_notifications(request):
+    if request.user.is_authenticated:
+        notis = Notification.objects.filter(user = request.user.userprofile, read = False)
+
+        for noti in notis:
+            noti.read = True
+            noti.save()
+
+
 # FUNCTIONS
 
 def get_tags(target):
@@ -841,13 +856,12 @@ def create_ref_code():
 
 def is_valid_form(values):
     valid = True
+
     for field in values:
         if field == '':
             valid = False
+
     return valid
 
 def get_vendors(owner):
     return Vendor.objects.get(owner = owner)
-
-def get_user(request):
-    return UserProfile.objects.get(user = request.user)

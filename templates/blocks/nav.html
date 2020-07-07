@@ -16,11 +16,28 @@
 		</div>
 		<div id = "nav-right">
 			{% if user.is_authenticated %}
-				<div class = "nav-button">
+				<div class = "nav-button" id = "notification-container">
 					<img src = "{% static 'img/icons/bell-white-48.png' %}">
-					<div class = "item-count-badge" style = "background-color: var(--light-red);">{{ 1 }}</div>
+					{% get_notification_count user as noti_count %}
+					{% if noti_count > 0 %}
+						<div class = "item-count-badge" style = "background-color: var(--light-red);">{{ noti_count }}</div>
+					{% endif %}
 					<div class = "dropdown-container">
-						
+						<p class = "title">Notifications</p>
+						{% get_notifications user as notifications %}
+						{% for noti in notifications %}
+							<div class = "notification">
+								<div class = "noti-left">
+									<div class = "noti-read {% if noti.read %}read{% endif %}"></div>
+								</div>
+								<div class = "noti-right">
+									<p class = "noti-text">{{ noti.text }}</p>
+									
+									{% get_normal_time noti.created as noti_time %}
+									<p class = "noti-time">{{ noti_time }}</p>
+								</div>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
 				<div class = "nav-button">
@@ -43,7 +60,7 @@
 						</div>
 						<div class = "left-panel-group">
 							<div class = "links">
-								<a href = "/account/orders">
+								<a href = "{% url 'core:account_page' 'orders' %}">
 									<div class = "link">
 										<div class = "link-image">
 											<img src = "{% static 'img/icons/products-48.png' %}">
@@ -56,7 +73,7 @@
 										<div class = "link-image">
 											<img src = "{% static 'img/icons/settings-48.png' %}">
 										</div>
-										<p>Setings</p>
+										<p>Settings</p>
 									</div>
 								</a>
 								<form id = "logout-form" action = "{% url 'account_logout' %}" method = "POST">

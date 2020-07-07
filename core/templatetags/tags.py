@@ -1,6 +1,8 @@
 from django import template
 from django.contrib.auth.models import User
 
+import arrow
+
 from ..models import *
 
 register = template.Library()
@@ -11,8 +13,23 @@ def get_cart_count(user):
 
 
 @register.simple_tag
+def get_notification_count(user):
+    notis = Notification.objects.filter(user = user.userprofile, read = False)
+
+    if notis.exists():
+        return notis.count()
+
+    return 0
+
+
+@register.simple_tag
+def get_notifications(user):
+    return Notification.objects.filter(user = user.userprofile).order_by('-created')
+
+
+@register.simple_tag
 def get_order_items(user):
-    order = Order.objects.filter(user=user)
+    order = Order.objects.filter(user=user, ordered=False)
 
     if order.exists():
         return OrderItem.objects.filter(order = order[0])
@@ -21,5 +38,5 @@ def get_order_items(user):
 
 
 @register.simple_tag
-def get_profile(user):
-    return UserProfile.objects.get(user = user)
+def get_normal_time(datetime):
+    return arrow.get(datetime).humanize()

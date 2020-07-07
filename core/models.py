@@ -63,7 +63,7 @@ class UserProfile(models.Model):
 
     @classmethod
     def get_cart_count(cls, user):
-        order = Order.objects.filter(user = user)
+        order = Order.objects.filter(user = user, ordered = False)
 
         if order.exists():
             return OrderItem.objects.filter(order = order[0]).count()
@@ -247,6 +247,14 @@ class PostImage(models.Model):
 
 class PostLink(models.Model):
     link = models.URLField()
+
+
+class Notification(models.Model):
+    user = models.ForeignKey('UserProfile', on_delete = models.CASCADE, related_name = 'notification_user')
+    text = models.CharField(max_length = 100)
+    link = models.CharField(max_length = 100)
+    created = models.DateTimeField(auto_now = True)
+    read = models.BooleanField(default = False)
 
 
 def userprofile_receiver(sender, instance, created, *args, **kwargs):
