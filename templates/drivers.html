@@ -64,10 +64,10 @@
 						<tr>
 							<td>{{ order.ref_code }}</td>
 							<td>{{ order.ordered_date }}</td>
-							<td>{{ order.shipping_address }}</td>
+							<td>{{ order.shipping_address.street_address }}</td>
 							<td>
 								<a href = "{{ order.get_absolute_url }}">
-									<button class="btn btn-primary btn-lg btn-block" type="submit">View this order</button>
+									<button class="form-submit"  type="submit">View this order</button>
 								</a>
 							</td>
 						</tr>
