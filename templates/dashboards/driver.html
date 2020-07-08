@@ -4,18 +4,12 @@
 
 {% block title %}Orders{% endblock %}
 
-{% block with_side_panel_css %}
-
-	<!--{% include 'bootstrap_css.html' %}-->
-
-{% endblock %}
-
 {% block left_panel %}
 
 	<div class = "left-panel-group">
-		<p class = "title">Orders</p>
+		<p class = "title">Deliveries</p>
 		<div class = "links">
-			<a href = "{% url 'core:feed' %}">
+			<a href = "{% url 'dashboards:driver' %}">
 				<div class = "link {% block select_outstanding %}selected{% endblock %}">
 					<div class = "link-image">
 						<img src = {% block select_outstanding_img %}"{% static 'img/icons/home-filled-48.png' %}"{% endblock %}>
@@ -23,18 +17,18 @@
 					<p>Outstanding</p>
 				</div>
 			</a>
-			<a href = "{% url 'core:account_page' 'deliveries' %}">
-				<div class = "link {% block select_deliveries%}{% endblock %}">
+			<a href = "{% url 'dashboards:driver_page' 'current' %}">
+				<div class = "link {% block select_current %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_deliveries_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>
+						<img src = {% block select_current_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>
 					</div>
-					<p>Current Deliveries</p>
+					<p>Current</p>
 				</div>
 			</a>
-			<a href = "{% url 'core:feed' %}">
-				<div class = "link {% block select_past %}{% endblock %}">
+			<a href = "{% url 'dashboards:driver_page' 'completed' %}">
+				<div class = "link {% block select_completed %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_past_img %}"{% static 'img/icons/dashboard-48.png' %}"{% endblock %}>
+						<img src = {% block select_completed_img %}"{% static 'img/icons/dashboard-48.png' %}"{% endblock %}>
 					</div>
 					<p>Completed</p>
 				</div>
@@ -47,8 +41,8 @@
 {% block right_panel %}
 
 	<div class = "right-panel-group content-panel-container">
-	<div class = "header">
-			<p class = "name">Orders</p>
+		<div class = "header">
+			<p class = "name">Outstanding Deliveries</p>
 		</div>
 		<div class = "section table">
 			<table class = "data-table">

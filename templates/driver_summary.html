@@ -79,7 +79,7 @@ function goBack() {
             <div class = "form-field row">  
                 <td colspan="6">
                 {% if object.driver.id == request.user.id %}
-                <a class='form-submit' type="submit" href="{% url 'core:set-received' object.get_ref_code %}">Mark Delivered</a>
+                <a class='form-submit' type="submit" href="{% url 'core:set_delivered' object.get_ref_code %}">Mark Delivered</a>
                 {% else %}
                 <a class='form-submit' type="submit" href="{% url 'core:set-driver' object.get_ref_code %}">Deliver this order</a>
                 {% endif %}

@@ -43,14 +43,6 @@
 					<p>Orders</p>
 				</div>
 			</a>
-			<a href = "{% url 'core:account_page' 'deliveries' %}">
-				<div class = "link {% block select_deliveries %}{% endblock %}">
-					<div class = "link-image">
-						<img src = {% block select_deliveries_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>
-					</div>
-					<p>Deliveries</p>
-				</div>
-			</a>
 			<a href = "{% url 'core:account_page' 'notifications' %}">
 				<div class = "link {% block select_notifications %}{% endblock %}">
 					<div class = "link-image">

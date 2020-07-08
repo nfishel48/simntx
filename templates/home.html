@@ -50,7 +50,7 @@
 				</a>
 			{% endif %}
 			{% if user.is_staff %}
-				<a href = "{% url 'core:drivers' %}">
+				<a href = "{% url 'dashboards:driver' %}">
 					<div class = "link {% block select_drivers %}{% endblock %}">
 						<div class = "link-image">
 							<img src = {% block select_drivers_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>

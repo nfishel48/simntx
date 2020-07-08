@@ -1,0 +1,33 @@
+{% extends 'dashboards/driver.html' %}
+
+{% load staticfiles %}
+
+{% block select_outstanding %} f{% endblock %}
+{% block select_outstanding_img %}"{% static 'img/icons/home-48.png' %}"{% endblock %}
+{% block select_current %}selected{% endblock %}
+{% block select_current_img %}"{% static 'img/icons/drivers-filled-48.png' %}"{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header">
+			<p class = "name">Current Deliveries</p>
+		</div>
+		<div class = "section table">
+			<table class = "data-table">
+				<tbody>
+					<tr class = "header-row">
+						<th>Title</th>
+						<th>Date Posted</th>
+						<th>Action</th>
+					</tr>
+					
+					{% for order in orders %}
+						
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

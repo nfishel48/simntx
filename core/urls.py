@@ -26,10 +26,9 @@ urlpatterns = [
     path('payment/<payment_option>/', views.PaymentView.as_view(), name='payment'),
     path('request-refund/', views.RequestRefundView.as_view(), name='request-refund'),
 
-    path('drivers/', views.drivers, name='drivers'),
     path('order/<ref_code>', views.OrderView.as_view(), name='order'),
     path('set-driver/<ref_code>', views.set_driver, name='set-driver'),
-    path('set-received/<ref_code>', views.set_received, name='set-received'),
+    path('set-delivered/<ref_code>', views.set_delivered, name='set_delivered'),
 
     path('account/', views.account, name='account'),
     path('account/<str:page>', views.account_page, name='account_page'),
@@ -37,5 +36,6 @@ urlpatterns = [
 
     path('landing/', views.landing, name='landing'),
 
+    path('read-notifications', views.read_notifications, name = 'read_notifications'),
     path('clear-notifications', views.clear_notifications, name = 'clear_notifications'),
 ]
