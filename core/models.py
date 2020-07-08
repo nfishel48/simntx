@@ -251,8 +251,8 @@ class PostLink(models.Model):
 
 class Notification(models.Model):
     user = models.ForeignKey('UserProfile', on_delete = models.CASCADE, related_name = 'notification_user')
-    text = models.CharField(max_length = 100)
-    link = models.CharField(max_length = 100)
+    text = models.CharField(max_length = 300)
+    link = models.CharField(max_length = 300)
     created = models.DateTimeField(auto_now = True)
     read = models.BooleanField(default = False)
 
