@@ -730,11 +730,12 @@ class RequestRefundView(View):
 
 class OrderView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        order = Order.objects.get(ref_code = kwargs['ref_code'])
-
-        context = {
-            'object': order
-        }
+        try:
+            context={
+                'object': Order.objects.get(ref_code = kwargs['ref_code'])
+            }
+        except ObjectDoesNotExist:
+            pass
 
         return render(self.request, 'driver_summary.html', context)
 

@@ -1,7 +1,7 @@
 import os
 
 from . import local_settings
-
+import re
 from django.contrib.admin import sites
 
 #set your own enviroment for what you want
@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simntx.middleware.auth_req.AuthRequiredMiddleware'
 ]
 
 TEMPLATES = [
@@ -139,6 +140,14 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 # CRISPY FORMS
+
+LOGIN_EXEMPT_URLS = (
+    r'^account/login/$',
+    r'^account/logout/$',
+    r'^account/signup/$',
+     r'^landing/$',
+
+)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
