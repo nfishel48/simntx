@@ -129,8 +129,8 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     driver = models.ForeignKey('UserProfile', related_name='driver', on_delete=models.SET_NULL, default=1, blank=True, null=True)
 
-    start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date = models.DateTimeField()
+    ordered_date = models.DateTimeField(null = True)
+    delivered_date = models.DateTimeField(null = True)
 
     shipping_address = models.ForeignKey('Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     billing_address = models.ForeignKey('Address', related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
@@ -141,7 +141,7 @@ class Order(models.Model):
 
     ordered = models.BooleanField(default=False)
     being_delivered = models.BooleanField(default=False)
-    received = models.BooleanField(default=False)
+    delivered = models.BooleanField(default=False)
 
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
@@ -251,8 +251,8 @@ class PostLink(models.Model):
 
 class Notification(models.Model):
     user = models.ForeignKey('UserProfile', on_delete = models.CASCADE, related_name = 'notification_user')
-    text = models.CharField(max_length = 100)
-    link = models.CharField(max_length = 100)
+    text = models.CharField(max_length = 300)
+    link = models.CharField(max_length = 300)
     created = models.DateTimeField(auto_now = True)
     read = models.BooleanField(default = False)
 

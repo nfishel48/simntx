@@ -23,20 +23,26 @@
 						<div class = "item-count-badge" style = "background-color: var(--light-red);">{{ noti_count }}</div>
 					{% endif %}
 					<div class = "dropdown-container">
-						<p class = "title">Notifications</p>
+						<div class = "header">
+							<p class = "title">Notifications</p>
+							<p class = "link" id = "clear-notifications">Clear All</p>
+						</div>
+						
 						{% get_notifications user as notifications %}
 						{% for noti in notifications %}
-							<div class = "notification">
-								<div class = "noti-left">
-									<div class = "noti-read {% if noti.read %}read{% endif %}"></div>
+							<a class = "notification-container" href = "{{ noti.link }}">
+								<div class = "notification">
+									<div class = "noti-left">
+										<div class = "noti-read {% if noti.read %}read{% endif %}"></div>
+									</div>
+									<div class = "noti-right">
+										<p class = "noti-text">{{ noti.text|safe }}</p>
+										
+										{% get_normal_time noti.created as noti_time %}
+										<p class = "noti-time">{{ noti_time }}</p>
+									</div>
 								</div>
-								<div class = "noti-right">
-									<p class = "noti-text">{{ noti.text }}</p>
-									
-									{% get_normal_time noti.created as noti_time %}
-									<p class = "noti-time">{{ noti_time }}</p>
-								</div>
-							</div>
+							</a>
 						{% endfor %}
 					</div>
 				</div>

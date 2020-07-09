@@ -11,10 +11,10 @@ $(document).ready(function(){
 	});
 	
 	$('.nav-button').on('click', function(e){
-		e.stopPropagation();
-		
 		if ($(e.target).attr('class') == 'dropdown-container' || $(e.target).closest('.dropdown-container').length > 0)
 			return;
+		
+		e.stopPropagation();
 		
 		$(this).siblings().each(function(){
 			$(this).find('.dropdown-container').css('display', 'none');

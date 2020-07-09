@@ -131,7 +131,41 @@ def delete_page(request, page, id):
 
 
 def driver(request):
-    return render(request, 'dashboards/driver.html')
+    data = {}
+
+    orders = Order.objects.filter(ordered=True, being_delivered=False, delivered=False)#.exclude(user = request.user)
+
+    data['orders'] = orders
+
+    return render(request, 'dashboards/driver.html', data)
+
+
+def driver_page(request, page):
+    data = {}
+
+    template = 'dashboards/driver/' + page + '.html'
+
+    if not is_template(template):
+        return redirect('dashboards:driver')
+
+    if page == 'current':
+        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = False, driver = request.user.userprofile)#.exclude(user = request.user)
+
+        data['orders'] = orders
+    elif page == 'products':
+        print('products')
+
+        products = Item.objects.filter(vendor = vendor)
+
+        data['products'] = products
+        print('products')
+
+    data['vendor'] = vendor
+
+    print(template)
+
+    return render(request, template, data)
+
 
 # METHODS
 

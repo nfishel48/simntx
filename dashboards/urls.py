@@ -11,4 +11,5 @@ urlpatterns = [
     path('vendor/<str:page>/delete/<int:id>', views.delete_page, name='delete_page'),
 
     path('driver', views.driver, name = 'driver'),
+    path('driver/<str:page>', views.driver_page, name = 'driver_page'),
 ]

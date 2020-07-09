@@ -11,9 +11,24 @@ $(document).ready(function(){
 	
 	$('#notification-container').on('click', function(){
 		$.ajax({
-			url: '/clear-notifications',
+			url: '/read-notifications',
 		});
 		
 		$(this).find('.item-count-badge').remove();
+	});
+	
+	$('#clear-notifications').on('click', function(){
+		$.ajax({
+			'url': '/clear-notifications',
+			'success': function(){
+				console.log('CLEARED NOTIFICATIONS');
+				
+				$('.notification-container').each(function(){
+					$(this).remove();
+					
+					console.log('noti');
+				});
+			}
+		});
 	});
 });
