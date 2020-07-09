@@ -648,6 +648,7 @@ class OrderView(LoginRequiredMixin, View):
 # The function to attach a driver to an order
 def set_driver(request, ref_code):
     order = Order.objects.get(ref_code = ref_code)
+    print(order)
     order.driver = request.user.userprofile
     order.being_delivered = True
     order.save()
