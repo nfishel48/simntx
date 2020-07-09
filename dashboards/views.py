@@ -152,6 +152,12 @@ def driver_page(request, page):
         orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = False, driver = request.user.userprofile)#.exclude(user = request.user)
 
         data['orders'] = orders
+       
+    elif page == 'completed':
+        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = True, driver = request.user.userprofile)
+
+        data['orders'] = orders
+
     elif page == 'products':
         print('products')
 

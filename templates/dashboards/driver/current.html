@@ -13,17 +13,27 @@
 		<div class = "header">
 			<p class = "name">Current Deliveries</p>
 		</div>
-		<div class = "section table">
+	<div class = "section table">
 			<table class = "data-table">
 				<tbody>
 					<tr class = "header-row">
-						<th>Title</th>
-						<th>Date Posted</th>
-						<th>Action</th>
+						<th>#</th>
+						<th>Ordered</th>
+						<th>Address</th>
+						<th>Summary</th>
 					</tr>
 					
 					{% for order in orders %}
-						
+						<tr>
+							<td>{{ order.ref_code }}</td>
+							<td>{{ order.ordered_date }}</td>
+							<td>{{ order.shipping_address.street_address }}</td>
+							<td>
+								<a href = "{{ order.get_absolute_url }}">
+									<button class="form-submit"  type="submit">View this order</button>
+								</a>
+							</td>
+						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
