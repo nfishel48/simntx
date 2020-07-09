@@ -31,14 +31,13 @@ function goBack() {
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Total Price</th>
-                            <th>{{ object.ref_code}}</th>
                         </tr>
-                        {% for order_items in items %}
+                        {% for product in items.all %}
                             <tr>
-                                <td>{{ orderitem.title }}</td>
-                                <td>{{ order_item.vendor }}</td>
-                                <td>{{ order_item.price }}</td>
-                                <td>{{ order_item.quantity }}</td>
+                                <td>{{ product.item.title }}</td>
+                                <td>{{ product.item.vendor }}</td>
+                                <td>{{ product.item.price }}</td>
+                                <td>{{ product.quantity }}</td>
                                 <td>
                                     {% if order_item.item.discount_price %}
                                         {{ product.get_total_discount_item_price }}
@@ -62,7 +61,7 @@ function goBack() {
                 <a class='form-submit' type="submit" href="{% url 'core:set_delivered' object.get_ref_code %}">Mark Delivered</a>
                 {% else %}
                 
-                    <button class='form-submit' type="submit" href="{% url 'core:set-driver' object.ref_code %}">Deliver this order</button>
+                    <button class='form-submit' type="submit" href="{% url 'core:set-driver' object.ref_code %}">Deliver this order</button> 
                 
                 {% endif %}
                 

@@ -639,8 +639,8 @@ class OrderView(LoginRequiredMixin, View):
             }
         except ObjectDoesNotExist:
             pass
-        order = Order.objects.get(ref_code = kwargs['ref_code'])
-        print(order.get_items(order))
+        test = Order.objects.get(ref_code = kwargs['ref_code'])
+        print(test.get_items(test))
         return render(self.request, 'driver_summary.html', context)
 
 
