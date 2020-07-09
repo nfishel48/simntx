@@ -632,12 +632,15 @@ class RequestRefundView(View):
 class OrderView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         try:
+            order = Order.objects.get(ref_code = kwargs['ref_code'])
             context={
-                'object': Order.objects.get(ref_code = kwargs['ref_code'])
+                'object': order,
+                'items': order.get_items(order)
             }
         except ObjectDoesNotExist:
             pass
-
+        order = Order.objects.get(ref_code = kwargs['ref_code'])
+        print(order.get_items(order))
         return render(self.request, 'driver_summary.html', context)
 
 
@@ -722,7 +725,7 @@ def account_page(request, page):
 
                 return redirect('core:account')
         elif page == 'orders':
-            orders = Order.objects.filter(user = request.user, ordered = True, delivered = True)
+            orders = Order.objects.filter(user = request.user, ordered = True)
 
             data['orders'] = orders
         elif page == 'deliveries':

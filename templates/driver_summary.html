@@ -31,15 +31,14 @@ function goBack() {
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Total Price</th>
-                            <th> {{ object.ref_code }}</th>
+                            <th>{{ object.ref_code}}</th>
                         </tr>
-                    
-                        {% for order_items in object.order_item.all %}
+                        {% for order_items in items %}
                             <tr>
-                                <td>{{ order_item.title }}</td>
-                                <td>{{ product.item.vendor.title }}</td>
-                                <td>{{ product.item.price }}</td>
-                                <td>{{ product.quantity }}</td>
+                                <td>{{ orderitem.title }}</td>
+                                <td>{{ order_item.vendor }}</td>
+                                <td>{{ order_item.price }}</td>
+                                <td>{{ order_item.quantity }}</td>
                                 <td>
                                     {% if order_item.item.discount_price %}
                                         {{ product.get_total_discount_item_price }}
