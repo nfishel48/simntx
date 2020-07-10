@@ -23,6 +23,11 @@ def get_notification_count(user):
 
 
 @register.simple_tag
+def get_follower_count(vendor):
+    return UserProfile.objects.filter(following = vendor).count()
+
+
+@register.simple_tag
 def get_notifications(user):
     return Notification.objects.filter(user = user.userprofile).order_by('-created')
 

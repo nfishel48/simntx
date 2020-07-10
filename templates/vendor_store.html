@@ -20,8 +20,15 @@
 
 {% block vendor_content %}
 
-	<div class = "content-container">
-		{% include 'blocks/content_panels/filters.html' with form_id="vendor_search" %}
+	<div class = "content-container main">
+		<div id = "filters-container" class = "content-panel">
+			<p class = "content-title">Filters</p>
+			
+			{% with 'vendor_search' as form_id %}
+				{% include 'blocks/filters/tags.html' with form_id=form_id all_tags=all_tags %}
+				{% include 'blocks/filters/price.html' with form_id=form_id price=price %}
+			{% endwith %}
+		</div>
 	</div>
 	<div class = "content-container">
 		<div class = "content-panel">
@@ -30,7 +37,7 @@
 				<p class = "content-subtitle"> Results {{ shown_lower }}-{{ shown_upper }} of {{ total_results }}</p>
 			</span>
 			<div class = "products-container">
-				{% for product in product_results %}
+				{% for product in results %}
 					{% include 'blocks/listing_item.html' with item=product vendor=None %}
 				{% endfor %}
 			</div>
@@ -41,7 +48,7 @@
 
 {% endblock %}
 
-{% block js %}
+{% block vendor_js %}
 
 	<script type = "text/javascript" src = "{% static 'js/search_helper.js' %}"></script>
 

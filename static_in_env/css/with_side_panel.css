@@ -229,11 +229,11 @@
 	
 	margin-top: 5px;
 }
-.filter-tag{
+.filter-options > *{
 	display: flex;
 	align-items: center;
 }
-.filter-tag label{
+.filter-options > * label{
 	margin-left: 5px;
 	
 	font-size: 14px;

@@ -40,7 +40,7 @@ def index(request):
 # View: Feed
 # The page for posts from vendors you follow
 def feed(request):
-    posts = Post.objects.all()
+    posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all())
 
     for post in posts:
         post.posted = arrow.get(post.posted).humanize()  # Convert DateTime to human-friendly message
@@ -804,6 +804,26 @@ def clear_notifications(request):
     return JsonResponse(response)
 
 
+def follow_action(request, slug):
+    data = {}
+
+    vendor = Vendor.objects.filter(slug = slug)
+
+    if vendor.exists():
+        if request.user.userprofile.following.filter(slug = slug).exists():
+            request.user.userprofile.following.remove(vendor[0])
+        else:
+            request.user.userprofile.following.add(vendor[0])
+
+        print('FOLLOWING: ' + str(request.user.userprofile.following.filter(slug = slug).exists()))
+
+        data['success'] = True
+    else:
+        data['success'] = False
+
+    return JsonResponse(data)
+
+
 # FUNCTIONS
 
 
@@ -818,6 +838,7 @@ def search(request, optional_qs):
     price_ceiling = 9999999
     tags = []
     page = 1
+    type = 'products'
 
     if request.method == 'GET':
         # Get every parameter passed from the request
@@ -840,6 +861,10 @@ def search(request, optional_qs):
         if 'pg' in request.GET:
             page = int(request.GET['pg'])
 
+        if 'tp' in request.GET:
+            if request.GET['tp'] == 'vendors':
+                type = 'vendors'
+
         '''print('QUERY: ' + query)
         print('TAGS: ' + str(tags))
         print('PRICE: ' + str(price))
@@ -848,12 +873,24 @@ def search(request, optional_qs):
 
         print('\n\nPAGE: ' + str(page) + '\n\n')
 
-        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, None)
+        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, type, None)
 
     if optional_qs:
-        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, optional_qs)
+        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, type, optional_qs)
 
-    total_pages = math.ceil(len(product_results) / load_amount)
+    data['query'] = query
+    data['price'] = price
+    data['page_num'] = page
+    data['all_tags'] = Tag.objects.all()
+    data['selected_tags'] = tags
+    data['type'] = type
+
+    if type == 'vendors':
+        results = vendor_results
+    else:
+        results = product_results
+
+    total_pages = math.ceil(len(results) / load_amount)
 
     lower_bound = page - 4 if page - 4 > 0 else 1
     upper_bound = page + 4 if page + 4 <= total_pages else total_pages
@@ -861,33 +898,20 @@ def search(request, optional_qs):
     shown_lower = (page - 1) * load_amount
     shown_upper = page * load_amount
 
-    print('LOWER BOUND: ' + str(lower_bound))
-    print('UPPER BOUND: ' + str(upper_bound))
-    print('TOTAL PAGES: ' + str(total_pages))
-
-    data['query'] = query
-    data['price'] = price
-    data['page_num'] = page
     data['total_pages'] = total_pages
     data['bound'] = range(lower_bound, upper_bound + 1)
     data['shown_lower'] = shown_lower + 1
-    data['shown_upper'] = shown_lower + len(product_results[shown_lower:shown_upper])
+    data['shown_upper'] = shown_lower + len(results[shown_lower:shown_upper])
     data['total_results'] = len(product_results)
-    data['all_tags'] = Tag.objects.all()
-    data['selected_tags'] = tags
 
-    data['product_results'] = product_results[shown_lower:shown_upper]
-    data['vendor_results'] = vendor_results[:load_amount]
-
-    print(query)
-    print(str(math.ceil(len(product_results) / load_amount)))
+    data['results'] = results[shown_lower:shown_upper]
 
     return data
 
 
 # Function: Get Search Items
 # The generic function to get search items from a set of variables
-def get_search_items(query, tags, price_floor, price_ceiling, optional_qs):
+def get_search_items(query, tags, price_floor, price_ceiling, type, optional_qs):
     # Creates select statements that can be dynamically used
 
     q_query = Q(title__contains = query)

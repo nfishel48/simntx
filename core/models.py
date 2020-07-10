@@ -6,6 +6,8 @@ from django.shortcuts import reverse
 from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
 
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 LABEL_CHOICES = (
     ('P', 'primary'),
@@ -31,9 +33,12 @@ class Vendor(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField()
     description = models.TextField()
-    image = models.ImageField(max_length=100)
+    profile_image = models.ImageField(max_length=100, null = True)
+    cover_image = models.ImageField(max_length=100, null = True)
     owner = models.ForeignKey('UserProfile', on_delete = models.CASCADE)
-    zip_code = models.IntegerField()
+    address = models.ForeignKey('Address', null = True, on_delete = models.DO_NOTHING, related_name = 'address')
+    phone_number = PhoneNumberField(null = True, blank = True)
+    hours = models.ForeignKey('VendorHours', null = True, blank = True, on_delete = models.DO_NOTHING, related_name = 'hours')
 
     def __str__(self):
         return self.title
@@ -47,6 +52,23 @@ class Vendor(models.Model):
         return self.owner
 
 
+class VendorHours(models.Model):
+    sunday_start = models.TimeField()
+    sunday_end = models.TimeField()
+    monday_start = models.TimeField()
+    monday_end = models.TimeField()
+    tuesday_start = models.TimeField()
+    tuesday_end = models.TimeField()
+    wednesday_start = models.TimeField()
+    wednesday_end = models.TimeField()
+    thursday_start = models.TimeField()
+    thursday_end = models.TimeField()
+    friday_start = models.TimeField()
+    friday_end = models.TimeField()
+    saturday_start = models.TimeField(null = True)
+    saturday_end = models.TimeField(null = True)
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length = 50, blank = False, null = False)
@@ -54,6 +76,8 @@ class UserProfile(models.Model):
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
     vendor_owner = models.BooleanField(default = False)
+    addresses = models.ManyToManyField('Address')
+    following = models.ManyToManyField('Vendor')
 
     def __str__(self):
         return self.user.username
@@ -183,20 +207,23 @@ class Order(models.Model):
     def get_items(cls, order):
         return OrderItem.objects.filter(order = order)
 
+
 class Address(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
-    apartment_address = models.CharField(max_length=100)
+    apartment_address = models.CharField(max_length=100, blank = True)
     country = CountryField(multiple=False)
     zip = models.CharField(max_length=100)
-    address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
-    default = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return self.street_address + ', ' + self.country.name + ', ' + self.zip
 
     class Meta:
         verbose_name_plural = 'Addresses'
+
+
+class UserAddress(Address):
+    address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
+    default = models.BooleanField(default=False)
 
 
 class Payment(models.Model):

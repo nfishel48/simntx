@@ -1,0 +1,35 @@
+{% load staticfiles %}
+
+<div class = "content-panel">
+	<p class = "content-title">Hours</p>
+	<div class = "open-hours">
+		<div class = "day">
+			<p>Sunday</p>
+			<p>{{ vendor.hours.sunday_start }} - {{ vendor.hours.sunday_end }}</p>
+		</div>
+		<div class = "day">
+			<p>Monday</p>
+			<p>{{ vendor.hours.monday_start }} - {{ vendor.hours.monday_end }}</p>
+		</div>
+		<div class = "day">
+			<p>Tuesday</p>
+			<p>{{ vendor.hours.tuesday_start }} - {{ vendor.hours.tuesday_end }}</p>
+		</div>
+		<div class = "day">
+			<p>Wednesday</p>
+			<p>{{ vendor.hours.wednesday_start }} - {{ vendor.hours.wednesday_end }}</p>
+		</div>
+		<div class = "day">
+			<p>Thursday</p>
+			<p>{{ vendor.hours.thursday_start }} - {{ vendor.hours.thursday_end }}</p>
+		</div>
+		<div class = "day">
+			<p>Friday</p>
+			<p>{{ vendor.hours.friday_start }} - {{ vendor.hours.friday_end }}</p>
+		</div>
+		<div class = "day">
+			<p>Saturday</p>
+			<p>{{ vendor.hours.saturday_start }} - {{ vendor.hours.saturday_end }}</p>
+		</div>
+	</div>
+</div>

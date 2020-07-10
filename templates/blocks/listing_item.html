@@ -3,21 +3,25 @@
 <a href = "{{ item.get_absolute_url }}">
 	<div class = "listing-item {% if vendor == None %} product {% endif %}">
 		<div class = "listing-image">
-			<img src = "{{item.image.url}}">
+			{% if vendor == None %}
+				<img src = "{{item.image.url}}">
+			{% else %}
+				<img src = "{{item.cover_image.url}}">
+			{% endif %}
 		</div>
 		<div class = "listing-info">
-			<div class = "tags-container">
-				{% if vendor == True %}
-					{% for tag in item.tags %}
-						{% include 'blocks/tag.html' with tag=tag %}
-					{% endfor %}
-				{% else %}
+			{% if vendor == None %}
+				<div class = "tags-container">
 					{% for tag in item.tags.all %}
 						{% include 'blocks/tag.html' with tag=tag %}
 					{% endfor %}
-				{% endif %}
-			</div>
+				</div>
+			{% endif %}
 			<div class = "listing-main">
+				{% if vendor == True %}
+					<div class = "vendor-image" style = "background-image: url({{item.profile_image.url}})">
+					</div>
+				{% endif %}
 				<p class = "listing-title">{{ item.title }}</p>
 				{% if vendor == None %}
 					<p class = "listing-price price">${{ item.price }}</p>
