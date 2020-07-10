@@ -19,7 +19,7 @@
 			<a href = "{% url 'dashboards:vendor' %}">
 				<div class = "link {% block select_home %}selected{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_home_img %}"{% static 'img/icons/home-filled-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/home-color-48.png' %}">
 					</div>
 					<p>Home</p>
 				</div>
@@ -27,7 +27,7 @@
 			<a href = "{% url 'dashboards:vendor_page' 'posts' %}">
 				<div class = "link {% block select_posts %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_posts_img %}"{% static 'img/icons/posts-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/posts-color-48.png' %}"{>
 					</div>
 					<p>Posts</p>
 				</div>
@@ -35,7 +35,7 @@
 			<a href = "{% url 'dashboards:vendor_page' 'products' %}">
 				<div class = "link {% block select_products %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_products_img %}"{% static 'img/icons/products-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/products-color-48.png' %}">
 					</div>
 					<p>Products</p>
 				</div>
@@ -47,7 +47,7 @@
 			<a href = "{% url 'dashboards:vendor_page' 'promotions' %}">
 				<div class = "link {% block select_promotions %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_promotions_img %}"{% static 'img/icons/promotions-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/promotions-color-48.png' %}">
 					</div>
 					<p>Promotions</p>
 				</div>

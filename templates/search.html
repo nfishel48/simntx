@@ -21,12 +21,17 @@
 			{% include 'blocks/content_panels/filters.html' with form_id='search-form' %}
 			
 			<div id = "results-container" class = "content-panel">
-				<p class = "content-title">Results</p>
+				<span class = "content-title">
+					Products
+					<p class = "content-subtitle"> Results {{ shown_lower }}-{{ shown_upper }} of {{ total_results }}</p>
+				</span>
 				<div class = "products-container">
 					{% for item in product_results %}
 						{% include 'blocks/listing_item.html' with item=item vendor=None%}
 					{% endfor %}
 				</div>
+				
+				{% include 'blocks/search-page-numbers.html' with page_num=page_num total_pages=total_pages bound=bound form_id="search-form" %}
 			</div>
 		</div>
 	</div>

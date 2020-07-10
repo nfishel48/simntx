@@ -12,7 +12,7 @@
 			<a href = "{% url 'dashboards:driver' %}">
 				<div class = "link {% block select_outstanding %}selected{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_outstanding_img %}"{% static 'img/icons/home-filled-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/home-color-48.png' %}">
 					</div>
 					<p>Outstanding</p>
 				</div>
@@ -20,7 +20,7 @@
 			<a href = "{% url 'dashboards:driver_page' 'current' %}">
 				<div class = "link {% block select_current %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_current_img %}"{% static 'img/icons/drivers-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/drivers-color-48.png' %}">
 					</div>
 					<p>Current</p>
 				</div>
@@ -28,7 +28,7 @@
 			<a href = "{% url 'dashboards:driver_page' 'completed' %}">
 				<div class = "link {% block select_completed %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_completed_img %}"{% static 'img/icons/dashboard-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/dashboard-color-48.png' %}">
 					</div>
 					<p>Completed</p>
 				</div>

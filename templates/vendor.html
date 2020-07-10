@@ -10,12 +10,15 @@
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/vendor.css' %}">
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
 
+	{% block vendor_css %}
+	{% endblock %}
+
 {% endblock %}
 
 {% block right_panel %}
 
 	<div class = "content-panel-container">
-		<div id = "vendor-header">
+		<div id = "vendor-header" class = "content-panel">
 			<div id = "vendor-cover" style = "background-image: url({{ vendor.image.url }});">
 				
 			</div>
@@ -28,11 +31,14 @@
 						<p id = "vendor-title">{{ vendor.title }}</p>
 					</div>
 					<div id = "vendor-links">
+						<a href = "{% url 'core:vendor_feed' vendor.slug %}">
+							<div class = "vendor-link {% block select_vendor_feed %}{% endblock %}">Feed</div>
+						</a>
 						<a href = "{% url 'core:vendor_store' vendor.slug %}">
 							<div class = "vendor-link {% block select_vendor_store %}{% endblock %}">Store</div>
 						</a>
-						<a href = "{% url 'core:vendor_feed' vendor.slug %}">
-							<div class = "vendor-link {% block select_vendor_feed %}{% endblock %}">Feed</div>
+						<a href = "{% url 'core:vendor_about' vendor.slug %}">
+							<div class = "vendor-link {% block select_vendor_about %}{% endblock %}">About</div>
 						</a>
 					</div>
 				</div>

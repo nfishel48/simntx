@@ -4,23 +4,38 @@
 
 {% block select_vendor_store %}selected{% endblock %}
 
+{% block vendor_css %}
+
+	<style>
+		#vendor-content{
+			grid-template-columns: 250px 1fr;
+			grid-template-areas: "left right";
+		}
+	</style>
+	
+	{% url 'core:vendor_store' as page %}
+	{% include 'blocks/searchbar.html' with page=page search_bar=None form_id='vendor_search' %}
+
+{% endblock %}
+
 {% block vendor_content %}
 
 	<div class = "content-container">
-		<div class = "content-panel">
-			{% url 'core:vendor_store' as page %}
-			{% include 'blocks/searchbar.html' with page=page search_bar=None form_id='vendor_search' %}
-			
-			<p class = "content-title">About</p>
-			<p id = "vendor-desc">{{ vendor.description }}</p>
-		</div>
 		{% include 'blocks/content_panels/filters.html' with form_id="vendor_search" %}
 	</div>
 	<div class = "content-container">
-		<div class = "products-container content-panel">
-			{% for product in product_results %}
-				{% include 'blocks/listing_item.html' with item=product vendor=None %}
-			{% endfor %}
+		<div class = "content-panel">
+			<span class = "content-title">
+				Products
+				<p class = "content-subtitle"> Results {{ shown_lower }}-{{ shown_upper }} of {{ total_results }}</p>
+			</span>
+			<div class = "products-container">
+				{% for product in product_results %}
+					{% include 'blocks/listing_item.html' with item=product vendor=None %}
+				{% endfor %}
+			</div>
+		
+			{% include 'blocks/search-page-numbers.html' with page_num=page_num total_pages=total_pages bound=bound form_id="vendor_search" %}
 		</div>
 	</div>
 
