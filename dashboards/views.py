@@ -154,7 +154,7 @@ def driver_page(request, page):
         data['orders'] = orders
        
     elif page == 'completed':
-        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = True, driver = request.user.userprofile)
+        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = True, driver = request.user.userprofile)
 
         data['orders'] = orders
 
