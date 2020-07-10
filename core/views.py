@@ -26,10 +26,11 @@ import random
 import string
 import stripe
 import arrow
+import math
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-load_amount = 10
+load_amount = 15
 
 # View: Index
 # The view that redirects to the front page
@@ -102,6 +103,18 @@ def vendor_store(request, slug):
     data['products'] = products
 
     return render(request, 'vendor_store.html', data)
+
+
+# View: Vendor About
+# The page showing all relevent information about a vendor
+def vendor_about(request, slug):
+    data = {}
+
+    vendor = Vendor.objects.get(slug=slug)
+
+    data['vendor'] = vendor
+
+    return render(request, 'vendor_about.html', data)
 
 
 # View: Product
@@ -803,6 +816,7 @@ def search(request, optional_qs):
     price_floor = 0
     price_ceiling = 9999999
     tags = []
+    page = 1
 
     if request.method == 'GET':
         # Get every parameter passed from the request
@@ -822,26 +836,50 @@ def search(request, optional_qs):
                 price_floor = float(parts[0])
                 price_ceiling = float(parts[1])
 
+        if 'pg' in request.GET:
+            page = int(request.GET['pg'])
+
         '''print('QUERY: ' + query)
         print('TAGS: ' + str(tags))
         print('PRICE: ' + str(price))
         print('PRICE FLOOR: ' + str(price_floor))
         print('PRICE FLOOR: ' + str(price_ceiling))'''
 
+        print('\n\nPAGE: ' + str(page) + '\n\n')
+
         product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, None)
 
     if optional_qs:
         product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, optional_qs)
 
+    total_pages = math.ceil(len(product_results) / load_amount)
+
+    lower_bound = page - 4 if page - 4 > 0 else 1
+    upper_bound = page + 4 if page + 4 <= total_pages else total_pages
+
+    shown_lower = (page - 1) * load_amount
+    shown_upper = page * load_amount
+
+    print('LOWER BOUND: ' + str(lower_bound))
+    print('UPPER BOUND: ' + str(upper_bound))
+    print('TOTAL PAGES: ' + str(total_pages))
+
     data['query'] = query
     data['price'] = price
+    data['page_num'] = page
+    data['total_pages'] = total_pages
+    data['bound'] = range(lower_bound, upper_bound + 1)
+    data['shown_lower'] = shown_lower + 1
+    data['shown_upper'] = shown_lower + len(product_results[shown_lower:shown_upper])
+    data['total_results'] = len(product_results)
     data['all_tags'] = Tag.objects.all()
     data['selected_tags'] = tags
 
-    data['product_results'] = product_results[:load_amount]
+    data['product_results'] = product_results[shown_lower:shown_upper]
     data['vendor_results'] = vendor_results[:load_amount]
 
     print(query)
+    print(str(math.ceil(len(product_results) / load_amount)))
 
     return data
 

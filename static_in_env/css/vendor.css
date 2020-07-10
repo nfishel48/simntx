@@ -8,6 +8,10 @@
 	display: flex;
 	flex-direction: column;
 	
+	position: relative;
+	
+	padding: 0 !important;
+	
 	background-color: white;
 	
 	border: 1px solid #ddd;
@@ -53,6 +57,8 @@
 }
 #vendor-info{
 	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 #vendor-title{
 	font-family: Roboto-Medium;
@@ -93,9 +99,15 @@
 #vendor-content{
 	width: 100%;
 	
-	display: flex;
+	display: grid;
+	grid-template-columns: 250px 1fr 250px;
+	grid-template-areas: "left mid right";
+	grid-gap: var(--content-panel-spacing);
 	
-	margin-top: 20px;
+	margin-top: var(--content-panel-spacing);
+}
+#vendor-content .content-container{
+	margin: 0;
 }
 
 #vendor-desc{
@@ -105,7 +117,4 @@
 #vendor-posts{
 	display: flex;
 	flex-direction: column;
-}
-.post{
-	width: 100%;
 }

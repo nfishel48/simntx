@@ -1,0 +1,16 @@
+{% extends 'vendor.html' %}
+
+{% load staticfiles %}
+
+{% block select_vendor_about %}selected{% endblock %}
+
+{% block vendor_content %}
+
+	<div class = "content-container">
+		<div class = "content-panel">
+			<p class = "content-title">About</p>
+			<p id = "vendor-desc">{{ vendor.description }}</p>
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,143 +1,198 @@
-p{
-	padding: 0;
-	margin: 0;
-}
 #nav{
 	width: 100%;
+	height: auto;
 	
-	padding: 15px 0 15px 0;
+	display: flex;
 	
-	background: white;
+	position: fixed;
+	top: 0;
+	left: 0;
+	
+	padding: 0 var(--spacing);
+	
+	background-color: white;
 	
 	border-bottom: 1px solid #ddd;
 	
 	box-sizing: border-box;
-}
-#nav .safe-div{
-	height: 100%;
-}
-.nav-section{	
 	
+	z-index: 3;
+}
+
+#nav-first-panel{
+	height: var(--nav-height);
+	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex: 1;
+	
+	box-sizing: border-box;
+}
+#nav-second-panel{
+	display: flex;
+	align-items: center;
+	
+	box-sizing: border-box;
+}
+#nav-second-panel.closed{ display: none; }
+
+#nav-left, #nav-right{
+	display: flex;
+	align-items: center;
+}
+
+#left-panel-expand{
+	position: relative;
+	top: 4px;
+
+	margin-right: 10px;
+	
+	cursor: pointer;
+}
+.nav-button img, #left-panel-expand{
+	width: 22px;
+	height: 22px;
 }
 
 #nav-left{
-	font-size: 22px;
-	color: var(--primary);
+	width: var(--left-panel-width);
 }
+#nav-left.closed{ display: none; }
 #nav-right{
-	display: flex;
-	flex-direction: column;
+	width: 100%;
+
+	justify-content: center;
 }
-.sub-section{
+
+.notification{
 	width: 100%;
 	
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
-}
-
-#account-links{
-	margin-bottom: 10px;
-}
-#logout{
-	outline: none;
-	border: none;
 	
-	background-color: transparent;
+	padding: 10px var(--dropdown-spacing);
+	
+	box-sizing: border-box;
 	
 	cursor: pointer;
 }
-#account-links, #logout{
-	font-family: Roboto-Medium;
+.notification:hover{
+	background-color: #f9f9f9;
+}
+.noti-left{
+	height: 100%;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.noti-right{
+	flex: 1;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	
+	padding-right: var(--dropdown-spacing);
+	
+	box-sizing: border-box;
+}
+.noti-read{
+	width: 8px;
+	height: 8px;
+	
+	margin-right: var(--dropdown-spacing);
+	
+	border-radius: 100%;
+	
+	background-color: var(--primary);
+	
+	box-sizing: border-box;
+}
+.noti-read.read{
+	background-color: #ccc;
+}
+.noti-text{
+	font-size: 14px;
+}
+.noti-time{
+	margin-top: 5px;
+	
 	font-size: 12px;
 	color: var(--light-text);
-	
-	text-transform: uppercase;
 }
 
+.nav-button{
+	width: 32px;
+	height: 32px;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	
+	background-color: #ccc;
+	
+	border-radius: 100%;
+	
+	box-sizing: border-box;
+	
+	transition: all .1s ease;
+	
+	cursor: pointer;
+}
+.nav-button.open{
+	background-color: var(--primary);
+}
 .nav-button:hover{
-	opacity: .7;
+	background-color: var(--primary);
 }
 .nav-button:not(:first-child){
-	margin-left: 15px;
+	margin-left: 8px;
 }
 .nav-button a{
 	display: flex;
 	align-items: center;
-}
-#item-count-badge{
-	position: relative;
-	top: 5px;
-	left: -2px;
-	
-	background: var(--light-red);
-	
-	font-size: 10px;
-	font-weight: bold;
-	color: white;
-	
-	padding: 1px 3px;
-	
-	border-radius: 3px;
-}
-
-#search-bar{
-	width: 300px;
-	height: 30px;
-	
-	display: flex;
 	
 	position: relative;
 }
-#search-icon{
-	width: 30px;
-	height: 100%;
+.item-count-badge{
+	width: 5px;
+	height: 5px;
 	
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: -8px;
+	right: -8px;
+	
+	padding: 6px;
+	
+	font-size: 10px;
+	font-weight: bold;
+	color: white;
+	padding: 5px;
+	
+	background: var(--light-blue);
+	
+	border: 2px solid white;
+	
+	border-radius: 100%;
 }
-#search-bar img{
-	width: auto;
-	height: auto;
-}
-#search{
-	height: 100%;
+.user-button{
+	width: 36px;
+	height: 36px;
 	
-	flex: 1;
-	
-	padding: 0 7px 0 30px;
-	
-	outline: none;
-	border: 1px solid #ddd;
-	
-	box-sizing: border-box;
-}
-#search:focus{
-	opacity: 1;
-}
-#search-submit{
-	height: 100%;
-	
-	outline: none;
-	border: none;
-	
-	padding: 0 10px;
+	margin-left: 12px !important;
 	
 	background-color: var(--primary);
-	
-	font-family: Roboto-Medium;
-	font-size: 12px;
-	color: white;
-	
-	cursor: pointer;
 }
-
-::placeholder{
+.user-initial{
+	font-family: Roboto-Medium;
 	font-size: 14px;
-	color: #aaa;
+	color: white;
 }

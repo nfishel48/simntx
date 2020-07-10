@@ -3,105 +3,108 @@
 {% load tags %}
 
 <div id = "nav">
-	<div id = "nav-left-panel">
-		<img id = "left-panel-expand" src = "{% static 'img/icons/menu-48.png' %}">
-		<a href = "{% url 'core:index' %}">
-			<img src = "{% static 'img/logo.png' %}">
-		</a>
-	</div>
-	<div id = "nav-right-panel">
-		<div id = "nav-mid">
+	<div id = "nav-first-panel">
+		<div id = "nav-left">
+			<img id = "left-panel-expand" src = "{% static 'img/icons/menu-48.png' %}">
+			<a href = "{% url 'core:index' %}">
+				<img id = "logo" src = "{% static 'img/logo.png' %}">
+			</a>
+		</div>
+		<div id = "nav-right">
 			{% url 'core:search' as page %}
 			{% include 'blocks/searchbar.html' with page=page search_bar=True form_id='search-form' %}
 		</div>
-		<div id = "nav-right">
-			{% if user.is_authenticated %}
-				<div class = "nav-button" id = "notification-container">
-					<img src = "{% static 'img/icons/bell-white-48.png' %}">
-					{% get_notification_count user as noti_count %}
-					{% if noti_count > 0 %}
-						<div class = "item-count-badge" style = "background-color: var(--light-red);">{{ noti_count }}</div>
-					{% endif %}
-					<div class = "dropdown-container">
-						<div class = "header">
-							<p class = "title">Notifications</p>
-							<p class = "link" id = "clear-notifications">Clear All</p>
+	</div>
+	<div id = "nav-second-panel">
+		{% if user.is_authenticated %}
+			<div class = "nav-button" id = "notification-container">
+				<img src = "{% static 'img/icons/bell-white-48.png' %}">
+				
+				{% get_notification_count user as noti_count %}
+				{% if noti_count > 0 %}
+					<div class = "item-count-badge" style = "background-color: var(--light-red);">{{ noti_count }}</div>
+				{% endif %}
+				
+				<div class = "dropdown-container">
+					<div class = "header">
+						<p class = "title">Notifications</p>
+						<p class = "link" id = "clear-notifications">Clear All</p>
+					</div>
+					
+					{% get_notifications user as notifications %}
+					{% for noti in notifications %}
+						<a class = "notification-container" href = "{{ noti.link }}">
+							<div class = "notification">
+								<div class = "noti-left">
+									<div class = "noti-read {% if noti.read %}read{% endif %}"></div>
+								</div>
+								<div class = "noti-right">
+									<p class = "noti-text">{{ noti.text|safe }}</p>
+									
+									{% get_normal_time noti.created as noti_time %}
+									<p class = "noti-time">{{ noti_time }}</p>
+								</div>
+							</div>
+						</a>
+					{% endfor %}
+				</div>
+			</div>
+			<div class = "nav-button">
+				<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
+					<img src = "{% static 'img/icons/cart-white-48.png' %}">
+				</a>
+				
+				{% get_cart_count user as cart_count %}
+				{% if cart_count > 0 %}
+					<div class = "item-count-badge">{{ cart_count }}</div>
+				{% endif %}
+			</div>
+			<div class = "nav-button user-button">
+				<p class = "user-initial">{{ user.first_name.0 }}</p>
+				<div class = "dropdown-container">
+					<div id = "user-info">
+						<div class = "nav-button user-button">
+							<p class = "user-initial">{{ user.first_name.0 }}</p>
 						</div>
-						
-						{% get_notifications user as notifications %}
-						{% for noti in notifications %}
-							<a class = "notification-container" href = "{{ noti.link }}">
-								<div class = "notification">
-									<div class = "noti-left">
-										<div class = "noti-read {% if noti.read %}read{% endif %}"></div>
+						<p id = "user-name">{{ user.first_name }} {{ user.last_name }}</p>
+					</div>
+					<div class = "left-panel-group">
+						<div class = "links">
+							<a href = "{% url 'core:account_page' 'orders' %}">
+								<div class = "link">
+									<div class = "link-image">
+										<img src = "{% static 'img/icons/products-48.png' %}">
 									</div>
-									<div class = "noti-right">
-										<p class = "noti-text">{{ noti.text|safe }}</p>
-										
-										{% get_normal_time noti.created as noti_time %}
-										<p class = "noti-time">{{ noti_time }}</p>
-									</div>
+									<p>Orders</p>
 								</div>
 							</a>
-						{% endfor %}
-					</div>
-				</div>
-				<div class = "nav-button">
-					<a href = "{% url 'core:order-summary' %}" style = "display: flex; align-items: flex-end;">
-						<img src = "{% static 'img/icons/cart-white-48.png' %}">
-					</a>
-					{% get_cart_count user as cart_count %}
-					{% if cart_count > 0 %}
-						<div class = "item-count-badge">{{ cart_count }}</div>
-					{% endif %}
-				</div>
-				<div class = "nav-button user-button">
-					<p class = "user-initial">{{ user.first_name.0 }}</p>
-					<div class = "dropdown-container">
-						<div id = "user-info">
-							<div class = "nav-button user-button">
-								<p class = "user-initial">{{ user.first_name.0 }}</p>
-							</div>
-							<p id = "user-name">{{ user.first_name }} {{ user.last_name }}</p>
-						</div>
-						<div class = "left-panel-group">
-							<div class = "links">
-								<a href = "{% url 'core:account_page' 'orders' %}">
-									<div class = "link">
-										<div class = "link-image">
-											<img src = "{% static 'img/icons/products-48.png' %}">
-										</div>
-										<p>Orders</p>
+							<a href = "{% url 'core:account' %}">
+								<div class = "link">
+									<div class = "link-image">
+										<img src = "{% static 'img/icons/settings-48.png' %}">
 									</div>
-								</a>
-								<a href = "{% url 'core:account' %}">
-									<div class = "link">
-										<div class = "link-image">
-											<img src = "{% static 'img/icons/settings-48.png' %}">
-										</div>
-										<p>Settings</p>
+									<p>Settings</p>
+								</div>
+							</a>
+							<form id = "logout-form" action = "{% url 'account_logout' %}" method = "POST">
+								{% csrf_token %}
+								
+								<div class = "link">
+									<div class = "link-image">
+										<img src = "{% static 'img/icons/logout-32.png' %}">
 									</div>
-								</a>
-								<form id = "logout-form" action = "{% url 'account_logout' %}" method = "POST">
-									{% csrf_token %}
-									
-									<div class = "link">
-										<div class = "link-image">
-											<img src = "{% static 'img/icons/logout-32.png' %}">
-										</div>
-										<p>Logout</p>
-									</div>
-								</form>
-							</div>
+									<p>Logout</p>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
-			{% else %}
-				<div id = "account-links">
-					<a href = "{% url 'account_login' %}" style = "margin-right: 10px;">Login</a>
-					<a href = "{% url 'account_signup' %}">Sign Up</a>
-				</div>
-			{% endif %}
-		</div>
+			</div>
+		{% else %}
+			<div id = "account-links">
+				<a href = "{% url 'account_login' %}" style = "margin-right: 10px;">Login</a>
+				<a href = "{% url 'account_signup' %}">Sign Up</a>
+			</div>
+		{% endif %}
 	</div>
 </div>

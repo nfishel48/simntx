@@ -4,14 +4,21 @@
 
 {% block select_vendor_feed %}selected{% endblock %}
 
+{% block vendor_css %}
+
+	<style>
+		.content-container:nth-child(1){
+			grid-area: mid;
+		}
+		.content-container:nth-child(2){
+			grid-area: left;
+		}
+	</style>
+
+{% endblock %}
+
 {% block vendor_content %}
 
-	<div class = "content-container">
-		<div class = "content-panel">
-			<p class = "content-title">About</p>
-			<p id = "vendor-desc">{{ vendor.description }}</p>
-		</div>
-	</div>
 	<div class = "content-container">
 		<div id = "vendor-posts">
 			{% for post in posts %}
@@ -20,9 +27,7 @@
 		</div>
 	</div>
 	<div class = "content-container">
-		<div class = "content-panel">
-			<p class = "content-title">Similar Vendors</p>
-		</div>
+		{% include 'blocks/content_panels/similar-vendors.html' %}
 	</div>
 
 {% endblock %}

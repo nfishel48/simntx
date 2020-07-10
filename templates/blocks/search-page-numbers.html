@@ -1,0 +1,21 @@
+{% load staticfiles %}
+
+<div id = "page-numbers">
+	<div id = "page-back-one" class = "page-number-container {% if page_num <= 1 %}disabled{% endif %}">
+		{% if page_num > 1 %}
+			<input id = "back-one-input" form = "{{ form_id }}" type = "text" name = "pg" value = "{{ page_num|add:'-1' }}" hidden>
+		{% endif %}
+		<img src = "{% static 'img/icons/right-slim-50.png' %}" style = "transform: rotate(180deg)">
+	</div>
+	<div id = "page-selector" class = "page-number-container">
+		{% for i in bound %}
+			<input onclick = "$('#{{ form_id }}').submit();" class = "page-number {% if i == page_num %}selected{% endif %}" form = "{{ form_id }}" type = "submit" name = "pg" value = {{ i }}>
+		{% endfor %}
+	</div>
+	<div id = "page-forward-one" class = "page-number-container {% if page_num >= total_pages %}disabled{% endif %}">
+		{% if page_num < total_pages %}
+			<input id = "forward-one-input" form = "{{ form_id }}" type = "text" name = "pg" value = "{{ page_num|add:'1' }}" hidden>
+		{% endif %}
+		<img src = "{% static 'img/icons/right-slim-50.png' %}">
+	</div>
+</div>
