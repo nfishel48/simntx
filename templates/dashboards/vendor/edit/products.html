@@ -7,7 +7,7 @@
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Edit Product</p>
 		</div>
@@ -25,11 +25,11 @@
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Price</p>
-					<input class = "field-input ten" type = "number" name = 'price' value = "{{ product.price }}">
+					<input class = "field-input ten" type = "number" name = 'price' step = .01 value = "{{ product.price }}">
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Discount Price</p>
-					<input class = "field-input ten" type = "number" name = 'discount_price' value = "{{ product.discount_price }}">
+					<input class = "field-input ten" type = "number" name = 'discount_price' step = .01 value = "{{ product.discount_price }}">
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Tags</p>
@@ -39,7 +39,7 @@
 						{% endfor %}
 					</select>
 				</div>
-				<div class = "form-end">
+				<div class = "form-end start">
 					<input class = "form-submit" type = "submit" value = "Save">
 				</div>
 			</form>

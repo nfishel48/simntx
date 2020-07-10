@@ -222,6 +222,7 @@ class Address(models.Model):
 
 
 class UserAddress(Address):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     default = models.BooleanField(default=False)
 
