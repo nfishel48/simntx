@@ -1,0 +1,3 @@
+.link-group:not(:first-child){
+	margin-top: calc(var(--spacing) / 2);
+}
