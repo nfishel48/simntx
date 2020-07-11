@@ -1,0 +1,76 @@
+{% extends "dashboards/driver.html" %}
+
+{% load staticfiles %}
+{% load tags %}
+
+{% block title %}Order Overview{% endblock %}
+
+{% block driver_css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/cart.css' %}">
+	
+{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header">
+			<p class = "name">Order</p>
+		</div>
+		<div class = "section">
+			<table>
+				<tbody>
+					<tr>
+						<th>Product</th>
+						<th>Vendor</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Total Price</th>
+					</tr>
+					{% get_order_items order.ref_code as items %}
+					{% for product in items.all %}
+						<tr>
+							<td>{{ product.item.title }}</td>
+							<td>{{ product.item.vendor }}</td>
+							<td>{{ product.item.price }}</td>
+							<td>{{ product.quantity }}</td>
+							<td>
+								{% if order_item.item.discount_price %}
+									{{ product.get_total_discount_item_price }}
+								{% else %}
+									{{ product.get_total_item_price }}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			
+			{% if not order.delivered and request.user.userprofile == order.driver %}
+				<div class = "form-end start">
+					{% if order.being_delivered %}
+						<a href = "{% url 'core:set_delivered' order.ref_code %}">
+							<input class = "form-submit" type = "submit" value = "Mark Delivered">
+						</a>
+					{% else %}
+						<a href = "{% url 'core:set-driver' order.ref_code %}">
+							<input class = "form-submit" type = "submit" value = "Accept" style = "background-color: var(--green);">
+						</a>
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+		
+	</div>
+
+{% endblock %}
+
+{% block js %}
+
+	<script>
+		function goBack() {
+		  window.history.back();
+		}
+	</script>
+	
+{% endblock %}

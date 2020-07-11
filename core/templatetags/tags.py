@@ -7,9 +7,10 @@ from ..models import *
 
 register = template.Library()
 
+
 @register.simple_tag
 def get_cart_count(user):
-	return UserProfile.get_cart_count(user)
+    return UserProfile.get_cart_count(user)
 
 
 @register.simple_tag
@@ -33,8 +34,18 @@ def get_notifications(user):
 
 
 @register.simple_tag
-def get_order_items(user):
+def get_active_order_items(user):
     order = Order.objects.filter(user=user, ordered=False)
+
+    if order.exists():
+        return OrderItem.objects.filter(order = order[0])
+
+    return None
+
+
+@register.simple_tag
+def get_order_items(ref_code):
+    order = Order.objects.filter(ref_code = ref_code)
 
     if order.exists():
         return OrderItem.objects.filter(order = order[0])

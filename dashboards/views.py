@@ -154,7 +154,7 @@ def driver_page(request, page):
         data['orders'] = orders
        
     elif page == 'completed':
-        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = True, driver = request.user.userprofile)
+        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = True, driver = request.user.userprofile)
 
         data['orders'] = orders
 
@@ -171,6 +171,21 @@ def driver_page(request, page):
     print(template)
 
     return render(request, template, data)
+
+
+def order(request, ref_code):
+    order = Order.objects.filter(ref_code = ref_code)
+
+    if order.exists():
+        data = {}
+
+        order = order[0]
+
+        data['order'] = order
+
+        return render(request, 'dashboards/driver/order.html', data)
+    else:
+        return redirect('dashboards:driver')
 
 
 # METHODS

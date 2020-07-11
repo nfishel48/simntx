@@ -78,7 +78,7 @@ def vendor(request, slug):
 def vendor_feed(request, slug):
     vendor = Vendor.objects.get(slug=slug)
 
-    posts = Post.objects.all(vendor = vendor)
+    posts = Post.objects.filter(vendor = vendor)
 
     for post in posts:
         post.posted = arrow.get(post.posted).humanize()
@@ -644,49 +644,57 @@ class RequestRefundView(View):
 # The page to show details about an order
 class OrderView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
+        data = {}
+
         try:
             order = Order.objects.get(ref_code = kwargs['ref_code'])
-            context={
-                'object': order,
+
+            data = {
+                'order': order,
                 'items': order.get_items(order)
             }
         except ObjectDoesNotExist:
             pass
-        test = Order.objects.get(ref_code = kwargs['ref_code'])
-        print(test.get_items(test))
-        return render(self.request, 'driver_summary.html', context)
+
+        return render(self.request, 'order.html', data)
 
 
 # View: Set Driver
 # The function to attach a driver to an order
 def set_driver(request, ref_code):
-    order = Order.objects.get(ref_code = ref_code)
-    print(order)
-    order.driver = request.user.userprofile
-    order.being_delivered = True
-    order.save()
+    order = Order.objects.filter(ref_code = ref_code)
 
-    notifications.push(order.user,
-                       'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
-                       reverse('core:order', args=(order.ref_code,)))
+    if order.exists() and not order[0].being_delivered:
+        order = order[0]
 
-    return render(request, 'account.html')
+        order.driver = request.user.userprofile
+        order.being_delivered = True
+        order.save()
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:driver')
 
 
 # View: Set Delivered
 # The function to set an order as delivered
 def set_delivered(request, ref_code):
-    order = Order.objects.get(ref_code = ref_code)
-    order.being_delivered = False
-    order.delivered = True
-    order.delivered_date = timezone.now()
-    order.save()
+    order = Order.objects.filter(ref_code = ref_code)
 
-    notifications.push(order.user,
-                       'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
-                       reverse('core:order', args=(order.ref_code,)))
+    if order.exists() and not order[0].delivered:
+        order = order[0]
+        order.being_delivered = False
+        order.delivered = True
+        order.delivered_date = timezone.now()
+        order.save()
 
-    return render(request, 'account.html')
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:driver')
 
 
 # View: Account

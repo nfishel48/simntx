@@ -12,4 +12,5 @@ urlpatterns = [
 
     path('driver', views.driver, name = 'driver'),
     path('driver/<str:page>', views.driver_page, name = 'driver_page'),
+    path('driver/order/<str:ref_code>', views.order, name = 'order'),
 ]
