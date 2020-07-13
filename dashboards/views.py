@@ -16,6 +16,14 @@ def vendor(request):
 
     vendor.tags = get_tags(vendor)
 
+    if request.method == 'POST':
+        form = forms.EditVendorForm(request.POST, request.FILES, instance = vendor)
+
+        if form.is_valid():
+            v = form.save()
+        else:
+            print(form.errors)
+
     data['vendor'] = vendor
 
     return render(request, 'dashboards/vendor.html', data)
@@ -62,6 +70,31 @@ def edit_page(request, page, id):
                 post = Post.objects.get(id = id)
                 post.text = form.cleaned_data['text']
 
+                print(request.POST)
+
+                if 'link-urls' in request.POST:
+                    post.links.all().delete()
+
+                    names = request.POST.getlist('link-names')
+                    urls = request.POST.getlist('link-urls')
+
+                    for i in range(len(urls)):
+                        name = names[i]
+                        url = urls[i]
+
+                        if url != "" and url is not None:
+                            print(name + ' // ' + url)
+
+                            post_link = PostLink.objects.filter(link = url, title = name)
+
+                            if post_link.exists():
+                                post_link = post_link[0]
+                            else:
+                                post_link = PostLink(link = url, title = name)
+
+                            post_link.save()
+                            post.links.add(post_link)
+
                 post.save()
             else:
                 print(form.errors)
@@ -82,8 +115,7 @@ def edit_page(request, page, id):
 
         return redirect('dashboards:vendor_page', page=page)
 
-    profile = request.user.userprofile
-    vendor = Vendor.objects.get(owner=profile)
+    vendor = Vendor.objects.get(owner=request.user.userprofile)
 
     template = 'dashboards/vendor/edit/' + page + '.html'
 
@@ -105,6 +137,45 @@ def edit_page(request, page, id):
 
         data['product'] = product[0]
         data['all_tags'] = Tag.objects.all()
+
+    data['vendor'] = vendor
+
+    return render(request, template, data)
+
+
+def create_page(request, page):
+    data = {}
+
+    vendor = Vendor.objects.get(owner=request.user.userprofile)
+
+    template = 'dashboards/vendor/create/' + page + '.html'
+
+    if not is_template(template):
+        return redirect('dashboards:vendor_page', page=page)
+
+    if page == 'products':
+        data['all_tags'] = Tag.objects.all()
+
+    if request.method == 'POST':
+        if page == 'posts':
+            form = forms.CreatePostForm(vendor, request.POST)
+
+            if form.is_valid():
+                post = form.save()
+            else:
+                print(form.errors)
+        elif page == 'products':
+            form = forms.CreateProductForm(vendor, request.POST, request.FILES)
+
+            if form.is_valid():
+                product = form.save()
+                form.save_m2m()
+            else:
+                data['form'] = form
+
+                return render(request, template, data)
+
+        return redirect('dashboards:vendor_page', page=page)
 
     data['vendor'] = vendor
 

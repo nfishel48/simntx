@@ -11,4 +11,18 @@
 		</div>
 	</a>
 	<p class = "post-text">{{ post.text }}</p>
+	
+	{% if post.links.all|length > 0 %}
+		<div class = "links">
+			{% for link in post.links.all %}
+				<a class = "post-link" target="_blank" href = "{{ link.link }}">
+					<img src = "{% static 'img/icons/link-48.png' %}">
+					<span style = "display: flex; align-items: baseline;">
+						<p class = "title">{{ link.title }}</p>
+						<p class = "url">{{ link.link }}</p>
+					</span>
+				</a>
+			{% endfor %}
+		</div>
+	{% endif %}
 </div>

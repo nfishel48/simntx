@@ -5,6 +5,7 @@ from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
+from django.template.defaultfilters import slugify
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -33,8 +34,8 @@ class Vendor(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField()
     description = models.TextField()
-    profile_image = models.ImageField(max_length=100, null = True)
-    cover_image = models.ImageField(max_length=100, null = True)
+    profile_image = models.ImageField(max_length=100, null = True, blank = True)
+    cover_image = models.ImageField(max_length=100, null = True, blank = True)
     owner = models.ForeignKey('UserProfile', on_delete = models.CASCADE)
     address = models.ForeignKey('Address', null = True, on_delete = models.DO_NOTHING, related_name = 'address')
     phone_number = PhoneNumberField(null = True, blank = True)
@@ -123,6 +124,12 @@ class Item(models.Model):
         return reverse("core:remove-from-cart", kwargs={
             'slug': self.slug
         })
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+
+        super(Item, self).save(*args, **kwargs)
 
 
 class OrderItem(models.Model):
@@ -258,8 +265,9 @@ class Refund(models.Model):
 class Post(models.Model):
     text = models.CharField(max_length = 500, null = False, blank = False)
     vendor = models.ForeignKey('Vendor', on_delete = models.CASCADE, related_name = 'vendor', null = False, blank = False)
-    posted = models.DateTimeField(auto_now=True)
+    posted = models.DateTimeField(auto_now_add=True)
     links = models.ManyToManyField('PostLink', blank = True)
+    images = models.ManyToManyField('PostImage', blank = True)
 
     def __str__(self):
         return self.vendor.title + ": " + self.text[:50]
@@ -270,10 +278,10 @@ class Post(models.Model):
 
 class PostImage(models.Model):
     image = models.ImageField()
-    post = models.ForeignKey('Post', on_delete = models.CASCADE, related_name = 'post')
 
 
 class PostLink(models.Model):
+    title = models.CharField(max_length = 50, default = "Link Title")
     link = models.URLField()
 
 
@@ -281,7 +289,7 @@ class Notification(models.Model):
     user = models.ForeignKey('UserProfile', on_delete = models.CASCADE, related_name = 'notification_user')
     text = models.CharField(max_length = 300)
     link = models.CharField(max_length = 300)
-    created = models.DateTimeField(auto_now = True)
+    created = models.DateTimeField(auto_now_add = True)
     read = models.BooleanField(default = False)
 
 

@@ -63,6 +63,46 @@
 		<div class = "header">
 			<p class = "name">Home</p>
 		</div>
+		<div class = "section">
+			<form method = 'POST' enctype='multipart/form-data'>
+				{% csrf_token %}
+			
+				<div class = "form-field">
+					<p class = "field-label">Name</p>
+					<input class = "field-input" name = "title" value = "{{ vendor.title }}" required>
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Description</p>
+					<textarea class = "field-input" name = "description" required>{{ vendor.description }}</textarea>
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Profile Image</p>
+					<a style = "margin-top: 5px; font-size: 10px;" href = "{{ vendor.profile_image.url }}">{{ vendor.profile_image.url }}</a>
+					<input class = "field-input half" type = "file" name = 'profile_image' style = "margin-left: 0;" value = "{{ vendor.profile_image }}">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Cover Image</p>
+					<a style = "margin-top: 5px; font-size: 10px;" href = "{{ vendor.cover_image.url }}">{{ vendor.cover_image.url }}</a>
+					<input class = "field-input half" type = "file" name = 'cover_image' style = "margin-left: 0;">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Address</p>
+					<div class = "field-inputs">
+						<input class = "field-input quarter" name = "street_address" value = "{{ vendor.address.street_address }}" required>
+						<input class = "field-input ten" name = "country" value = "{{ vendor.address.country.name }}" required>
+						<input class = "field-input ten" name = "zip" value = "{{ vendor.address.zip }}" required>
+					</div>
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Phone Number</p>
+					<input class = "field-input" type = "text" name = "phone_number" placeholder = "888-888-8888" value = "{{ vendor.phone_number.as_e164 }}" required>
+				</div>
+				
+				<div class = "form-end start">
+					<input class = "form-submit" type = "submit" value = "Save">
+				</div>
+			</form>
+		</div>
 	</div>
 
 {% endblock %}

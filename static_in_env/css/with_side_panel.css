@@ -189,6 +189,10 @@
 .right-panel-group .header{
 	width: 100%;
 	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
 	padding: 20px;
 	
 	box-sizing: border-box;

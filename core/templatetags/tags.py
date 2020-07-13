@@ -30,7 +30,7 @@ def get_follower_count(vendor):
 
 @register.simple_tag
 def get_notifications(user):
-    return Notification.objects.filter(user = user.userprofile).order_by('-created')
+    return Notification.objects.filter(user = user.userprofile).order_by('-created')[:10]
 
 
 @register.simple_tag
@@ -56,3 +56,8 @@ def get_order_items(ref_code):
 @register.simple_tag
 def get_normal_time(datetime):
     return arrow.get(datetime).humanize()
+
+
+@register.simple_tag
+def get_num_remaining_links(post):
+    return range(5 - post.links.count())

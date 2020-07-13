@@ -1,6 +1,7 @@
 {% extends 'dashboards/vendor.html' %}
 
 {% load staticfiles %}
+{% load tags %}
 
 {% block opt_vendor %}{% endblock %}
 {% block opt_posts %}selected{% endblock %}
@@ -12,12 +13,33 @@
 			<p class = "name">Edit Post</p>
 		</div>
 		<div class = "section">
-			<form method = 'POST'>
+			<form method = 'POST' novalidate>
 				{% csrf_token %}
 			
 				<div class = "form-field">
+					<p class = "field-label">Text</p>
 					<textarea class = "field-input" name = "text" required>{{ post.text }}</textarea>
 				</div>
+				<div class = "form-field quarter">
+					<p class = "field-label">Links</p>
+					<div class = "field-inputs column">
+						{% for link in post.links.all %}
+							<div class = "field-inputs">
+								<input class = "field-input" type = "text" name = "link-names" value = "{{ link.title }}">
+								<input class = "field-input" type = "url" name = "link-urls" value = "{{ link.link }}">
+							</div>
+						{% endfor %}
+						
+						{% get_num_remaining_links post as remaining_links %}
+						{% for i in remaining_links %}
+							<div class = "field-inputs">
+								<input class = "field-input" type = "text" name = "link-names" placeholder = "Name">
+								<input class = "field-input" type = "url" name = "link-urls" placeholder = "URL">
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				
 				<div class = "form-end start">
 					<input class = "form-submit" type = "submit" value = "Save">
 				</div>

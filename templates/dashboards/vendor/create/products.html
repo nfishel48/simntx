@@ -1,0 +1,59 @@
+{% extends 'dashboards/vendor.html' %}
+
+{% load staticfiles %}
+
+{% block opt_vendor %}{% endblock %}
+{% block opt_products %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header">
+			<p class = "name">Create Product</p>
+		</div>
+		<div class = "section">
+			{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+					{{ field }} - {{ error }}
+				{% endfor %}
+			{% endfor %}
+			
+			<form method = 'POST' enctype='multipart/form-data'>
+				{% csrf_token %}
+			
+				<div class = "form-field">
+					<p class = "field-label">Title</p>
+					<input class = "field-input" type = "text" name = 'title'>
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Description</p>
+					<textarea class = "field-input" name = "description" required></textarea>
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Image</p>
+					<input class = "field-input half" type = "file" name = 'image' style = "margin-left: 0;">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Price</p>
+					<input class = "field-input ten" type = "number" name = 'price' step = .01 value = "">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Discount Price</p>
+					<input class = "field-input ten" type = "number" name = 'discount_price' step = .01 value = "">
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Tags</p>
+					<select class = "field-input fifteen" name = "tags" multiple>
+						{% for tag in all_tags.all %}
+							<option value = "{{ tag.id }}">{{ tag.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class = "form-end start">
+					<input class = "form-submit" type = "submit" value = "Save">
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}
