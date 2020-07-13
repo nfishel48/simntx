@@ -9,6 +9,11 @@ register = template.Library()
 
 
 @register.simple_tag
+def get_like_count(post):
+    return UserProfile.objects.filter(liked_posts = post).count()
+
+
+@register.simple_tag
 def get_cart_count(user):
     return UserProfile.get_cart_count(user)
 
@@ -26,6 +31,11 @@ def get_notification_count(user):
 @register.simple_tag
 def get_follower_count(vendor):
     return UserProfile.objects.filter(following = vendor).count()
+
+
+@register.simple_tag
+def get_num_remaining_links(post):
+    return range(5 - post.links.count())
 
 
 @register.simple_tag
@@ -59,5 +69,15 @@ def get_normal_time(datetime):
 
 
 @register.simple_tag
-def get_num_remaining_links(post):
-    return range(5 - post.links.count())
+def get_comments(post):
+    return PostComment.objects.filter(post = post)
+
+
+@register.simple_tag
+def get_latest_comment(post):
+    return PostComment.objects.filter(post = post).latest('posted')
+
+
+@register.simple_tag
+def get_comment_count(post):
+    return get_comments(post).count()

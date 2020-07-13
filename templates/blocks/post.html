@@ -1,6 +1,8 @@
 {% load staticfiles %}
+{% load tags %}
 
 <div class = "post content-panel">
+	<input class = "post-id" type = "text" value = "{{ post.id }}" hidden>
 	<a href = "{{ post.vendor.get_absolute_url }}">
 		<div class = "post-header">
 			<img class = "post-vendor-image" src = "{{ post.vendor.profile_image.url }}">
@@ -24,5 +26,58 @@
 				</a>
 			{% endfor %}
 		</div>
+	{% endif %}
+	
+	<div class = "action-bar">
+		<div class = "post-actions">
+			<div class = "like-post post-action">
+				{% if post in user.userprofile.liked_posts.all %}
+					<img src = "{% static 'img/icons/heart-color-48.png' %}">
+				{% else %}
+					<img src = "{% static 'img/icons/heart-hollow-48.png' %}">
+				{% endif %}
+				
+				{% get_like_count post as like_count %}
+				<p>{{ like_count }}</p>
+			</div>
+			<div class = "comment-post post-action">
+				<img src = "{% static 'img/icons/comment-hollow-48.png' %}">
+
+				{% get_comment_count post as comment_count %}
+				<a href>
+					<p>{{ comment_count }}</p>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	{% if comment_count > 0 %}
+		
+		<div class = "post-comments">
+			<p class = "content-title" style = "margin-bottom: 5px;">
+				Comments
+				
+				{% if comment_count > 0 %}
+					<a class = "see-all-comments link" href = "">See all</a>
+				{% endif %}	
+			</p>
+		
+			{% get_latest_comment post as comment %}
+			<div class = "post-comment">
+				<div class = "comment-image">
+					<p>{{ comment.user.first_name.0 }}</p>
+				</div>
+				<div class = "comment-main">
+					<div class = "comment-info">
+						<p class = "comment-name">{{ comment.user.first_name }} {{ comment.user.last_name }}</p>
+						
+						{% get_normal_time comment.posted as posted %}
+						<p class = "comment-posted">{{ posted }}</p>
+					</div>
+					<p class = "comment-text">{{ comment.text }}</p>
+				</div>
+			</div>
+		</div>
+		
 	{% endif %}
 </div>

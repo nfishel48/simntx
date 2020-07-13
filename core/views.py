@@ -832,6 +832,30 @@ def follow_action(request, slug):
     return JsonResponse(data)
 
 
+def like_action(request, id):
+    data = {}
+
+    post = Post.objects.filter(id = id)
+
+    if post.exists():
+        post = post[0]
+
+        if post in request.user.userprofile.liked_posts.all():
+            request.user.userprofile.liked_posts.remove(post)
+
+            data['following'] = False
+        else:
+            request.user.userprofile.liked_posts.add(post)
+
+            data['following'] = True
+
+        data['success'] = True
+    else:
+        data['success'] = False
+
+    return JsonResponse(data)
+
+
 # FUNCTIONS
 
 

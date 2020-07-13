@@ -82,6 +82,33 @@ $(document).ready(function(){
 	$('#logout-form').on('click', function(){
 		$(this).submit();
 	});
+	
+	$('.like-post img').on('click', function(){
+		var post = $(this).closest('.post'),
+			id = post.find('.post-id').val();
+		
+		$.ajax({
+			'url': '/like-action/' + id,
+			'failure': function(){
+				console.log('FAILURE');
+			},
+			'success': function(data){
+				var newImage = post.find('.like-post img').attr('src'), 
+					newCount = parseInt(post.find('.like-post p').html());
+				
+				if (data['following']){
+					newImage = newImage.replace('hollow', 'color');
+					newCount++;
+				} else {
+					newImage = newImage.replace('color', 'hollow');
+					newCount--;
+				}
+				
+				post.find('.like-post img').attr('src', newImage);
+				post.find('.like-post p').html(newCount);
+			}
+		});
+	});
 });
 
 function markAllRead(div){

@@ -17,7 +17,6 @@
 {% block right_panel %}
 
 	<div class = "content-panel-container">
-		<input id = "vendor-slug" type = "text" value = "{{ vendor.slug }}" hidden>
 		<div id = "vendor-header" class = "content-panel">
 			<div id = "vendor-cover" style = "background-image: url({{ vendor.cover_image.url }});">
 				
@@ -69,6 +68,8 @@
 {% endblock %}
 
 {% block home_js %}
+
+	<input id = "vendor-slug" type = "text" value = "{{ vendor.slug }}" hidden>
 
 	<script type = "text/javascript" src = "{% static 'js/vendor.js' %}"></script>
 	

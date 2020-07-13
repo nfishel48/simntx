@@ -79,6 +79,7 @@ class UserProfile(models.Model):
     vendor_owner = models.BooleanField(default = False)
     addresses = models.ManyToManyField('Address')
     following = models.ManyToManyField('Vendor')
+    liked_posts = models.ManyToManyField('Post')
 
     def __str__(self):
         return self.user.username
@@ -283,6 +284,13 @@ class PostImage(models.Model):
 class PostLink(models.Model):
     title = models.CharField(max_length = 50, default = "Link Title")
     link = models.URLField()
+
+
+class PostComment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'user')
+    post = models.ForeignKey('Post', on_delete = models.CASCADE, related_name = 'post')
+    text = models.CharField(max_length = 200)
+    posted = models.DateTimeField(auto_now_add = True)
 
 
 class Notification(models.Model):
