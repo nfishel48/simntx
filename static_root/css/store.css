@@ -1,9 +1,0 @@
-#store-container{
-	width: 1200px;
-	
-	display: flex;
-	flex-direction: column;
-	
-	position: relative;
-	left: calc(var(--left-panel-width) / -2);
-}
