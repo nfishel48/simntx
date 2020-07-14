@@ -12,7 +12,7 @@ from django.http import JsonResponse
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
-from django.http import HttpResponseRedirect
+
 
 from allauth.account.views import PasswordChangeView
 from allauth.account.forms import ChangePasswordForm
@@ -671,13 +671,11 @@ def set_driver(request, ref_code):
         order.being_delivered = True
         order.save()
 
-
         notifications.push(order.user,
                            'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
                            reverse('core:order', args=(order.ref_code,)))
 
     return redirect('dashboards:driver')
-
 
 
 # View: Set Delivered
@@ -696,10 +694,7 @@ def set_delivered(request, ref_code):
                            'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
                            reverse('core:order', args=(order.ref_code,)))
 
-
     return redirect('dashboards:driver')
-
-
 
 
 # View: Account
@@ -777,6 +772,7 @@ class ChangePassView(PasswordChangeView):
 change_password = login_required(ChangePassView.as_view())
 
 
+# View: Landing
 # The page that shows when youre not logged in; asks the user for their zip code for better results
 def landing(request):
     return render(request, "landing.html")
