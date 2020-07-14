@@ -19,7 +19,7 @@ class EditProductForm(forms.ModelForm):
 
     class Meta:
         model = Item
-        fields = ['title', 'description', 'price', 'discount_price', 'tags']
+        fields = ['title', 'description', 'image', 'price', 'discount_price', 'tags']
 
 class CreatePostForm(forms.ModelForm):
     class Meta:

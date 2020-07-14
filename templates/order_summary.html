@@ -27,7 +27,7 @@
 						<th></th>
 					</tr>
 					
-					{% get_order_items user as order_items %}
+					{% get_active_order_items user as order_items %}
 					{% for product in order_items.all %}
 						<tr>
 							<td>{{ product.item.title }}</td>

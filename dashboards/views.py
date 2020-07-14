@@ -99,17 +99,10 @@ def edit_page(request, page, id):
             else:
                 print(form.errors)
         elif page == 'products':
-            form = forms.EditProductForm(request.POST)
+            form = forms.EditProductForm(request.POST, request.FILES, instance = Item.objects.get(id=id))
 
             if form.is_valid():
-                product = Item.objects.get(id=id)
-                product.title = form.cleaned_data['title']
-                product.description = form.cleaned_data['description']
-                product.price = form.cleaned_data['price']
-                product.discount_price = form.cleaned_data['discount_price']
-                product.tags.set(form.cleaned_data['tags'])
-
-                product.save()
+                product = form.save()
             else:
                 print(form.errors)
 

@@ -856,6 +856,35 @@ def like_action(request, id):
     return JsonResponse(data)
 
 
+def comment(request):
+    data = {
+        'success': False,
+        'first_name': request.user.first_name,
+        'last_name': request.user.last_name
+    }
+
+    if 'post_id' in request.GET and 'text' in request.GET:
+        post = Post.objects.filter(id = int(request.GET['post_id']))
+
+        print(post)
+
+        if post.exists():
+            post = post[0]
+
+            comment = PostComment(post = post, text = request.GET['text'], user = request.user)
+            comment.save()
+
+            print(comment)
+
+            data['success'] = True
+        else:
+            print('Post does not exist')
+    else:
+        print(request.GET)
+
+    return JsonResponse(data)
+
+
 # FUNCTIONS
 
 

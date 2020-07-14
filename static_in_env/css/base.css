@@ -422,7 +422,7 @@ body{
 }
 .post-action:not(:first-child){ margin-left: 10px; }
 .post-action img{
-	height: 24px;
+	height: 22px;
 	
 	cursor: pointer;
 }
@@ -431,7 +431,7 @@ body{
 	
 	font-family: Roboto-Medium;
 }
-.post-comments{
+.comments-container{
 	width: 100%;
 	max-height: 150px;
 	
@@ -445,6 +445,12 @@ body{
 	
 	overflow-x: hidden;
 	overflow-y: auto;
+}
+.post-comments{
+	display: flex;
+	flex-direction: column;
+	
+	margin-top: 15px;
 }
 .post-comment{
 	display: flex;
@@ -495,6 +501,28 @@ body{
 	
 	font-family: Roboto-Medium;
 	font-size: 12px;
+}
+.add-comment{
+	width: 100%;
+	
+	display: flex;
+	align-items: center;
+	
+	margin-top: 15px;
+	
+	box-sizing: border-box;
+}
+.add-comment .comment-image{
+	width: 30px;
+	height: 30px;
+	
+	margin: 0 3px;
+	
+	font-size: 12px;
+}
+.add-comment .field-input{
+	margin-left: 10px;
+	margin-top: 0;
 }
 
 .price{

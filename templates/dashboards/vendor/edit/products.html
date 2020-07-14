@@ -12,7 +12,7 @@
 			<p class = "name">Edit Product</p>
 		</div>
 		<div class = "section">
-			<form method = 'POST'>
+			<form method = 'POST' enctype='multipart/form-data'>
 				{% csrf_token %}
 			
 				<div class = "form-field">
@@ -22,6 +22,11 @@
 				<div class = "form-field">
 					<p class = "field-label">Description</p>
 					<textarea class = "field-input" name = "description" required>{{ product.description }}</textarea>
+				</div>
+				<div class = "form-field">
+					<p class = "field-label">Image</p>
+					<a style = "margin-top: 5px; font-size: 10px;" href = "{{ product.image.url }}">{{ product.image.url }}</a>
+					<input class = "field-input half" type = "file" name = 'image' style = "margin-left: 0;">
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Price</p>

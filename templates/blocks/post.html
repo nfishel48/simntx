@@ -50,34 +50,30 @@
 			</div>
 		</div>
 	</div>
-	
-	{% if comment_count > 0 %}
 		
-		<div class = "post-comments">
-			<p class = "content-title" style = "margin-bottom: 5px;">
-				Comments
-				
-				{% if comment_count > 0 %}
-					<a class = "see-all-comments link" href = "">See all</a>
-				{% endif %}	
-			</p>
+	<div class = "comments-container">
+		<p class = "content-title" style = "font-size: 16px; margin-bottom: 0;">
+			Comments
+			
+			{% if comment_count > 1 %}
+				<a class = "see-all-comments link" href = "">See all</a>
+			{% endif %}	
+		</p>
 		
-			{% get_latest_comment post as comment %}
-			<div class = "post-comment">
-				<div class = "comment-image">
-					<p>{{ comment.user.first_name.0 }}</p>
-				</div>
-				<div class = "comment-main">
-					<div class = "comment-info">
-						<p class = "comment-name">{{ comment.user.first_name }} {{ comment.user.last_name }}</p>
-						
-						{% get_normal_time comment.posted as posted %}
-						<p class = "comment-posted">{{ posted }}</p>
-					</div>
-					<p class = "comment-text">{{ comment.text }}</p>
-				</div>
+		{% if comment_count > 0 %}
+		
+			<div class = "post-comments">
+				{% get_latest_comment post as comment %}
+				{% include 'blocks/comment.html' with comment=comment %}
 			</div>
-		</div>
+			
+		{% endif %}	
 		
-	{% endif %}
+		<div class = "add-comment">
+			<div class = "comment-image">
+				<p>{{ user.first_name.0 }}</p>
+			</div>
+			<input class = "field-input" type = "text" name = "comment" placeholder = "Add a comment...">
+		</div>
+	</div>
 </div>

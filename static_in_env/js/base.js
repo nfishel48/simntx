@@ -1,4 +1,5 @@
-var mobile = false;
+var mobile = false,
+	canPostComment = true;
 
 $(document).ready(function(){
 	if ($('#search').css('display') == 'none'){
@@ -108,6 +109,59 @@ $(document).ready(function(){
 				post.find('.like-post p').html(newCount);
 			}
 		});
+	});
+	
+	$('.add-comment .field-input').keypress(function(e){
+		if (canPostComment && e.which == 13){
+			var post = $(this).closest('.post'),
+				id = post.find('.post-id').val(),
+				commentBox = $(this),
+				text = commentBox.val();
+			
+			canPostComment = false;
+			
+			console.log("TEST");
+			
+			$.ajax({
+				'url': '/comment',
+				'data': {
+					'post_id': id,
+					'text': text
+				},
+				'failure': function(){
+					canPostComment = true;
+					
+					commentBox.val('');
+				},
+				'success': function(data){
+					var newComment,
+						newCount = parseInt(post.find('.comment-post p').html());
+					
+					canPostComment = true;
+					
+					commentBox.val('');
+					
+					if (post.find('.post-comments').length == 0)
+						newComment = $('<div class = "post-comments"><div class = "post-comment"><div class = "comment-image"><p></p></div><div class = "comment-main"><div class = "comment-info"><p class = "comment-name"></p><p class = "comment-posted"></p></div><p class = "comment-text"></p></div></div></div>');
+					else
+						newComment = post.find('.post-comment').last().clone();
+					
+					newComment.find('.comment-name').text(data['first_name'] + ' ' + data['last_name']);
+					newComment.find('.comment-name').text(data['first_name'] + ' ' + data['last_name']);
+					newComment.find('.comment-image p').text(data['first_name'][0]);
+					newComment.find('.comment-text').text(text);
+					newComment.find('.comment-posted').text('just now');
+						
+					$(newComment).insertBefore(commentBox.closest('.add-comment'));
+					
+					newCount++;
+					
+					post.find('.comment-post p').html(newCount);
+					
+					console.log(newComment);
+				}
+			});
+		}
 	});
 });
 

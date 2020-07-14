@@ -35,7 +35,7 @@ def get_follower_count(vendor):
 
 @register.simple_tag
 def get_num_remaining_links(post):
-    return range(5 - post.links.count())
+    return range(3 - post.links.count())
 
 
 @register.simple_tag
@@ -56,6 +56,8 @@ def get_active_order_items(user):
 @register.simple_tag
 def get_order_items(ref_code):
     order = Order.objects.filter(ref_code = ref_code)
+
+    print(order)
 
     if order.exists():
         return OrderItem.objects.filter(order = order[0])
