@@ -1,0 +1,4 @@
+#posts{
+	position: relative;
+	left: calc(var(--left-panel-width) / -2);
+}

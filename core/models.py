@@ -107,6 +107,7 @@ class Item(models.Model):
     image = models.ImageField()
     vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag')
+    id = models.AutoField(primary_key=True, editable=True)
 
     def __str__(self):
         return self.title

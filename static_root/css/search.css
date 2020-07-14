@@ -1,0 +1,33 @@
+.content-panel-container{
+	flex-direction: column;
+}
+
+#search-bar-container{
+	flex-direction: column;
+}
+#search-bar{
+	width: 100%;
+	
+	border-bottom: 1px solid #ddd;
+}
+
+#search-details-container{
+	width: 100%;
+	
+	display: flex;
+	
+	margin-top: 20px;
+}
+
+#filters-container{
+	height: fit-content;
+	
+	flex: 1;
+}
+
+#results-container{
+	flex: 3;
+	
+	margin: 0;
+	margin-left: 20px;
+}

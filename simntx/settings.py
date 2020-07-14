@@ -52,7 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'simntx.middleware.auth_req.AuthRequiredMiddleware'
+    'simntx.middleware.auth_req.AuthRequiredMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 TEMPLATES = [
@@ -143,6 +144,8 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGIN_EXEMPT_URLS = (
     r'^account/login/$',
+    r'^accounts/login/$',
+    r'^accounts/signup/$',
     r'^account/logout/$',
     r'^account/signup/$',
      r'^landing/$',
