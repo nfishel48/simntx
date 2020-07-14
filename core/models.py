@@ -5,6 +5,9 @@ from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
+from django.template.defaultfilters import slugify
+
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 LABEL_CHOICES = (
@@ -31,9 +34,12 @@ class Vendor(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField()
     description = models.TextField()
-    image = models.ImageField(max_length=100)
+    profile_image = models.ImageField(max_length=100, null = True, blank = True)
+    cover_image = models.ImageField(max_length=100, null = True, blank = True)
     owner = models.ForeignKey('UserProfile', on_delete = models.CASCADE)
-    zip_code = models.IntegerField()
+    address = models.ForeignKey('Address', null = True, on_delete = models.DO_NOTHING, related_name = 'address')
+    phone_number = PhoneNumberField(null = True, blank = True)
+    hours = models.ForeignKey('VendorHours', null = True, blank = True, on_delete = models.DO_NOTHING, related_name = 'hours')
 
     def __str__(self):
         return self.title
@@ -47,6 +53,23 @@ class Vendor(models.Model):
         return self.owner
 
 
+class VendorHours(models.Model):
+    sunday_start = models.TimeField()
+    sunday_end = models.TimeField()
+    monday_start = models.TimeField()
+    monday_end = models.TimeField()
+    tuesday_start = models.TimeField()
+    tuesday_end = models.TimeField()
+    wednesday_start = models.TimeField()
+    wednesday_end = models.TimeField()
+    thursday_start = models.TimeField()
+    thursday_end = models.TimeField()
+    friday_start = models.TimeField()
+    friday_end = models.TimeField()
+    saturday_start = models.TimeField(null = True)
+    saturday_end = models.TimeField(null = True)
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length = 50, blank = False, null = False)
@@ -54,6 +77,9 @@ class UserProfile(models.Model):
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
     vendor_owner = models.BooleanField(default = False)
+    addresses = models.ManyToManyField('Address')
+    following = models.ManyToManyField('Vendor')
+    liked_posts = models.ManyToManyField('Post')
 
     def __str__(self):
         return self.user.username
@@ -100,6 +126,12 @@ class Item(models.Model):
         return reverse("core:remove-from-cart", kwargs={
             'slug': self.slug
         })
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+
+        super(Item, self).save(*args, **kwargs)
 
 
 class OrderItem(models.Model):
@@ -184,20 +216,24 @@ class Order(models.Model):
     def get_items(cls, order):
         return OrderItem.objects.filter(order = order)
 
+
 class Address(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
-    apartment_address = models.CharField(max_length=100)
+    apartment_address = models.CharField(max_length=100, blank = True)
     country = CountryField(multiple=False)
     zip = models.CharField(max_length=100)
-    address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
-    default = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return self.street_address + ', ' + self.country.name + ', ' + self.zip
 
     class Meta:
         verbose_name_plural = 'Addresses'
+
+
+class UserAddress(Address):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
+    default = models.BooleanField(default=False)
 
 
 class Payment(models.Model):
@@ -231,8 +267,9 @@ class Refund(models.Model):
 class Post(models.Model):
     text = models.CharField(max_length = 500, null = False, blank = False)
     vendor = models.ForeignKey('Vendor', on_delete = models.CASCADE, related_name = 'vendor', null = False, blank = False)
-    posted = models.DateTimeField(auto_now=True)
+    posted = models.DateTimeField(auto_now_add=True)
     links = models.ManyToManyField('PostLink', blank = True)
+    images = models.ManyToManyField('PostImage', blank = True)
 
     def __str__(self):
         return self.vendor.title + ": " + self.text[:50]
@@ -243,18 +280,25 @@ class Post(models.Model):
 
 class PostImage(models.Model):
     image = models.ImageField()
-    post = models.ForeignKey('Post', on_delete = models.CASCADE, related_name = 'post')
 
 
 class PostLink(models.Model):
+    title = models.CharField(max_length = 50, default = "Link Title")
     link = models.URLField()
+
+
+class PostComment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'user')
+    post = models.ForeignKey('Post', on_delete = models.CASCADE, related_name = 'post')
+    text = models.CharField(max_length = 200)
+    posted = models.DateTimeField(auto_now_add = True)
 
 
 class Notification(models.Model):
     user = models.ForeignKey('UserProfile', on_delete = models.CASCADE, related_name = 'notification_user')
     text = models.CharField(max_length = 300)
     link = models.CharField(max_length = 300)
-    created = models.DateTimeField(auto_now = True)
+    created = models.DateTimeField(auto_now_add = True)
     read = models.BooleanField(default = False)
 
 

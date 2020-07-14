@@ -7,12 +7,6 @@
 {% block vendor_css %}
 
 	<style>
-		.content-container:nth-child(1){
-			grid-area: mid;
-		}
-		.content-container:nth-child(2){
-			grid-area: left;
-		}
 	</style>
 
 {% endblock %}
@@ -20,6 +14,9 @@
 {% block vendor_content %}
 
 	<div class = "content-container">
+		{% include 'blocks/content_panels/contact-info.html' with vendor=vendor %}
+	</div>
+	<div class = "content-container main">
 		<div id = "vendor-posts">
 			{% for post in posts %}
 				{% include 'blocks/post.html' with post=post %}
@@ -27,7 +24,7 @@
 		</div>
 	</div>
 	<div class = "content-container">
-		{% include 'blocks/content_panels/similar-vendors.html' %}
+		{% include 'blocks/content_panels/similar-vendors.html' with vendor=vendor %}
 	</div>
 
 {% endblock %}

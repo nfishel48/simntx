@@ -10,6 +10,13 @@
 	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Products</p>
+			<div class = "header-actions">
+				<a href = "{% url 'dashboards:create_page' 'products' %}">
+					<div class = "action" title = "Create Product" style = "--background-color: var(--primary);">
+						<img src = "{% static 'img/icons/plus-48.png' %}">
+					</div>
+				</a>
+			</div>
 		</div>
 		<div class = "section table">
 			<table class = "data-table">

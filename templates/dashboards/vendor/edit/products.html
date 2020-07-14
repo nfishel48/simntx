@@ -2,17 +2,17 @@
 
 {% load staticfiles %}
 
-{% block opt_vendor %}{% endblock %}
-{% block opt_products %}selected{% endblock %}
+{% block select_home %}{% endblock %}
+{% block select_products %}selected{% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Edit Product</p>
 		</div>
 		<div class = "section">
-			<form method = 'POST'>
+			<form method = 'POST' enctype='multipart/form-data'>
 				{% csrf_token %}
 			
 				<div class = "form-field">
@@ -24,12 +24,17 @@
 					<textarea class = "field-input" name = "description" required>{{ product.description }}</textarea>
 				</div>
 				<div class = "form-field">
+					<p class = "field-label">Image</p>
+					<a style = "margin-top: 5px; font-size: 10px;" href = "{{ product.image.url }}">{{ product.image.url }}</a>
+					<input class = "field-input half" type = "file" name = 'image' style = "margin-left: 0;">
+				</div>
+				<div class = "form-field">
 					<p class = "field-label">Price</p>
-					<input class = "field-input ten" type = "number" name = 'price' value = "{{ product.price }}">
+					<input class = "field-input ten" type = "number" name = 'price' step = .01 value = "{{ product.price }}">
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Discount Price</p>
-					<input class = "field-input ten" type = "number" name = 'discount_price' value = "{{ product.discount_price }}">
+					<input class = "field-input ten" type = "number" name = 'discount_price' step = .01 value = "{{ product.discount_price }}">
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Tags</p>
@@ -39,7 +44,7 @@
 						{% endfor %}
 					</select>
 				</div>
-				<div class = "form-end">
+				<div class = "form-end start">
 					<input class = "form-submit" type = "submit" value = "Save">
 				</div>
 			</form>

@@ -39,4 +39,8 @@ urlpatterns = [
 
     path('read-notifications', views.read_notifications, name = 'read_notifications'),
     path('clear-notifications', views.clear_notifications, name = 'clear_notifications'),
+
+    path('follow-action/<slug>', views.follow_action, name = 'follow-action'),
+    path('like-action/<int:id>', views.like_action, name = 'like-action'),
+    path('comment', views.comment, name = 'comment'),
 ]

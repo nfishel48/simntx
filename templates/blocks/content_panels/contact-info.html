@@ -1,0 +1,14 @@
+{% load staticfiles %}
+
+<div class = "content-panel">
+	<div id = "vendor-contact">
+		<div class = "contact-info">
+			<img src = "{% static 'img/icons/location-color-48.png' %}">
+			<p>{{ vendor.address }}</p>
+		</div>
+		<div class = "contact-info">
+			<img src = "{% static 'img/icons/phone-color-48.png' %}">
+			<p>{{ vendor.phone_number.as_national  }}</p>
+		</div>
+	</div>
+</div>

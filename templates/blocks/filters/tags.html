@@ -1,0 +1,11 @@
+<div class = "filter-group">
+	<p class = "filter-title">Tags</p>
+	<div class = "filter-options">
+		{% for tag in all_tags %}
+			<div class = "filter-tag">
+				<input form = "{{ form_id }}" id = "checkbox-{{ tag.name }}" type = "checkbox" name = "t" value = "{{ tag.name }}" {% if tag.name in selected_tags %}checked{% endif %}>
+				<label style = "text-transform: capitalize;" for = "checkbox-{{ tag.name }}">{{ tag.name }}</label>
+			</div>
+		{% endfor %}
+	</div>
+</div>

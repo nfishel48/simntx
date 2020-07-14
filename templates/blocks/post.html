@@ -1,9 +1,11 @@
 {% load staticfiles %}
+{% load tags %}
 
 <div class = "post content-panel">
+	<input class = "post-id" type = "text" value = "{{ post.id }}" hidden>
 	<a href = "{{ post.vendor.get_absolute_url }}">
 		<div class = "post-header">
-			<img class = "post-vendor-image" src = "{{ post.vendor.image.url }}">
+			<img class = "post-vendor-image" src = "{{ post.vendor.profile_image.url }}">
 			<div class = "post-info">
 				<p class = "post-vendor">{{ post.vendor.title }}</p>
 				<p class = "post-date">{{ post.posted }}</p>
@@ -11,4 +13,67 @@
 		</div>
 	</a>
 	<p class = "post-text">{{ post.text }}</p>
+	
+	{% if post.links.all|length > 0 %}
+		<div class = "links">
+			{% for link in post.links.all %}
+				<a class = "post-link" target="_blank" href = "{{ link.link }}">
+					<img src = "{% static 'img/icons/link-48.png' %}">
+					<span style = "display: flex; align-items: baseline;">
+						<p class = "title">{{ link.title }}</p>
+						<p class = "url">{{ link.link }}</p>
+					</span>
+				</a>
+			{% endfor %}
+		</div>
+	{% endif %}
+	
+	<div class = "action-bar">
+		<div class = "post-actions">
+			<div class = "like-post post-action">
+				{% if post in user.userprofile.liked_posts.all %}
+					<img src = "{% static 'img/icons/heart-color-48.png' %}">
+				{% else %}
+					<img src = "{% static 'img/icons/heart-hollow-48.png' %}">
+				{% endif %}
+				
+				{% get_like_count post as like_count %}
+				<p>{{ like_count }}</p>
+			</div>
+			<div class = "comment-post post-action">
+				<img src = "{% static 'img/icons/comment-hollow-48.png' %}">
+
+				{% get_comment_count post as comment_count %}
+				<a href>
+					<p>{{ comment_count }}</p>
+				</a>
+			</div>
+		</div>
+	</div>
+		
+	<div class = "comments-container">
+		<p class = "content-title" style = "font-size: 16px; margin-bottom: 0;">
+			Comments
+			
+			{% if comment_count > 1 %}
+				<a class = "see-all-comments link" href = "">See all</a>
+			{% endif %}	
+		</p>
+		
+		{% if comment_count > 0 %}
+		
+			<div class = "post-comments">
+				{% get_latest_comment post as comment %}
+				{% include 'blocks/comment.html' with comment=comment %}
+			</div>
+			
+		{% endif %}	
+		
+		<div class = "add-comment">
+			<div class = "comment-image">
+				<p>{{ user.first_name.0 }}</p>
+			</div>
+			<input class = "field-input" type = "text" name = "comment" placeholder = "Add a comment...">
+		</div>
+	</div>
 </div>

@@ -189,6 +189,10 @@
 .right-panel-group .header{
 	width: 100%;
 	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
 	padding: 20px;
 	
 	box-sizing: border-box;
@@ -229,11 +233,11 @@
 	
 	margin-top: 5px;
 }
-.filter-tag{
+.filter-options > *{
 	display: flex;
 	align-items: center;
 }
-.filter-tag label{
+.filter-options > * label{
 	margin-left: 5px;
 	
 	font-size: 14px;

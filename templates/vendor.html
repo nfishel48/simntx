@@ -3,7 +3,6 @@
 {% load staticfiles %}
 
 {% block select_store %}selected{% endblock %}
-{% block select_store_img %} "{% static 'img/icons/store-filled-48.png' %}" {% endblock %}
 
 {% block home_css %}
 
@@ -19,16 +18,32 @@
 
 	<div class = "content-panel-container">
 		<div id = "vendor-header" class = "content-panel">
-			<div id = "vendor-cover" style = "background-image: url({{ vendor.image.url }});">
+			<div id = "vendor-cover" style = "background-image: url({{ vendor.cover_image.url }});">
 				
 			</div>
 			<div id = "vendor-details">
-				<div id = "vendor-image" style = "background-image: url({{ vendor.image.url }});">
+				<div id = "vendor-image" style = "background-image: url({{ vendor.profile_image.url }});">
 					
 				</div>
 				<div id = "vendor-main">
 					<div id = "vendor-info">
 						<p id = "vendor-title">{{ vendor.title }}</p>
+						<div id = "follow-container">
+							<div id = "follow-count">
+								<span style = "display: flex; align-items: baseline;">
+									<p id = "follower-count">{% get_follower_count vendor %}</p>
+								</span>
+							</div>
+							{% if vendor in user.userprofile.following.all %}
+								<div id = "follow" class = "following">
+									Following
+								</div>
+							{% else %}
+								<div id = "follow">
+									Follow
+								</div>
+							{% endif %}
+						</div>
 					</div>
 					<div id = "vendor-links">
 						<a href = "{% url 'core:vendor_feed' vendor.slug %}">
@@ -49,5 +64,16 @@
 			{% endblock %}
 		</div>
 	</div>
+
+{% endblock %}
+
+{% block home_js %}
+
+	<input id = "vendor-slug" type = "text" value = "{{ vendor.slug }}" hidden>
+
+	<script type = "text/javascript" src = "{% static 'js/vendor.js' %}"></script>
+	
+	{% block vendor_js %}
+	{% endblock %}
 
 {% endblock %}

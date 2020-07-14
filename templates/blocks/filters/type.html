@@ -1,0 +1,13 @@
+<div class = "filter-group">
+	<p class = "filter-title">Type</p>
+	<div class = "filter-options">
+		<div class = "filter-checkbox">
+			<input form = "{{ form_id }}" type = "radio" name = "tp" value = "products" id = "checkbox-products" class = "{% if type == 'products' %}checked{% endif %}" {% if type == 'products' %}checked{% endif %}>
+			<label for = "checkbox-products">Products</label>
+		</div>
+		<div class = "filter-checkbox">
+			<input form = "{{ form_id }}" type = "radio" name = "tp" value = "vendors" id = "checkbox-vendors" class = "{% if type == 'vendors' %}checked{% endif %}" {% if type == 'vendors' %}checked{% endif %}>
+			<label for = "checkbox-vendors">Vendors</label>
+		</div>
+	</div>
+</div>

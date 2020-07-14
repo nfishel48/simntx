@@ -2,10 +2,8 @@
 
 {% load staticfiles %}
 
-{% block select_outstanding %} f{% endblock %}
-{% block select_outstanding_img %}"{% static 'img/icons/home-48.png' %}"{% endblock %}
+{% block select_outstanding %}{% endblock %}
 {% block select_completed %}selected{% endblock %}
-{% block select_completed_img %}"{% static 'img/icons/dashboard-filled-48.png' %}"{% endblock %}
 
 {% block right_panel %}
 
@@ -28,9 +26,11 @@
 							<td>{{ order.ref_code }}</td>
 							<td>{{ order.ordered_date }}</td>
 							<td>{{ order.shipping_address.street_address }}</td>
-							<td>
-								<a href = "{{ order.get_absolute_url }}">
-									<button class="form-submit"  type="submit">View this order</button>
+							<td class = "action-col">
+								<a href = "{% url 'dashboards:order' order.ref_code %}">
+									<div class = "action" title = "View">
+										<img src = "{% static 'img/icons/eye-48.png' %}">
+									</div>
 								</a>
 							</td>
 						</tr>

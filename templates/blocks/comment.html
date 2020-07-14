@@ -1,0 +1,16 @@
+{% load tags %}
+
+<div class = "post-comment">
+	<div class = "comment-image">
+		<p>{{ comment.user.first_name.0 }}</p>
+	</div>
+	<div class = "comment-main">
+		<div class = "comment-info">
+			<p class = "comment-name">{{ comment.user.first_name }} {{ comment.user.last_name }}</p>
+			
+			{% get_normal_time comment.posted as posted %}
+			<p class = "comment-posted">{{ posted }}</p>
+		</div>
+		<p class = "comment-text">{{ comment.text }}</p>
+	</div>
+</div>

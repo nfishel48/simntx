@@ -1,0 +1,56 @@
+{% extends "home.html" %}
+{% block js %}
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block title %}Order Overview{% endblock %}
+
+{% block home_css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/cart.css' %}">
+	
+{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header">
+			<p class = "name">Order #{{ order.ref_code }}</p>
+		</div>
+		<div class = "section">
+			<table>
+				<tbody>
+					<tr>
+						<th>Product</th>
+						<th>Vendor</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Total Price</th>
+					</tr>
+					{% for product in items.all %}
+						<tr>
+							<td>{{ product.item.title }}</td>
+							<td>{{ product.item.vendor }}</td>
+							<td>{{ product.item.price }}</td>
+							<td>{{ product.quantity }}</td>
+							<td>
+								{% if order_item.item.discount_price %}
+									{{ product.get_total_discount_item_price }}
+								{% else %}
+									{{ product.get_total_item_price }}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

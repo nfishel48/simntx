@@ -40,7 +40,7 @@ def index(request):
 # View: Feed
 # The page for posts from vendors you follow
 def feed(request):
-    posts = Post.objects.all()
+    posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all())
 
     for post in posts:
         post.posted = arrow.get(post.posted).humanize()  # Convert DateTime to human-friendly message
@@ -78,7 +78,7 @@ def vendor(request, slug):
 def vendor_feed(request, slug):
     vendor = Vendor.objects.get(slug=slug)
 
-    posts = Post.objects.all()
+    posts = Post.objects.filter(vendor = vendor)
 
     for post in posts:
         post.posted = arrow.get(post.posted).humanize()
@@ -167,7 +167,7 @@ class CheckoutView(View):
                 'DISPLAY_COUPON_FORM': True
             }
 
-            shipping_address_qs = Address.objects.filter(
+            shipping_address_qs = UserAddress.objects.filter(
                 user=self.request.user,
                 address_type='S',
                 default=True
@@ -176,7 +176,7 @@ class CheckoutView(View):
                 context.update(
                     {'default_shipping_address': shipping_address_qs[0]})
 
-            billing_address_qs = Address.objects.filter(
+            billing_address_qs = UserAddress.objects.filter(
                 user=self.request.user,
                 address_type='B',
                 default=True
@@ -200,7 +200,7 @@ class CheckoutView(View):
                     'use_default_shipping')
                 if use_default_shipping:
                     print("Using the defualt shipping address")
-                    address_qs = Address.objects.filter(
+                    address_qs = UserAddress.objects.filter(
                         user=self.request.user,
                         address_type='S',
                         default=True
@@ -224,7 +224,7 @@ class CheckoutView(View):
                     shipping_zip = form.cleaned_data.get('shipping_zip')
 
                     if is_valid_form([shipping_address1, shipping_country, shipping_zip]):
-                        shipping_address = Address(
+                        shipping_address = UserAddress(
                             user=self.request.user,
                             street_address=shipping_address1,
                             apartment_address=shipping_address2,
@@ -263,7 +263,7 @@ class CheckoutView(View):
 
                 elif use_default_billing:
                     print("Using the defualt billing address")
-                    address_qs = Address.objects.filter(
+                    address_qs = UserAddress.objects.filter(
                         user=self.request.user,
                         address_type='B',
                         default=True
@@ -287,7 +287,7 @@ class CheckoutView(View):
                     billing_zip = form.cleaned_data.get('billing_zip')
 
                     if is_valid_form([billing_address1, billing_country, billing_zip]):
-                        billing_address = Address(
+                        billing_address = UserAddress(
                             user=self.request.user,
                             street_address=billing_address1,
                             apartment_address=billing_address2,
@@ -644,49 +644,62 @@ class RequestRefundView(View):
 # The page to show details about an order
 class OrderView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
+        data = {}
+
         try:
             order = Order.objects.get(ref_code = kwargs['ref_code'])
-            context={
-                'object': order,
+
+            data = {
+                'order': order,
                 'items': order.get_items(order)
             }
         except ObjectDoesNotExist:
             pass
-        test = Order.objects.get(ref_code = kwargs['ref_code'])
-        print(test.get_items(test))
-        return render(self.request, 'driver_summary.html', context)
+
+        return render(self.request, 'order.html', data)
 
 
 # View: Set Driver
 # The function to attach a driver to an order
 def set_driver(request, ref_code):
-    order = Order.objects.get(ref_code = ref_code)
-    print(order)
-    order.driver = request.user.userprofile
-    order.being_delivered = True
-    order.save()
+    order = Order.objects.filter(ref_code = ref_code)
 
-    notifications.push(order.user,
-                       'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
-                       reverse('core:order', args=(order.ref_code,)))
+    if order.exists() and not order[0].being_delivered:
+        order = order[0]
 
-    return  HttpResponseRedirect('/db/driver/current')
+        order.driver = request.user.userprofile
+        order.being_delivered = True
+        order.save()
+
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:driver')
+
 
 
 # View: Set Delivered
 # The function to set an order as delivered
 def set_delivered(request, ref_code):
-    order = Order.objects.get(ref_code = ref_code)
-    order.being_delivered = False
-    order.delivered = True
-    order.delivered_date = timezone.now()
-    order.save()
+    order = Order.objects.filter(ref_code = ref_code)
 
-    notifications.push(order.user,
-                       'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
-                       reverse('core:order', args=(order.ref_code,)))
+    if order.exists() and not order[0].delivered:
+        order = order[0]
+        order.being_delivered = False
+        order.delivered = True
+        order.delivered_date = timezone.now()
+        order.save()
 
-    return  HttpResponseRedirect('/db/driver/completed')
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
+                           reverse('core:order', args=(order.ref_code,)))
+
+
+    return redirect('dashboards:driver')
+
+
 
 
 # View: Account
@@ -803,6 +816,79 @@ def clear_notifications(request):
     return JsonResponse(response)
 
 
+def follow_action(request, slug):
+    data = {}
+
+    vendor = Vendor.objects.filter(slug = slug)
+
+    if vendor.exists():
+        if request.user.userprofile.following.filter(slug = slug).exists():
+            request.user.userprofile.following.remove(vendor[0])
+        else:
+            request.user.userprofile.following.add(vendor[0])
+
+        print('FOLLOWING: ' + str(request.user.userprofile.following.filter(slug = slug).exists()))
+
+        data['success'] = True
+    else:
+        data['success'] = False
+
+    return JsonResponse(data)
+
+
+def like_action(request, id):
+    data = {}
+
+    post = Post.objects.filter(id = id)
+
+    if post.exists():
+        post = post[0]
+
+        if post in request.user.userprofile.liked_posts.all():
+            request.user.userprofile.liked_posts.remove(post)
+
+            data['following'] = False
+        else:
+            request.user.userprofile.liked_posts.add(post)
+
+            data['following'] = True
+
+        data['success'] = True
+    else:
+        data['success'] = False
+
+    return JsonResponse(data)
+
+
+def comment(request):
+    data = {
+        'success': False,
+        'first_name': request.user.first_name,
+        'last_name': request.user.last_name
+    }
+
+    if 'post_id' in request.GET and 'text' in request.GET:
+        post = Post.objects.filter(id = int(request.GET['post_id']))
+
+        print(post)
+
+        if post.exists():
+            post = post[0]
+
+            comment = PostComment(post = post, text = request.GET['text'], user = request.user)
+            comment.save()
+
+            print(comment)
+
+            data['success'] = True
+        else:
+            print('Post does not exist')
+    else:
+        print(request.GET)
+
+    return JsonResponse(data)
+
+
 # FUNCTIONS
 
 
@@ -817,6 +903,7 @@ def search(request, optional_qs):
     price_ceiling = 9999999
     tags = []
     page = 1
+    type = 'products'
 
     if request.method == 'GET':
         # Get every parameter passed from the request
@@ -839,6 +926,10 @@ def search(request, optional_qs):
         if 'pg' in request.GET:
             page = int(request.GET['pg'])
 
+        if 'tp' in request.GET:
+            if request.GET['tp'] == 'vendors':
+                type = 'vendors'
+
         '''print('QUERY: ' + query)
         print('TAGS: ' + str(tags))
         print('PRICE: ' + str(price))
@@ -847,12 +938,24 @@ def search(request, optional_qs):
 
         print('\n\nPAGE: ' + str(page) + '\n\n')
 
-        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, None)
+        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, type, None)
 
     if optional_qs:
-        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, optional_qs)
+        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, type, optional_qs)
 
-    total_pages = math.ceil(len(product_results) / load_amount)
+    data['query'] = query
+    data['price'] = price
+    data['page_num'] = page
+    data['all_tags'] = Tag.objects.all()
+    data['selected_tags'] = tags
+    data['type'] = type
+
+    if type == 'vendors':
+        results = vendor_results
+    else:
+        results = product_results
+
+    total_pages = math.ceil(len(results) / load_amount)
 
     lower_bound = page - 4 if page - 4 > 0 else 1
     upper_bound = page + 4 if page + 4 <= total_pages else total_pages
@@ -860,33 +963,20 @@ def search(request, optional_qs):
     shown_lower = (page - 1) * load_amount
     shown_upper = page * load_amount
 
-    print('LOWER BOUND: ' + str(lower_bound))
-    print('UPPER BOUND: ' + str(upper_bound))
-    print('TOTAL PAGES: ' + str(total_pages))
-
-    data['query'] = query
-    data['price'] = price
-    data['page_num'] = page
     data['total_pages'] = total_pages
     data['bound'] = range(lower_bound, upper_bound + 1)
     data['shown_lower'] = shown_lower + 1
-    data['shown_upper'] = shown_lower + len(product_results[shown_lower:shown_upper])
+    data['shown_upper'] = shown_lower + len(results[shown_lower:shown_upper])
     data['total_results'] = len(product_results)
-    data['all_tags'] = Tag.objects.all()
-    data['selected_tags'] = tags
 
-    data['product_results'] = product_results[shown_lower:shown_upper]
-    data['vendor_results'] = vendor_results[:load_amount]
-
-    print(query)
-    print(str(math.ceil(len(product_results) / load_amount)))
+    data['results'] = results[shown_lower:shown_upper]
 
     return data
 
 
 # Function: Get Search Items
 # The generic function to get search items from a set of variables
-def get_search_items(query, tags, price_floor, price_ceiling, optional_qs):
+def get_search_items(query, tags, price_floor, price_ceiling, type, optional_qs):
     # Creates select statements that can be dynamically used
 
     q_query = Q(title__contains = query)

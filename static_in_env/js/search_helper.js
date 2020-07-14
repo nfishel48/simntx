@@ -9,6 +9,7 @@ $(document).ready(function(){
 			}
 		}
 		
+		console.log($(this));
 		$('#' + $(this).attr('form')).submit();
 	});
 	
