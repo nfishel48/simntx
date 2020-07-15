@@ -11,8 +11,8 @@ from . import forms
 
 def vendor(request):
     data = {}
-
-    vendor = Vendor.objects.get(owner = UserProfile.objects.get(user = request.user))
+    
+    vendor = Vendor.objects.get(owner = request.user.userprofile)
 
     vendor.tags = get_tags(vendor)
 
@@ -51,6 +51,10 @@ def vendor_page(request, page):
 
         data['products'] = products
         print('products')
+
+    elif page == 'orders':
+        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = False, authorized = False)
+        data['orders'] = orders
 
     data['vendor'] = vendor
 
@@ -197,7 +201,7 @@ def delete_page(request, page, id):
 def driver(request):
     data = {}
 
-    orders = Order.objects.filter(ordered=True, being_delivered=False, delivered=False)#.exclude(user = request.user)
+    orders = Order.objects.filter(ordered=True, being_delivered=False, delivered=False, authorized = True)#.exclude(user = request.user)
 
     data['orders'] = orders
 
@@ -213,7 +217,7 @@ def driver_page(request, page):
         return redirect('dashboards:driver')
 
     if page == 'current':
-        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = False, driver = request.user.userprofile)#.exclude(user = request.user)
+        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = False, driver = request.user.userprofile, authorized = True)#.exclude(user = request.user)
 
         data['orders'] = orders
        

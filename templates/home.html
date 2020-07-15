@@ -49,7 +49,7 @@
 					</div>
 				</a>
 			{% endif %}
-			{% if user.is_staff %}
+			{% if user.userprofile.is_driver %}
 				<a href = "{% url 'dashboards:driver' %}">
 					<div class = "link {% block select_drivers %}{% endblock %}">
 						<div class = "link-image">
