@@ -32,6 +32,14 @@
 					<p>Posts</p>
 				</div>
 			</a>
+			<a href = "{% url 'dashboards:vendor_page' 'orders' %}">
+				<div class = "link {% block select_orders %}{% endblock %}">
+					<div class = "link-image">
+						<img src = "{% static 'img/icons/posts-color-48.png' %}"{>
+					</div>
+					<p>Orders</p>
+				</div>
+			</a>
 			<a href = "{% url 'dashboards:vendor_page' 'products' %}">
 				<div class = "link {% block select_products %}{% endblock %}">
 					<div class = "link-image">

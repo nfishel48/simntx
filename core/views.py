@@ -1118,3 +1118,22 @@ def is_valid_form(values):
 # * Doesnt support multiple vendors
 def get_vendors(owner):
     return Vendor.objects.get(owner = owner)
+
+#
+# Function : approve delivery
+# This function is used by vendors to aprove a delivery and 
+# allow a driver too assigan the delivery
+def approve_order(request, ref_code):
+    order = Order.objects.filter(ref_code = ref_code)
+    
+    if order.exists() and not order[0].being_delivered:
+        order = order[0]
+
+        order.authorized = True
+        order.save()
+
+        notifications.push(order.user,
+                'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been approved by a vendor and will soon be assigned to a driver',
+               reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:vendor')

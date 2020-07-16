@@ -77,6 +77,7 @@ class UserProfile(models.Model):
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
     vendor_owner = models.BooleanField(default = False)
+    is_driver = models.BooleanField(default = False)
     addresses = models.ManyToManyField('Address', blank = True)
     following = models.ManyToManyField('Vendor', blank = True)
     liked_posts = models.ManyToManyField('Post', blank = True)
@@ -177,6 +178,7 @@ class Order(models.Model):
 
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
+    authorized = models.BooleanField(default=False)
 
     '''
     1. Item added to cart
@@ -199,7 +201,7 @@ class Order(models.Model):
         if self.coupon:
             total -= self.coupon.amount
         return total
-    
+
     def get_ref_code(self):
         return self.ref_code
 
@@ -307,4 +309,3 @@ def userprofile_receiver(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
-
