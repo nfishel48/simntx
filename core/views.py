@@ -78,9 +78,6 @@ def vendor_feed(request, slug):
 
     posts = Post.objects.filter(vendor = vendor)
 
-    for post in posts:
-        post.posted = arrow.get(post.posted).humanize()
-
     return render(request, 'vendor_feed.html', {
         'vendor': vendor,
         'posts': posts,
