@@ -24,7 +24,7 @@ class EditProductForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['text', 'links']
+        fields = ['text']
 
     def __init__(self, vendor, *args, **kwargs):
         self.vendor = vendor

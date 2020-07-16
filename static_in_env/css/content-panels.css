@@ -1,0 +1,71 @@
+.content-desc{
+	font-size: 14px;
+}
+
+#vendor-contact{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+}
+.contact-info{
+	display: flex;
+}
+.contact-info:not(:first-child){ margin-top: 15px; }
+.contact-info img{
+	height: 20px;
+}
+.contact-info p{
+	flex: 1;
+	
+	margin-left: 20px;
+	
+	font-size: 14px;
+	
+	text-align: right;
+}
+
+.open-hours{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+}
+.day{
+	display: flex;
+	justify-content: space-between;
+	
+	font-size: 14px;
+}
+.day p:first-child{
+	font-family: Roboto-Medium;
+}
+.day p:last-child{
+	
+}
+
+.content-header{
+	width: 100%;
+	
+	display: flex;
+}
+.content-header .image{
+	width: 40px;
+	height: 40px;
+	
+	background-position: center;
+	background-size: cover;
+}
+.content-header .info{
+	margin-left: 10px;
+	
+	font-family: Roboto-Medium;
+}
+.content-header #follow-container{
+	height: 21px;
+	
+	margin-top: 4px;
+}
+.content-header #follow-count, .content-header #follow{
+	padding: 0 4px;
+}

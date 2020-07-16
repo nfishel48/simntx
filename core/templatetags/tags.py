@@ -39,6 +39,21 @@ def get_num_remaining_links(post):
 
 
 @register.simple_tag
+def get_max_links():
+    return range(3)
+
+
+@register.simple_tag
+def get_num_remaining_images(post):
+    return range(3 - post.images.count())
+
+
+@register.simple_tag
+def get_max_images():
+    return range(3)
+
+
+@register.simple_tag
 def get_notifications(user):
     return Notification.objects.filter(user = user.userprofile).order_by('-created')[:10]
 

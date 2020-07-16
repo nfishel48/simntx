@@ -77,9 +77,9 @@ class UserProfile(models.Model):
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
     vendor_owner = models.BooleanField(default = False)
-    addresses = models.ManyToManyField('Address')
-    following = models.ManyToManyField('Vendor')
-    liked_posts = models.ManyToManyField('Post')
+    addresses = models.ManyToManyField('Address', blank = True)
+    following = models.ManyToManyField('Vendor', blank = True)
+    liked_posts = models.ManyToManyField('Post', blank = True)
 
     def __str__(self):
         return self.user.username

@@ -1,0 +1,13 @@
+{% load tags %}
+
+<div class = "content-panel">
+	<div class = "content-header">
+		<div class = "image" {% if vendor.profile_image %}style = "background-image: url({{ vendor.profile_image.url }})"{% endif %}>
+			
+		</div>
+		<div class = "info">
+			<p class = "title">{{ vendor.title }}</p>
+			{% include 'blocks/follow-container.html' with vendor=vendor show_count=True %}
+		</div>
+	</div>
+</div>

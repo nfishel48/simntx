@@ -20,7 +20,7 @@
 					<p class = "field-label">Text</p>
 					<textarea class = "field-input" name = "text" required>{{ post.text }}</textarea>
 				</div>
-				<div class = "form-field quarter">
+				<div class = "form-field half">
 					<p class = "field-label">Links</p>
 					<div class = "field-inputs column">
 						{% for link in post.links.all %}
@@ -35,6 +35,27 @@
 							<div class = "field-inputs">
 								<input class = "field-input" type = "text" name = "link-names" placeholder = "Name">
 								<input class = "field-input" type = "url" name = "link-urls" placeholder = "URL">
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class = "form-field half">
+					<p class = "field-label">Images</p>
+					<div class = "field-inputs column">
+						{% for image in post.images.all %}
+							<div class = "form-field row" style = "justify-content: unset; margin-top: 5px;">
+								<input class = "field-input half" type = "file" name = 'image' style = "margin-left: 0;">
+								<a target = "_blank" style = "display: flex; align-items: center; margin-left: 2px; font-size: 10px;" href = "{{ image.image.url }}">
+									<img style = "margin-left: 5px; height: 25px;" src = "{{ image.image.url }}">
+									<p style = "margin-left: 2px;">{{ image.image.url }}</p>
+								</a>
+							</div>
+						{% endfor %}
+						
+						{% get_num_remaining_images post as remaining_images %}
+						{% for i in remaining_images %}
+							<div class = "form-field row" style = "justify-content: unset; margin-top: 5px;">
+								<input class = "field-input half" type = "file" name = 'image' style = "margin-left: 0;">
 							</div>
 						{% endfor %}
 					</div>

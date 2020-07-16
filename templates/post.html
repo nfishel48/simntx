@@ -1,0 +1,28 @@
+{% extends 'home.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ post.get_title }}{% endblock %}
+
+{% block home_css %}
+	
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/content-panels.css' %}">
+
+{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "content-panel-container">
+		<div class = "content-grid two">
+			<div class = "content-container">
+				{% include 'blocks/content_panels/vendor.html' with vendor=post.vendor %}
+				{% include 'blocks/content_panels/about.html' with vendor=post.vendor %}
+				{% include 'blocks/content_panels/contact-info.html' with vendor=post.vendor %}
+			</div>
+			<div class = "content-container">
+				{% include 'blocks/post.html' with post=post %}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

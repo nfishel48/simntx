@@ -1,37 +1,53 @@
 {% load staticfiles %}
 
-<a href = "{{ item.get_absolute_url }}">
-	<div class = "listing-item {% if vendor == None %} product {% endif %}">
-		<div class = "listing-image">
-			{% if vendor == None %}
-				<img src = "{{item.image.url}}">
-			{% elif item.cover_image %}
-				<img src = "{{item.cover_image.url}}">
-			{% endif %}
-		</div>
-		<div class = "listing-info">
-			{% if vendor == None %}
-				<div class = "tags-container">
-					{% for tag in item.tags.all %}
-						{% include 'blocks/tag.html' with tag=tag %}
-					{% endfor %}
-				</div>
-			{% endif %}
-			<div class = "listing-main">
-				{% if vendor == True and item.profile_image %}
-					<div class = "vendor-image" style = "background-image: url({{item.profile_image.url}})">
-					</div>
-				{% endif %}
-				<p class = "listing-title">{{ item.title }}</p>
-				{% if vendor == None %}
-					<p class = "listing-price price">${{ item.price }}</p>
-				{% endif %}
+{% if vendor == True %}
+	
+	<div class = "listing-item vendor">
+		<a href = "{{ item.get_absolute_url }}">
+			<div class = "listing-image" {% if item.cover_image %}style = "background-image: url({{item.cover_image.url}})"{% endif %}>
+
 			</div>
-			{% if vendor == None %}
-				<div class = "listing-other">
-					<p class = "listing-vendor">{{ item.vendor.title }}</p>
-				</div>
-			{% endif %}
+		</a>
+		<div class = "listing-info">
+			<div class = "listing-main">
+				<span class = "listing-title">
+					<a href = "{{ item.get_absolute_url }}">{{ item.title }}</a>
+					{% include 'blocks/follow-container.html' with vendor=item show_count=None %}
+				</span>
+				<span class = "vendor-address">
+					<img src = "{% static 'img/icons/location-color-48.png' %}">
+					<p>{{ item.address.street_address }}</p>
+				</span>
+			</div>
 		</div>
 	</div>
-</a>
+	
+{% else %}
+
+	<div class = "listing-item product">
+		<a href = "{{ item.get_absolute_url }}">
+			<div class = "listing-image">
+				<img src = "{{item.image.url}}">
+			</div>
+		</a>
+		<div class = "listing-info">
+			<div class = "tags-container">
+				{% for tag in item.tags.all %}
+					{% include 'blocks/tag.html' with tag=tag %}
+				{% endfor %}
+			</div>
+			<div class = "listing-main">
+				<span class = "listing-title">
+					<a href = "{{ item.get_absolute_url }}">{{ item.title }}</a>
+				</span>
+				<p class = "listing-price price">${{ item.price }}</p>
+			</div>
+			<div class = "listing-other">
+				<a href = "{{ item.vendor.get_absolute_url }}">
+					<p class = "listing-vendor">{{ item.vendor.title }}</p>
+				</a>
+			</div>
+		</div>
+	</div>
+
+{% endif %}

@@ -3,15 +3,20 @@
 
 <div class = "post content-panel">
 	<input class = "post-id" type = "text" value = "{{ post.id }}" hidden>
-	<a href = "{{ post.vendor.get_absolute_url }}">
-		<div class = "post-header">
+	<input class = "comment-index" type = "text" value = "0" hidden>
+	<div class = "post-header">
+		<a href = "{{ post.vendor.get_absolute_url }}">
 			<img class = "post-vendor-image" src = "{{ post.vendor.profile_image.url }}">
-			<div class = "post-info">
-				<p class = "post-vendor">{{ post.vendor.title }}</p>
-				<p class = "post-date">{{ post.posted }}</p>
-			</div>
+		</a>
+		<div class = "post-info">
+			<a href = "{{ post.vendor.get_absolute_url }}">
+				<p class = "post-vendor underline">{{ post.vendor.title }}</p>
+			</a>
+			<a href = "{% url 'core:post' post.id %}">
+				<p class = "post-date underline" title = "{{ post.posted }}">{% get_normal_time post.posted %}</p>
+			</a>
 		</div>
-	</a>
+	</div>
 	<p class = "post-text">{{ post.text }}</p>
 	
 	{% if post.links.all|length > 0 %}
@@ -23,6 +28,16 @@
 						<p class = "title">{{ link.title }}</p>
 						<p class = "url">{{ link.link }}</p>
 					</span>
+				</a>
+			{% endfor %}
+		</div>
+	{% endif %}
+	
+	{% if post.images.all|length > 0 %}
+		<div class = "images">
+			{% for image in post.images.all %}
+				<a class = "post-image" target="_blank" href = "{{ image.image.url }}">
+					<img src = "{{ image.image.url }}">
 				</a>
 			{% endfor %}
 		</div>
@@ -52,16 +67,10 @@
 	</div>
 		
 	<div class = "comments-container">
-		<p class = "content-title" style = "font-size: 16px; margin-bottom: 0;">
-			Comments
-			
-			{% if comment_count > 1 %}
-				<a class = "see-all-comments link" href = "">See all</a>
-			{% endif %}	
-		</p>
 		
 		{% if comment_count > 0 %}
-		
+			
+			<p class = "underline load-more-comments" style = "cursor: pointer; font-size: 14px; margin-bottom: 15px;">load more comments</p>
 			<div class = "post-comments">
 				{% get_latest_comment post as comment %}
 				{% include 'blocks/comment.html' with comment=comment %}

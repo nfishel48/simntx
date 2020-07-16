@@ -8,8 +8,7 @@
 		<div class = "comment-info">
 			<p class = "comment-name">{{ comment.user.first_name }} {{ comment.user.last_name }}</p>
 			
-			{% get_normal_time comment.posted as posted %}
-			<p class = "comment-posted">{{ posted }}</p>
+			<p class = "comment-posted" title = "{{ comment.posted }}">{% get_normal_time comment.posted %}</p>
 		</div>
 		<p class = "comment-text">{{ comment.text }}</p>
 	</div>

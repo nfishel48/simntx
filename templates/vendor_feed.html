@@ -13,18 +13,20 @@
 
 {% block vendor_content %}
 
-	<div class = "content-container">
-		{% include 'blocks/content_panels/contact-info.html' with vendor=vendor %}
-	</div>
-	<div class = "content-container main">
-		<div id = "vendor-posts">
-			{% for post in posts %}
-				{% include 'blocks/post.html' with post=post %}
-			{% endfor %}
+	<div id = "vendor-content" class = "content-grid three">
+		<div class = "content-container">
+			{% include 'blocks/content_panels/contact-info.html' with vendor=vendor %}
 		</div>
-	</div>
-	<div class = "content-container">
-		{% include 'blocks/content_panels/similar-vendors.html' with vendor=vendor %}
+		<div class = "content-container main">
+			<div id = "vendor-posts">
+				{% for post in posts %}
+					{% include 'blocks/post.html' with post=post %}
+				{% endfor %}
+			</div>
+		</div>
+		<div class = "content-container">
+			{% include 'blocks/content_panels/similar-vendors.html' with vendor=vendor %}
+		</div>
 	</div>
 
 {% endblock %}

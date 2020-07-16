@@ -41,7 +41,7 @@ def vendor_page(request, page):
         return redirect('dashboards:vendor')
 
     if page == 'posts':
-        posts = Post.objects.filter(vendor = vendor)
+        posts = Post.objects.filter(vendor = vendor).order_by('-posted')
 
         data['posts'] = posts
     elif page == 'products':
@@ -94,6 +94,21 @@ def edit_page(request, page, id):
 
                             post_link.save()
                             post.links.add(post_link)
+
+                if 'image' in request.POST:
+                    images = request.POST.getlist('image')
+
+                    for i in range(len(images)):
+                        image = images[i]
+
+                        if image != "" and image is not None:
+                            if i < post.images.all().count():
+                                post.images.all()[i].delete()
+
+                            post_image = PostImage(image = image)
+
+                            post_image.save()
+                            post.images.add(post_image)
 
                 post.save()
             else:
@@ -151,10 +166,37 @@ def create_page(request, page):
 
     if request.method == 'POST':
         if page == 'posts':
-            form = forms.CreatePostForm(vendor, request.POST)
+            form = forms.CreatePostForm(vendor, request.POST, request.FILES)
 
             if form.is_valid():
                 post = form.save()
+
+                if 'link-urls' in request.POST:
+                    names = request.POST.getlist('link-names')
+                    urls = request.POST.getlist('link-urls')
+
+                    for i in range(len(urls)):
+                        name = names[i]
+                        url = urls[i]
+
+                        if url != "" and url is not None:
+                            post_link = PostLink(link=url, title=name)
+
+                            post_link.save()
+                            post.links.add(post_link)
+
+                if 'image' in request.FILES:
+                    print(request.POST)
+                    print(request.FILES)
+
+                    for image in request.FILES.getlist('image'):
+                        if image != "" and image is not None:
+                            post_image = PostImage()
+                            post_image.image.save(image.name, image)
+
+                            post.images.add(post_image)
+
+                post.save()
             else:
                 print(form.errors)
         elif page == 'products':

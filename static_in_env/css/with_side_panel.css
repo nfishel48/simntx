@@ -123,11 +123,14 @@
 	height: fit-content;
 	
 	display: flex;
+	justify-content: center;
 	
 	color: var(--dark-text);
 }
 .content-panel-container.column{
 	flex-direction: column;
+	justify-content: unset;
+	align-items: center;
 }
 .content-panel{
 	width: 100%;
@@ -167,7 +170,7 @@
 	width: 100%;
 }
 .content-container:not(:first-child){
-	margin-left: 20px;
+	--margin-left: 20px;
 }
 .right-panel-group{
 	flex-direction: column;

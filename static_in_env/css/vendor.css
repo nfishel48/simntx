@@ -69,54 +69,6 @@
 	font-size: 24px;
 	color: var(--dark-text);
 }
-#follow-container{
-	height: 30px;
-	
-	display: flex;
-	align-items: center;
-}
-#follow-count, #follow{
-	height: 100%;
-	
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	
-	box-sizing: border-box;
-}
-#follow-count{
-	padding: 0 8px;
-	
-	font-family: Roboto-Medium;
-	font-size: 12px;
-	
-	border-width: 1px 0 1px 1px;
-	border-style: solid;
-	border-color: #aaa;
-}
-#follow{
-	width: fit-content;
-	
-	padding: 0 12px;
-	
-	background-color: var(--primary);
-	
-	border: 1px solid var(--primary);
-	outline: 0;
-	
-	font-family: Roboto-Medium;
-	font-size: 12px;
-	color: white;
-	
-	text-transform: uppercase;
-	
-	cursor: pointer;
-}
-#follow.following{
-	background: transparent;
-	
-	color: var(--primary);
-}
 #vendor-links{
 	display: flex;
 	
@@ -156,64 +108,13 @@
 #vendor-content{
 	width: 100%;
 	
-	display: grid;
-	grid-template-columns: 250px 1fr 250px;
-	grid-template-areas: "left mid right";
-	grid-gap: var(--content-panel-spacing);
-	
 	margin-top: var(--content-panel-spacing);
 }
 #vendor-content .content-container{
 	margin: 0;
 }
 
-#vendor-desc{
-	font-size: 14px;
-}
-
 #vendor-posts{
 	display: flex;
 	flex-direction: column;
-}
-
-#vendor-contact{
-	width: 100%;
-	
-	display: flex;
-	flex-direction: column;
-}
-.contact-info{
-	display: flex;
-}
-.contact-info:not(:first-child){ margin-top: 15px; }
-.contact-info img{
-	height: 20px;
-}
-.contact-info p{
-	flex: 1;
-	
-	margin-left: 20px;
-	
-	font-size: 14px;
-	
-	text-align: right;
-}
-
-.open-hours{
-	width: 100%;
-	
-	display: flex;
-	flex-direction: column;
-}
-.day{
-	display: flex;
-	justify-content: space-between;
-	
-	font-size: 14px;
-}
-.day p:first-child{
-	font-family: Roboto-Medium;
-}
-.day p:last-child{
-	
 }

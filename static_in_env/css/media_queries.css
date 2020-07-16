@@ -65,15 +65,20 @@
 	}
 	#vendor-image{
 		left: calc(50% - 60px) !important;
-		top: calc(-50% - 30px) !important;
+		top: calc(-50%) !important;
 	}
 	#vendor-main{
 		width: 100% !important;
 		
 		margin: 40px 0 0 0 !important;
 	}
+	#vendor-info{
+		flex-direction: column;
+	}
 	#vendor-title{
-		font-size: 26px !important;
+		margin-bottom: 10px;
+		
+		font-size: 28px !important;
 	}
 	#vendor-links a{
 		flex: 1;

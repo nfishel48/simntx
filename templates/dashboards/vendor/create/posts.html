@@ -14,13 +14,37 @@
 			<p class = "name">Create Post</p>
 		</div>
 		<div class = "section">
-			<form method = 'POST'>
+			<form method = 'POST' enctype='multipart/form-data'>
 				{% csrf_token %}
 			
 				<div class = "form-field">
 					<p class = "field-label">Text</p>
 					<textarea class = "field-input" name = "text" required></textarea>
 				</div>
+				<div class = "form-field half">
+					<p class = "field-label">Links</p>
+					<div class = "field-inputs column">
+						{% get_max_links as remaining %}
+						{% for i in remaining %}
+							<div class = "field-inputs">
+								<input class = "field-input" type = "text" name = "link-names" placeholder = "Name">
+								<input class = "field-input" type = "url" name = "link-urls" placeholder = "URL">
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class = "form-field half">
+					<p class = "field-label">Images</p>
+					<div class = "field-inputs column">
+						{% get_max_images as remaining %}
+						{% for i in remaining %}
+							<div class = "form-field row" style = "justify-content: unset; margin-top: 5px;">
+								<input class = "field-input half" type = "file" name = 'image' style = "margin-left: 0;">
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				
 				<div class = "form-end start">
 					<input class = "form-submit" type = "submit" value = "Save">
 				</div>

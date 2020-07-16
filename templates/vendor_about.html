@@ -4,27 +4,15 @@
 
 {% block select_vendor_about %}selected{% endblock %}
 
-{% block vendor_css %}
-
-	<style>
-		#vendor-content{
-			grid-template-columns: 250px 1fr;
-			grid-template-areas: "left right";
-		}
-	</style>
-
-{% endblock %}
-
 {% block vendor_content %}
 
-	<div class = "content-container">
-		{% include 'blocks/content_panels/open-hours.html' with vendor=vendor %}
-		{% include 'blocks/content_panels/contact-info.html' with vendor=vendor %}
-	</div>
-	<div class = "content-container main">
-		<div class = "content-panel">
-			<p class = "content-title">About</p>
-			<p id = "vendor-desc">{{ vendor.description }}</p>
+	<div id = "vendor-content" class = "content-grid two">
+		<div class = "content-container">
+			{% include 'blocks/content_panels/open-hours.html' with vendor=vendor %}
+			{% include 'blocks/content_panels/contact-info.html' with vendor=vendor %}
+		</div>
+		<div class = "content-container main">
+			{% include 'blocks/content_panels/about.html' with vendor=vendor %}
 		</div>
 	</div>
 

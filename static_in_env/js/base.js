@@ -147,7 +147,6 @@ $(document).ready(function(){
 						newComment = post.find('.post-comment').last().clone();
 					
 					newComment.find('.comment-name').text(data['first_name'] + ' ' + data['last_name']);
-					newComment.find('.comment-name').text(data['first_name'] + ' ' + data['last_name']);
 					newComment.find('.comment-image p').text(data['first_name'][0]);
 					newComment.find('.comment-text').text(text);
 					newComment.find('.comment-posted').text('just now');
@@ -162,6 +161,79 @@ $(document).ready(function(){
 				}
 			});
 		}
+	});
+	
+	$('#follow').on('click', function(){
+		var following = $(this).hasClass('following'),
+			slug = $(this).parent('#follow-container').find('.vendor-slug').val(),
+			button = $(this);
+		
+		if (following){
+			button.removeClass('following');
+			button.html('Follow');
+			
+			var count = parseInt($('#follower-count').text()) - 1;
+			
+			$('#follower-count').text(count);
+		} else {
+			button.addClass('following');
+			button.html('Following');
+			
+			var count = parseInt($('#follower-count').text()) + 1;
+			
+			$('#follower-count').text(count);
+		}
+		
+		$.ajax({
+			'url': '/follow-action/' + slug,
+			'type': 'POST',
+			'failure': function(data){
+				console.log('FAIL');
+			},
+			'success': function(data){
+				console.log(following);
+			},
+		});
+	});
+	$('.load-more-comments').on('click', function(){
+		var post = $(this).closest('.post'),
+			id = post.find('.post-id').val(),
+			index = post.find('.comment-index').val();
+			
+		$.ajax({
+			'url': '/comments',
+			'data': {
+					'post_id': id,
+					'index': index
+			},
+			'type': 'GET',
+			'failure': function(data){
+				
+			},
+			'success': function(data){
+				console.log(data);
+				
+				for (var i = 0; i < data['comments'].length; i++){
+					var comment = data['comments'][i];
+					
+					console.log(data['comments'][i]);
+					
+					var newComment = post.find('.post-comment').last().clone();
+					
+					newComment.find('.comment-name').text(comment['first_name'] + ' ' + comment['last_name']);
+					newComment.find('.comment-image p').text(comment['first_name'][0]);
+					newComment.find('.comment-text').text(comment['text']);
+					newComment.find('.comment-posted').text(comment['posted']);
+					
+					post.find('.post-comments').prepend(newComment);
+				}
+				
+				if (!data['more_to_load'])
+					$('.load-more-comments').remove();
+				else
+					post.find('.comment-index').val(parseInt(post.find('.comment-index').val()) + 1);
+			},
+		});
 	});
 });
 

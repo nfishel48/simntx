@@ -8,6 +8,7 @@
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/vendor.css' %}">
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/listings.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/content-panels.css' %}">
 
 	{% block vendor_css %}
 	{% endblock %}
@@ -28,22 +29,7 @@
 				<div id = "vendor-main">
 					<div id = "vendor-info">
 						<p id = "vendor-title">{{ vendor.title }}</p>
-						<div id = "follow-container">
-							<div id = "follow-count">
-								<span style = "display: flex; align-items: baseline;">
-									<p id = "follower-count">{% get_follower_count vendor %}</p>
-								</span>
-							</div>
-							{% if vendor in user.userprofile.following.all %}
-								<div id = "follow" class = "following">
-									Following
-								</div>
-							{% else %}
-								<div id = "follow">
-									Follow
-								</div>
-							{% endif %}
-						</div>
+						{% include 'blocks/follow-container.html' with vendor=vendor show_count=True %}
 					</div>
 					<div id = "vendor-links">
 						<a href = "{% url 'core:vendor_feed' vendor.slug %}">
@@ -59,10 +45,9 @@
 				</div>
 			</div>
 		</div>
-		<div id = "vendor-content">
-			{% block vendor_content %}
-			{% endblock %}
-		</div>
+		
+		{% block vendor_content %}
+		{% endblock %}
 	</div>
 
 {% endblock %}

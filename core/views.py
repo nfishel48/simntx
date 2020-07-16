@@ -19,6 +19,7 @@ from allauth.account.forms import ChangePasswordForm
 
 from .forms import *
 from .models import *
+from .templatetags.tags import get_normal_time
 
 from . import notifications
 
@@ -40,10 +41,7 @@ def index(request):
 # View: Feed
 # The page for posts from vendors you follow
 def feed(request):
-    posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all())
-
-    for post in posts:
-        post.posted = arrow.get(post.posted).humanize()  # Convert DateTime to human-friendly message
+    posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')
 
     return render(request, 'feed.html', {
         'posts': posts,
@@ -127,6 +125,21 @@ def product(request, slug):
         'product': product,
         'other_products': other_products
     })
+
+
+def post(request, id):
+    data = {}
+
+    post = Post.objects.filter(id = id)
+
+    if post.exists():
+        post = post[0]
+
+        data['post'] = post
+    else:
+        return redirect('core:feed')
+
+    return render(request, 'post.html', data)
 
 
 # View: Search
@@ -885,6 +898,44 @@ def comment(request):
     return JsonResponse(data)
 
 
+def comments(request):
+    data = {}
+
+    amount = 10
+
+    if 'post_id' in request.GET and 'index' in request.GET:
+        post = Post.objects.filter(id=int(request.GET['post_id']))
+
+        print('POST:' + str(post))
+
+        if post.exists():
+            post = post[0]
+
+            index = int(request.GET['index'])
+
+            q_comments = PostComment.objects.filter(post = post).order_by('-posted')[index * amount + 1:(index * amount) + amount + 1]
+
+            comments = []
+
+            for comment in q_comments:
+                new_comment = {
+                    'text': comment.text,
+                    'first_name': comment.user.first_name,
+                    'last_name': comment.user.last_name,
+                    'posted': get_normal_time(comment.posted)
+                }
+
+                comments.append(new_comment)
+
+            data['comments'] = comments
+            data['more_to_load'] = len(comments) == 10
+        else:
+            print('Post does not exist')
+    else:
+        print('GET: ' + str(request.GET))
+
+    return JsonResponse(data)
+
 # FUNCTIONS
 
 
@@ -1024,32 +1075,6 @@ def serialize_items(product_results, vendor_results):
         })
 
     return product_json, vendor_json
-
-
-# Function: Search More
-# A helper function for when a user loads more products on the search page
-def search_more(request):
-    data = {}
-
-    start_index = request.session['start_index']
-
-    print(start_index)
-
-    query = request.session['query']
-    tags = request.session['tags']
-
-    product_results, vendor_results = get_search_items(query, tags)
-
-    data['show_load_button'] = len(product_results) - start_index > load_amount
-
-    request.session['start_index'] += load_amount
-
-    product_json, vendor_json = serialize_items(product_results[start_index:start_index + load_amount], vendor_results[start_index:start_index + load_amount])
-
-    data['product_results'] = product_json,
-    data['vendor_results'] = vendor_json
-
-    return JsonResponse(data)
 
 
 # Function: Get Tags

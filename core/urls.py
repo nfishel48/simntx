@@ -16,7 +16,8 @@ urlpatterns = [
     path('vendor/<slug>/about', views.vendor_about, name='vendor_about'),
 
     path('search', views.search_view, name='search'),
-    path('search_more', views.search_more, name = 'search_more'),
+
+    path('post/<int:id>', views.post, name = 'post'),
 
     path('checkout/', views.CheckoutView.as_view(), name='checkout'),
     path('order-summary/', views.OrderSummaryView.as_view(), name='order-summary'),
@@ -43,4 +44,5 @@ urlpatterns = [
     path('follow-action/<slug>', views.follow_action, name = 'follow-action'),
     path('like-action/<int:id>', views.like_action, name = 'like-action'),
     path('comment', views.comment, name = 'comment'),
+    path('comments/', views.comments, name = 'comments'),
 ]
