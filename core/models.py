@@ -138,6 +138,7 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name = 'item')
     quantity = models.IntegerField(default=1)
     order = models.ForeignKey('Order', null = True, on_delete = models.CASCADE, related_name = 'order')
+    in_stock = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
@@ -179,6 +180,7 @@ class Order(models.Model):
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
     authorized = models.BooleanField(default=False)
+    vendor_id = models.ForeignKey('Vendor', related_name='vendor_id', on_delete=models.SET_NULL, blank=True, null=True)
 
     '''
     1. Item added to cart

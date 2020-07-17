@@ -143,8 +143,9 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGIN_EXEMPT_URLS = (
     r'^account/login/$',
+    r'^accounts/login/$',
     r'^account/logout/$',
-    r'^account/signup/$',
+    r'^accounts/signup/$',
      r'^landing/$',
 
 )

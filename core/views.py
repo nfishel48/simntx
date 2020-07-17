@@ -154,7 +154,7 @@ class OrderSummaryView(LoginRequiredMixin, View):
         data = {}
 
         try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
+            order = Order.objects.filter(user=self.request.user, ordered=False)
 
             data['order'] = order
         except ObjectDoesNotExist:
@@ -407,7 +407,7 @@ class PaymentView(View):
                 payment.save()
 
                 # assign the payment to the order
-                order.ordered = True
+                order.ordered = True  
                 order.payment = payment
                 order.ref_code = create_ref_code()
                 order.save()
@@ -1125,7 +1125,12 @@ def approve_order(request, ref_code):
     
     if order.exists() and not order[0].being_delivered:
         order = order[0]
-
+        
+        #for items in order
+            #if orderitem is not authorized
+                #order.autherized == false 
+            #else
+                #order.autherized == true
         order.authorized = True
         order.save()
 
