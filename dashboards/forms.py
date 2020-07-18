@@ -15,7 +15,7 @@ class EditPostForm(forms.ModelForm):
         fields = ['text']
 
 class EditProductForm(forms.ModelForm):
-    tags = forms.ModelMultipleChoiceField(queryset = Tag.objects.all())
+    tags = forms.ModelMultipleChoiceField(queryset = GeneralTag.objects.all())
 
     class Meta:
         model = Item
@@ -41,7 +41,7 @@ class CreatePostForm(forms.ModelForm):
         return instance
 
 class CreateProductForm(forms.ModelForm):
-    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
+    tags = forms.ModelMultipleChoiceField(queryset=GeneralTag.objects.all())
 
     class Meta:
         model = Item

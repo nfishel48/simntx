@@ -18,6 +18,12 @@
 	
 	z-index: 3;
 }
+#nav .link{
+	flex: 1;
+	
+	padding-left: 0;
+	padding-right: 0;
+}
 
 #nav-first-panel{
 	height: var(--nav-height);

@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.contrib import messages
 
 from core.models import *
-from core.views import get_tags
+from core.views import get_general_tags
 
 from . import forms
 
@@ -14,7 +14,7 @@ def vendor(request):
     
     vendor = Vendor.objects.get(owner = request.user.userprofile)
 
-    vendor.tags = get_tags(vendor)
+    vendor.general_tags = get_general_tags(vendor)
 
     if request.method == 'POST':
         form = forms.EditVendorForm(request.POST, request.FILES, instance = vendor)
@@ -148,7 +148,7 @@ def edit_page(request, page, id):
             return redirect('dashboards:vendor_page', page=page)
 
         data['product'] = product[0]
-        data['all_tags'] = Tag.objects.all()
+        data['all_tags'] = GeneralTag.objects.all()
 
     data['vendor'] = vendor
 
@@ -166,7 +166,7 @@ def create_page(request, page):
         return redirect('dashboards:vendor_page', page=page)
 
     if page == 'products':
-        data['all_tags'] = Tag.objects.all()
+        data['all_tags'] = GeneralTag.objects.all()
 
     if request.method == 'POST':
         if page == 'posts':

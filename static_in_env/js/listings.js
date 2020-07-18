@@ -1,3 +1,5 @@
+var sliderStrength = 1.2;
+
 $(document).ready(function(){
 	$('.product-row').each(function(){
 		var outerDiv = $(this).find('.slider-container'),
@@ -14,26 +16,38 @@ $(document).ready(function(){
 	});
 	
 	$('.slide-left').on('click', function(){
-		$(this).closest('.product-row').find('.slider').css('margin-left', '0');
+		var sliderContainer = $(this).closest('.product-row').find('.slider-container'),
+			slider = $(this).closest('.product-row').find('.slider'),
+			left = parseInt(slider.css('margin-left').slice(0, -2)) + sliderContainer.width() / 2 * sliderStrength;
+		
+		if (left > 0){
+			left = 0;
+			
+			$(this).css('display', 'none');
+		}
+		
+		slider.css('margin-left', left + 'px');
 		
 		$(this).siblings('.slide-right').css('display', 'flex');
-		$(this).css('display', 'none');
 	});
 	$('.slide-right').on('click', function(){
-		var outerDiv = $(this).closest('.product-row').find('.slider-container'),
-			innerDiv = $(this).closest('.product-row').find('.slider');
+		var sliderContainer = $(this).closest('.product-row').find('.slider-container'),
+			slider = $(this).closest('.product-row').find('.slider'),
+			left = parseInt(slider.css('margin-left').slice(0, -2)) - sliderContainer.width() / 2 * sliderStrength;
 		
-		var outer = outerDiv.width(),
-			inner = innerDiv.width();
+		var outer = sliderContainer.width(),
+			inner = slider.width();
 		
 		var width = inner - outer;
 		
-		console.log($(outerDiv).width());
-		console.log($(innerDiv).width());
+		if (left < -width){
+			left = -width;
+			
+			$(this).css('display', 'none');
+		}
 		
-		$(innerDiv).css('margin-left', (0 - width) + 'px');
+		slider.css('margin-left', left + 'px');
 		
 		$(this).siblings('.slide-left').css('display', 'flex');
-		$(this).css('display', 'none');
 	});
 });

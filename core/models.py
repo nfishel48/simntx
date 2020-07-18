@@ -22,12 +22,16 @@ ADDRESS_CHOICES = (
 )
 
 
-class Tag(models.Model):
+class GeneralTag(models.Model):
     name = models.CharField(max_length = 20)
     color = models.CharField(max_length = 7)
 
     def __str__(self):
         return self.name
+
+
+class DescriptiveTag(models.Model):
+    name = models.CharField(max_length=20)
 
 
 class Vendor(models.Model):
@@ -107,7 +111,8 @@ class Item(models.Model):
     description = models.TextField()
     image = models.ImageField()
     vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
-    tags = models.ManyToManyField('Tag')
+    general_tags = models.ManyToManyField('GeneralTag')
+    desc_tags = models.ManyToManyField('DescriptiveTag')
 
     def __str__(self):
         return self.title
