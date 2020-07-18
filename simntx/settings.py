@@ -146,7 +146,7 @@ LOGIN_EXEMPT_URLS = (
     r'^accounts/login/$',
     r'^account/logout/$',
     r'^accounts/signup/$',
-     r'^landing/$',
+    r'^landing/$',
 
 )
 
@@ -168,8 +168,8 @@ ROOT_URLCONF = 'simntx.urls'
 
 # STRIPE SETTINGS
 # if DEBUG:
-STRIPE_PUBLIC_KEY = 'pk_test_51GtkimASycExiKjqwnRJpXJt8fySzvcRbeu14D7Ojazha64RDUuID9kVhCfeHlfOCFOJbKbZ9pOMFvVKelhY8jrV009FTiquzO'
-STRIPE_SECRET_KEY = 'sk_test_51GtkimASycExiKjqfWXiucyq8NjoCsBWmTUNxbRyp3zmK0PJQckKKLfF22dahOlFzbzqi0NfQsBXatHWyui2lEWG00j2W27877'
+STRIPE_PUBLIC_KEY = 'pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk'
+STRIPE_SECRET_KEY = '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'
 # else:
 
 
