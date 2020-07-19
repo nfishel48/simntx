@@ -338,6 +338,8 @@ class CheckoutView(View):
                     messages.warning(
                         self.request, "Invalid payment option selected")
                     return redirect('core:checkout')
+            else:
+                print(form.errors)
         except ObjectDoesNotExist:
             messages.warning(self.request, "You do not have an active order")
             return redirect("core:order-summary")
@@ -486,7 +488,14 @@ class PaymentView(View):
 # The function to add a product to your cart
 @login_required
 def add_to_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
+    item = Item.objects.filter(slug = slug)
+
+    if item.exists():
+        item = item[0]
+    else:
+        messages.error(request, 'This item does not exist.')
+
+        return redirect('core:store')
 
     order_qs = Order.objects.filter(user=request.user, ordered=False)
 
@@ -496,7 +505,7 @@ def add_to_cart(request, slug):
         order = order_qs[0]
         
         #if the item being added is from the same vendor
-        if item.vendor == order.vendor_id:
+        if item.vendor == order.vendor:
             
             order_item = order.get_items(order).filter(item__slug=item.slug)
 
@@ -520,13 +529,18 @@ def add_to_cart(request, slug):
         else:
             messages.info(request, "Plese finish your order from the previous vendor before you order from a second")
             dir(item.vendor)
-            #messages.push( "Plese finish your order from the previous vendor before you order from a second")
+
             return redirect("core:order-summary")
     else:
         ordered_date = timezone.now()
-        
+
+        print("\n\nITEM: " + str(item))
+        print("\n\nVENDOR: " + str(item.vendor))
+        print("\n\nUSER: " + str(request.user.userprofile))
+
         #create new order marked for vendor of inintial Item
-        order = Order.objects.create(user=request.user, ordered_date=ordered_date, vendor_id=item.vendor)
+        order = Order(user=request.user, ordered_date=ordered_date, vendor=item.vendor)
+        order.save()
 
         order_item = OrderItem(item=item, order=order)
         order_item.save()
@@ -1053,7 +1067,7 @@ def search(request, optional_qs):
 def get_search_items(query, general_tags, price_floor, price_ceiling, type, optional_qs):
     # Creates select statements that can be dynamically used
 
-    q_query = Q(title__contains = query)
+    q_query = Q(title__icontains = query.lower())
     q_price = Q(price__range = (price_floor, price_ceiling))
 
     qs_products = None

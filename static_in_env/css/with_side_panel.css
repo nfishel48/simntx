@@ -25,7 +25,7 @@
 	width: 100%;
 	
 	display: flex;
-	justify-content: center;
+	align-items: center;
 	
 	padding-left: calc(var(--left-panel-margin) + var(--left-panel-width) + var(--content-container-spacing));
 	padding-top: var(--content-container-spacing);
@@ -156,6 +156,9 @@
 	align-items: baseline;
 	
 	margin-bottom: 10px;
+}
+.content-title.large{
+	font-size: 28px;
 }
 .content-subtitle{
 	margin-left: 5px;

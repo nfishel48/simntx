@@ -40,10 +40,10 @@ class Vendor(models.Model):
     description = models.TextField()
     profile_image = models.ImageField(max_length=100, null = True, blank = True)
     cover_image = models.ImageField(max_length=100, null = True, blank = True)
-    owner = models.ForeignKey('UserProfile', on_delete = models.CASCADE)
-    address = models.ForeignKey('Address', null = True, on_delete = models.DO_NOTHING, related_name = 'address')
+    owner = models.ForeignKey('UserProfile', null = True, on_delete = models.SET_NULL)
+    address = models.ForeignKey('Address', null = True, on_delete = models.SET_NULL, related_name = 'address')
     phone_number = PhoneNumberField(null = True, blank = True)
-    hours = models.ForeignKey('VendorHours', null = True, blank = True, on_delete = models.DO_NOTHING, related_name = 'hours')
+    hours = models.ForeignKey('VendorHours', null = True, blank = True, on_delete = models.SET_NULL, related_name = 'hours')
 
     def __str__(self):
         return self.title
@@ -87,7 +87,7 @@ class UserProfile(models.Model):
     liked_posts = models.ManyToManyField('Post', blank = True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
     def get_user(self):
         return self.user
@@ -112,7 +112,7 @@ class Item(models.Model):
     image = models.ImageField()
     vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
     general_tags = models.ManyToManyField('GeneralTag')
-    desc_tags = models.ManyToManyField('DescriptiveTag')
+    desc_tags = models.ManyToManyField('DescriptiveTag', blank = True)
 
     def __str__(self):
         return self.title
@@ -186,7 +186,7 @@ class Order(models.Model):
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
     authorized = models.BooleanField(default=False)
-    vendor_id = models.ForeignKey('Vendor', related_name='vendor_id', on_delete=models.SET_NULL, blank=True, null=True)
+    vendor = models.ForeignKey('Vendor', related_name='order_vendor', on_delete=models.CASCADE, blank=True)
 
     '''
     1. Item added to cart

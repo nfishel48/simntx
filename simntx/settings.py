@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     # Custom
     'core',
     'dashboards',
-    'storages',
 ]
 
 MIDDLEWARE = [
@@ -108,6 +107,8 @@ if ENVIRONMENT == 'developmentLocalNate':
     }
 
 if ENVIRONMENT == 'developmentLiveHeroku':
+    INSTALLED_APPS.append('storages')
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -118,6 +119,15 @@ if ENVIRONMENT == 'developmentLiveHeroku':
             "PORT": "5432",
             }
     }
+
+    AWS_ACCESS_KEY_ID = ' AKIAXZMCD6S4VCTZGHVQ '
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'simntx'
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_S3_REGION_NAME = 'us-east-2'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 if ENVIRONMENT == 'production':
@@ -149,7 +159,7 @@ LOGIN_EXEMPT_URLS = (
     r'^accounts/signup/$',
     r'^accounts/confirm-email/[a-zA-Z0-9]/$',
     r'^landing/$',
-
+    r'^admin'
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -187,16 +197,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 #S3 BUCKETS CONFIG
-
-AWS_ACCESS_KEY_ID = ' AKIAXZMCD6S4VCTZGHVQ '
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'simntx'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME = 'us-east-2'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
 
 
 '''
