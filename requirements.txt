@@ -40,17 +40,12 @@ isort==4.3.21
 jedi==0.17.1
 jmespath==0.10.0
 joblib==0.16.0
-Keras-Preprocessing==1.1.2
 kiwisolver==1.2.0
 lazy-object-proxy==1.4.3
 Markdown==3.2.2
-matplotlib==3.2.2
 mccabe==0.6.1
-mysql-connector-python==8.0.20
-numpy==1.19.0
 oauthlib==3.1.0
 opt-einsum==3.2.1
-pandas==1.0.5
 parso==0.7.0
 pep8==1.7.1
 pexpect==4.8.0

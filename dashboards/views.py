@@ -73,7 +73,7 @@ def vendor_page(request, page):
         print('products')
 
     elif page == 'orders':
-        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = False, authorized = False)
+        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = False, authorized = False, vendor_id = vendor)
         data['orders'] = orders
 
     data['vendor'] = vendor

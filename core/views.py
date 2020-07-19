@@ -494,6 +494,7 @@ def add_to_cart(request, slug):
     if order_qs.exists():
 
         order = order_qs[0]
+        
         #if the item being added is from the same vendor
         if item.vendor == order.vendor_id:
             
@@ -518,6 +519,7 @@ def add_to_cart(request, slug):
             
         else:
             messages.info(request, "Plese finish your order from the previous vendor before you order from a second")
+            dir(item.vendor)
             #messages.push( "Plese finish your order from the previous vendor before you order from a second")
             return redirect("core:order-summary")
     else:
