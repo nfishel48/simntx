@@ -2,7 +2,7 @@
 
 {% load staticfiles %}
 
-{% block title %}Orders{% endblock %}
+{% block title %}Outstanding Deliveries{% endblock %}
 
 {% block with_side_panel_css %}
 
@@ -14,7 +14,7 @@
 {% block left_panel %}
 
 	<div class = "left-panel-group">
-		<p class = "title">Deliveries</p>
+		<p class = "title">Driver Dashboard</p>
 		<div class = "links">
 			<a href = "{% url 'dashboards:driver' %}">
 				<div class = "link {% block select_outstanding %}selected{% endblock %}">

@@ -7,3 +7,29 @@
 	position: relative;
 	left: calc(var(--left-panel-width) / -2);
 }
+
+.tag-link-container{
+	width: 100%;
+	
+	display: flex;
+}
+.tag-link{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	padding: 12px 20px;
+	
+	font-family: Roboto-Medium;
+	font-size: 12px;
+	color: white !important;
+
+	text-transform: uppercase;
+	
+	background-color: white;
+	
+	box-sizing: border-box;
+}
+.tag-link:not(:first-child){
+	margin-left: 10px;
+}

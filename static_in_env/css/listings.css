@@ -6,7 +6,7 @@
 
 	box-sizing: border-box;
 }
-.listing-item:not(:first-child){
+.listing-item:not(.grid-item):not(:first-child){
 	margin-left: 20px;
 }
 .listing-item #follow-container{

@@ -1,7 +1,10 @@
 {% load staticfiles %}
 
 <div class = "product-row content-panel">
-	<p class = "content-title">{{ label }}</p>
+	<span style = "display: flex; align-items: baseline;">
+		<a class = "content-title underline" href = "{{ more_link }}">{{ label }}</a>
+		<a class = "content-subtitle link underline" href = "{{ more_link }}">See All</a>
+	</span>
 	<div class = "slider-container">
 		<div class = "slider">
 			{% for item in items %}

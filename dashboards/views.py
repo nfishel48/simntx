@@ -4,7 +4,9 @@ from django.template.loader import get_template
 from django.contrib import messages
 
 from core.models import *
-from core.views import get_tags
+from core.views import get_general_tags
+
+from datetime import datetime
 
 from . import forms
 
@@ -14,13 +16,31 @@ def vendor(request):
     
     vendor = Vendor.objects.get(owner = request.user.userprofile)
 
-    vendor.tags = get_tags(vendor)
+    vendor.general_tags = get_general_tags(vendor)
 
     if request.method == 'POST':
         form = forms.EditVendorForm(request.POST, request.FILES, instance = vendor)
 
+        print(request.POST)
+
         if form.is_valid():
             v = form.save()
+            v.hours.sunday_start = datetime.strptime(request.POST['sunday_start'], '%H:%S')
+            v.hours.sunday_end = datetime.strptime(request.POST['sunday_end'], '%H:%S')
+            v.hours.monday_start = datetime.strptime(request.POST['monday_start'], '%H:%S')
+            v.hours.monday_end = datetime.strptime(request.POST['monday_end'], '%H:%S')
+            v.hours.tuesday_start = datetime.strptime(request.POST['tuesday_start'], '%H:%S')
+            v.hours.tuesday_end = datetime.strptime(request.POST['tuesday_end'], '%H:%S')
+            v.hours.wednesday_start = datetime.strptime(request.POST['wednesday_start'], '%H:%S')
+            v.hours.wednesday_end = datetime.strptime(request.POST['wednesday_end'], '%H:%S')
+            v.hours.thursday_start = datetime.strptime(request.POST['thursday_start'], '%H:%S')
+            v.hours.thursday_end = datetime.strptime(request.POST['thursday_end'], '%H:%S')
+            v.hours.friday_start = datetime.strptime(request.POST['friday_start'], '%H:%S')
+            v.hours.friday_end = datetime.strptime(request.POST['friday_end'], '%H:%S')
+            v.hours.saturday_start = datetime.strptime(request.POST['saturday_start'], '%H:%S')
+            v.hours.saturday_end = datetime.strptime(request.POST['saturday_end'], '%H:%S')
+
+            v.save()
         else:
             print(form.errors)
 
@@ -148,7 +168,7 @@ def edit_page(request, page, id):
             return redirect('dashboards:vendor_page', page=page)
 
         data['product'] = product[0]
-        data['all_tags'] = Tag.objects.all()
+        data['all_tags'] = GeneralTag.objects.all()
 
     data['vendor'] = vendor
 
@@ -166,7 +186,7 @@ def create_page(request, page):
         return redirect('dashboards:vendor_page', page=page)
 
     if page == 'products':
-        data['all_tags'] = Tag.objects.all()
+        data['all_tags'] = GeneralTag.objects.all()
 
     if request.method == 'POST':
         if page == 'posts':

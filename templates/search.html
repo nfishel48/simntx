@@ -2,6 +2,8 @@
 
 {% load staticfiles %}
 
+{% block title %}{% if query %}{{ query }}{% else %}Search{% endif %}{% endblock %}
+
 {% block home_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/search.css' %}">
@@ -36,11 +38,11 @@
 				<div class = "products-container">
 					{% if type == 'vendors' %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=True %}
+							{% include 'blocks/listing_item.html' with item=item vendor=True grid_item=True %}
 						{% endfor %}
 					{% else %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=None %}
+							{% include 'blocks/listing_item.html' with item=item vendor=None grid_item=True %}
 						{% endfor %}
 					{% endif %}
 				</div>

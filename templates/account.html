@@ -2,11 +2,7 @@
 {% load account %}
 {% load staticfiles %}
 
-{% block title %}
-
-	Account - Simntx
-	
-{% endblock %}
+{% block title %}Account{% endblock %}
 
 {% block with_side_panel_css %}
 
@@ -22,7 +18,7 @@
 			<a href = "{% url 'core:account' %}">
 				<div class = "link {% block select_account %}selected{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_account_img %}"{% static 'img/icons/home-filled-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/home-color-48.png' %}">
 					</div>
 					<p>Account</p>
 				</div>
@@ -30,7 +26,7 @@
 			<a href = "{% url 'core:account_page' 'password' %}">
 				<div class = "link {% block select_password %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_password_img %}"{% static 'img/icons/lock-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/lock-color-48.png' %}">
 					</div>
 					<p>Password</p>
 				</div>
@@ -38,7 +34,7 @@
 			<a href = "{% url 'core:account_page' 'orders' %}">
 				<div class = "link {% block select_orders %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_orders_img %}"{% static 'img/icons/products-48.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/products-color-48.png' %}">
 					</div>
 					<p>Orders</p>
 				</div>
@@ -46,7 +42,7 @@
 			<a href = "{% url 'core:account_page' 'notifications' %}">
 				<div class = "link {% block select_notifications %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_notifications_img %}"{% static 'img/icons/bell-24.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/bell-color-48.png' %}">
 					</div>
 					<p>Notifications</p>
 				</div>
@@ -58,9 +54,9 @@
 			<a href = "{% url 'core:account_page' 'delete' %}">
 				<div id = "delete" class = "link {% block select_delete %}{% endblock %}">
 					<div class = "link-image">
-						<img src = {% block select_delete_img %}"{% static 'img/icons/trash-24.png' %}"{% endblock %}>
+						<img src = "{% static 'img/icons/trash-color-48.png' %}">
 					</div>
-					<p style = "color: red;">Delete Account</p>
+					<p style = "color: red; font-family: Roboto-Medium;">Delete Account</p>
 				</div>
 			</a>
 		</div>

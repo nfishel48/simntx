@@ -17,9 +17,16 @@
 {% block right_panel %}
 
 	<div class = "content-panel-container column">
-		{% include 'blocks/product_row.html' with label='All Vendors' items=vendors vendor=True %}
-		{% include 'blocks/product_row.html' with label='All Products' items=products vendor=None %}
-		{% include 'blocks/product_row.html' with label='Food' items=food vendor=None %}
+		<div class = "tag-link-container">
+			{% for tag in general_tags.all %}
+				<a class = "tag-link" style = "background-color: {{ tag.color }};" href = "{% url 'core:search' %}?t={{ tag.name }}">{{ tag.name }}</a>
+			{% endfor %}
+		</div>
+	
+		{% url 'core:search' as search %}
+		{% include 'blocks/product_row.html' with label='All Vendors' items=vendors vendor=True more_link=search|add:'?tp=vendors' %}
+		{% include 'blocks/product_row.html' with label='All Products' items=products vendor=None more_link=search|add:'?tp=products' %}
+		{% include 'blocks/product_row.html' with label='Food' items=food vendor=None more_link=search|add:'?t=food' %}
 	</div>
 
 {% endblock %}

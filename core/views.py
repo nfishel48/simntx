@@ -43,6 +43,11 @@ def index(request):
 def feed(request):
     posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')
 
+    #messages.info(request, 'Info message');
+    #messages.success(request, 'Success message');
+    #messages.warning(request, 'Warning message');
+    #messages.error(request, 'Error message');
+
     return render(request, 'feed.html', {
         'posts': posts,
     })
@@ -53,15 +58,18 @@ def feed(request):
 def store(request):
     vendors = Vendor.objects.all()[:10]
     products = Item.objects.all()[:10]
-    food = Item.objects.filter(tags = Tag.objects.get(name = 'food'))[:10]
+    food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
+
+    general_tags = GeneralTag.objects.all()
 
     for vendor in vendors:
-        vendor.tags = get_tags(vendor.id)
+        vendor.general_tags = get_general_tags(vendor.id)
 
     return render(request, 'store.html', {
         'vendors': vendors,
         'products': products,
         'food': food,
+        'general_tags': general_tags,
     })
 
 
@@ -90,7 +98,7 @@ def vendor_store(request, slug):
     vendor = Vendor.objects.get(slug=slug)
     products = Item.objects.filter(vendor=vendor)
 
-    vendor.tags = get_tags(vendor.id)
+    vendor.general_tags = get_general_tags(vendor.id)
 
     data = search(request, [Q(vendor=vendor)])  # Only searches items from this vendor
 
@@ -965,7 +973,7 @@ def search(request, optional_qs):
     price = None
     price_floor = 0
     price_ceiling = 9999999
-    tags = []
+    general_tags = []
     page = 1
     type = 'products'
 
@@ -976,7 +984,7 @@ def search(request, optional_qs):
             query = request.GET['q']
 
         if 't' in request.GET:
-            tags = request.GET.getlist('t')
+            general_tags = request.GET.getlist('t')
 
         if 'p' in request.GET:
             price = request.GET['p']
@@ -1002,16 +1010,16 @@ def search(request, optional_qs):
 
         print('\n\nPAGE: ' + str(page) + '\n\n')
 
-        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, type, None)
+        product_results, vendor_results = get_search_items(query, general_tags, price_floor, price_ceiling, type, None)
 
     if optional_qs:
-        product_results, vendor_results = get_search_items(query, tags, price_floor, price_ceiling, type, optional_qs)
+        product_results, vendor_results = get_search_items(query, general_tags, price_floor, price_ceiling, type, optional_qs)
 
     data['query'] = query
     data['price'] = price
     data['page_num'] = page
-    data['all_tags'] = Tag.objects.all()
-    data['selected_tags'] = tags
+    data['all_tags'] = GeneralTag.objects.all()
+    data['selected_tags'] = general_tags
     data['type'] = type
 
     if type == 'vendors':
@@ -1040,7 +1048,7 @@ def search(request, optional_qs):
 
 # Function: Get Search Items
 # The generic function to get search items from a set of variables
-def get_search_items(query, tags, price_floor, price_ceiling, type, optional_qs):
+def get_search_items(query, general_tags, price_floor, price_ceiling, type, optional_qs):
     # Creates select statements that can be dynamically used
 
     q_query = Q(title__contains = query)
@@ -1051,10 +1059,10 @@ def get_search_items(query, tags, price_floor, price_ceiling, type, optional_qs)
 
     # Only searches products if tags are a parameter
 
-    if tags:
-        q_tags = Q(tags__name__in=tags)
+    if general_tags:
+        q_general_tags = Q(general_tags__name__in=general_tags)
 
-        qs_products = Q(q_query & q_tags & q_price)
+        qs_products = Q(q_query & q_general_tags & q_price)
         qs_vendors = Q(q_query) # TODO: fix this
     else:
         qs_products = Q(q_query & q_price)
@@ -1088,7 +1096,7 @@ def serialize_items(product_results, vendor_results):
                 'vendor_url': item.vendor.get_absolute_url(),
             },
             'price': item.price,
-            'tags': list(item.tags.all().values_list('name', 'color'))
+            'general_tags': list(item.general_tags.all().values_list('name', 'color'))
         })
 
     return product_json, vendor_json
@@ -1096,19 +1104,19 @@ def serialize_items(product_results, vendor_results):
 
 # Function: Get Tags
 # The function to get every tag that a vendor uses
-def get_tags(vendor):
+def get_general_tags(vendor):
     items = Item.objects.filter(vendor = vendor)
 
-    tags = []
+    general_tags = []
 
     for item in items:
-        print(item.tags.all())
+        print(item.general_tags.all())
 
-        for tag in item.tags.all():
-            if tag not in tags:
-                tags.append(tag)
+        for tag in item.general_tags.all():
+            if tag not in general_tags:
+                general_tags.append(tag)
 
-    return tags
+    return general_tags
 
 
 # Function: Create Reference Code
