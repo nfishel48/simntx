@@ -186,7 +186,7 @@ class Order(models.Model):
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
     authorized = models.BooleanField(default=False)
-    vendor = models.ForeignKey('Vendor', related_name='order_vendor', on_delete=models.CASCADE, blank=True)
+    vendor = models.ForeignKey('Vendor', related_name='order_vendor', on_delete=models.CASCADE, default = 1, blank=True)
 
     '''
     1. Item added to cart
