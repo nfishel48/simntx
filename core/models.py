@@ -143,6 +143,7 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name = 'item')
     quantity = models.IntegerField(default=1)
     order = models.ForeignKey('Order', null = True, on_delete = models.CASCADE, related_name = 'order')
+    in_stock = models.BooleanField(default=True)
     
 
     def __str__(self):
