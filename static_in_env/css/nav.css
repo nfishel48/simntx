@@ -1,3 +1,54 @@
+.messages{
+	width: 100%;
+	
+	position: absolute;
+	top: 100%;
+	left: 0;
+	
+	z-index: 100;
+}
+.message{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	padding: 10px var(--spacing);
+	
+	color: rgba(0, 0, 0, .9);
+	
+	box-sizing: border-box;
+}
+.message.info{ background-color: #adcceb; }
+.message.success{ background-color: #b5dd86; }
+.message.warning{ background-color: #f4d289; }
+.message.error{ background-color: #f47d6c; }
+.message .close{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	padding: 5px;
+	
+	outline: none;
+	border: none;
+	
+	color: white;
+	
+	border-radius: 100%;
+	
+	background-color: rgba(0, 0, 0, .3);
+	
+	cursor: pointer;
+	
+	transition: all .1s ease;
+}
+.message .close:hover{
+	background-color: rgba(0, 0, 0, .5);
+}
+.message .close img{
+	height: 14px;
+}
+
 #nav{
 	width: 100%;
 	height: auto;

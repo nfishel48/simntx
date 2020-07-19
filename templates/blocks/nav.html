@@ -107,4 +107,17 @@
 			</div>
 		{% endif %}
 	</div>
+	
+	{% if messages %}
+		<div class = "messages">
+			{% for message in messages %}
+				<div {% if message.tags %}class="message {{ message.tags }}"{% endif %}>
+					<p>{{ message }}</p>
+					<div class = "close">
+						<img src = "{% static 'img/icons/delete-white-48.png' %}">
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
 </div>

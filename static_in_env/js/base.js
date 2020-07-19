@@ -2,6 +2,10 @@ var mobile = false,
 	canPostComment = true;
 
 $(document).ready(function(){
+	if ($('.messages').length > 0){
+		messagesResize();
+	}
+	
 	if ($('#search').css('display') == 'none'){
 		mobile = true;
 		
@@ -235,6 +239,12 @@ $(document).ready(function(){
 			},
 		});
 	});
+	
+	$('.message .close').on('click', function(){
+		$(this).parent('.message').remove();
+		
+		messagesResize();
+	});
 });
 
 function markAllRead(div){
@@ -243,4 +253,9 @@ function markAllRead(div){
 			$(this).addClass('read');
 		});
 	}
+}
+
+function messagesResize(){
+	$('#container').css('margin-top', $('.messages').height() + 'px');
+	$('#left-panel').css('top', $('.messages').height() + 'px');
 }

@@ -107,6 +107,58 @@
 					<p class = "field-label">Phone Number</p>
 					<input class = "field-input" type = "text" name = "phone_number" placeholder = "888-888-8888" value = "{{ vendor.phone_number.as_e164 }}" required>
 				</div>
+				<div class = "form-field">
+					<p class = "field-label">Hours</p>
+					<div class = "field-inputs" style = "align-items: center;">
+						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Sunday</p>
+						<div class = "field-inputs">
+							<input class = "field-input ten" type = "time" name = "sunday_start" value = "{{ vendor.hours.sunday_start|time:'H:i' }}" required>
+							<input class = "field-input ten" type = "time" name = "sunday_end" value = "{{ vendor.hours.sunday_end|time:'H:i' }}" required>
+						</div>
+					</div>
+					<div class = "field-inputs" style = "align-items: center;">
+						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Monday</p>
+						<div class = "field-inputs">
+							<input class = "field-input ten" type = "time" name = "monday_start" value = "{{ vendor.hours.monday_start|time:'H:i' }}" required>
+							<input class = "field-input ten" type = "time" name = "monday_end" value = "{{ vendor.hours.monday_end|time:'H:i' }}" required>
+						</div>
+					</div>
+					<div class = "field-inputs" style = "align-items: center;">
+						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Tuesday</p>
+						<div class = "field-inputs">
+							<input class = "field-input ten" type = "time" name = "tuesday_start" value = "{{ vendor.hours.tuesday_start|time:'H:i' }}" required>
+							<input class = "field-input ten" type = "time" name = "tuesday_end" value = "{{ vendor.hours.tuesday_end|time:'H:i' }}" required>
+						</div>
+					</div>
+					<div class = "field-inputs" style = "align-items: center;">
+						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Wednesday</p>
+						<div class = "field-inputs">
+							<input class = "field-input ten" type = "time" name = "wednesday_start" value = "{{ vendor.hours.wednesday_start|time:'H:i' }}" required>
+							<input class = "field-input ten" type = "time" name = "wednesday_end" value = "{{ vendor.hours.wednesday_end|time:'H:i' }}" required>
+						</div>
+					</div>
+					<div class = "field-inputs" style = "align-items: center;">
+						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Thursday</p>
+						<div class = "field-inputs">
+							<input class = "field-input ten" type = "time" name = "thursday_start" value = "{{ vendor.hours.thursday_start|time:'H:i' }}" required>
+							<input class = "field-input ten" type = "time" name = "thursday_end" value = "{{ vendor.hours.thursday_end|time:'H:i' }}" required>
+						</div>
+					</div>
+					<div class = "field-inputs" style = "align-items: center;">
+						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Friday</p>
+						<div class = "field-inputs">
+							<input class = "field-input ten" type = "time" name = "friday_start" value = "{{ vendor.hours.friday_start|time:'H:i' }}" required>
+							<input class = "field-input ten" type = "time" name = "friday_end" value = "{{ vendor.hours.friday_end|time:'H:i' }}" required>
+						</div>
+					</div>
+					<div class = "field-inputs" style = "align-items: center;">
+						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Saturday</p>
+						<div class = "field-inputs">
+							<input class = "field-input ten" type = "time" name = "saturday_start" value = "{{ vendor.hours.saturday_start|time:'H:i' }}" required>
+							<input class = "field-input ten" type = "time" name = "saturday_end" value = "{{ vendor.hours.saturday_end|time:'H:i' }}" required>
+						</div>
+					</div>
+				</div>
 				
 				<div class = "form-end start">
 					<input class = "form-submit" type = "submit" value = "Save">

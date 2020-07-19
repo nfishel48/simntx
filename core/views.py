@@ -43,6 +43,11 @@ def index(request):
 def feed(request):
     posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')
 
+    #messages.info(request, 'Info message');
+    #messages.success(request, 'Success message');
+    #messages.warning(request, 'Warning message');
+    #messages.error(request, 'Error message');
+
     return render(request, 'feed.html', {
         'posts': posts,
     })

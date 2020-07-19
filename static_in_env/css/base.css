@@ -75,6 +75,9 @@ body{
 #right-panel{
 	height: fit-content;
 	
+	display: flex;
+	flex-direction: column;
+	
 	margin-top: var(--nav-height);
 }
 
@@ -629,6 +632,9 @@ body{
 	font-size: 14px;
 	color: var(--dark-text);
 }
+.field-label.adjusted{
+	width: 100px;
+}
 .form-field.row .field-label{
 	flex: 1;
 }
@@ -649,6 +655,10 @@ body{
 	
 	display: flex;
 }
+.field-inputs.half{ width: 50%; }
+.field-inputs.quarter{ width: 25%; }
+.field-inputs.ten{ width: 10%; }
+.field-inputs.fifteen{ width: 15%; }
 .field-inputs.column{
 	flex-direction: column;
 }
