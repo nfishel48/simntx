@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Custom
     'core',
     'dashboards',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'simntx.middleware.auth_req.AuthRequiredMiddleware'
+    #'simntx.middleware.auth_req.AuthRequiredMiddleware'
 ]
 
 TEMPLATES = [
@@ -146,6 +147,7 @@ LOGIN_EXEMPT_URLS = (
     r'^accounts/login/$',
     r'^account/logout/$',
     r'^accounts/signup/$',
+    r'^accounts/confirm-email/[a-zA-Z0-9]/$',
     r'^landing/$',
 
 )
@@ -167,10 +169,12 @@ ACCOUNT_FORMS = {'signup': 'core.forms.UserSignUpForm'}
 ROOT_URLCONF = 'simntx.urls'
 
 # STRIPE SETTINGS
-# if DEBUG:
-STRIPE_PUBLIC_KEY = 'pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk'
-STRIPE_SECRET_KEY = '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'
-# else:
+if DEBUG:
+    STRIPE_PUBLIC_KEY = 'pk_test_51H6HtIBIRW4ci3Bhs3n98Lmeb9sZiXLnKpKsWVxp3BU0ULH4rnv8KtPl6MgA8WzBia6Muc7ZE1E84MSHiR9HrwrJ00WpXuvaSn'
+    STRIPE_SECRET_KEY = 'sk_test_51H6HtIBIRW4ci3Bh2WYF9bkxfJZydcTVgosqEVhzlsrDS2fhgmMFd3bCo6Rn7bFgx6TtOZLYKgX8zI1ltidHvja600x1w3CRGz'
+else:
+    STRIPE_PUBLIC_KEY = 'pk_test_51H6HtIBIRW4ci3Bhs3n98Lmeb9sZiXLnKpKsWVxp3BU0ULH4rnv8KtPl6MgA8WzBia6Muc7ZE1E84MSHiR9HrwrJ00WpXuvaSn'
+    STRIPE_SECRET_KEY = 'sk_test_51H6HtIBIRW4ci3Bh2WYF9bkxfJZydcTVgosqEVhzlsrDS2fhgmMFd3bCo6Rn7bFgx6TtOZLYKgX8zI1ltidHvja600x1w3CRGz'
 
 
 EMAIL_HOST= 'smtp.gmail.com'
@@ -179,3 +183,30 @@ EMAIL_HOST_PASSWORD= 'omtEEWXmh23a'
 EMAIL_USE_TLS= True
 EMAIL_PORT= 587
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+
+#S3 BUCKETS CONFIG
+
+AWS_ACCESS_KEY_ID = ' AKIAXZMCD6S4VCTZGHVQ '
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'simntx'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+
+'''
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+'''

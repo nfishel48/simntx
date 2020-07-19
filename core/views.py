@@ -482,31 +482,41 @@ def add_to_cart(request, slug):
 
     order_qs = Order.objects.filter(user=request.user, ordered=False)
 
+    #if order exists 
     if order_qs.exists():
+
         order = order_qs[0]
+        #if the item being added is from the same vendor
+        if item.vendor == order.vendor_id:
+            
+            order_item = order.get_items(order).filter(item__slug=item.slug)
 
-        order_item = order.get_items(order).filter(item__slug=item.slug)
+            if order_item.exists():
+                order_item = order_item[0]
 
-        if order_item.exists():
-            order_item = order_item[0]
+                order_item.quantity += 1
+                order_item.save()
 
-            order_item.quantity += 1
-            order_item.save()
+                messages.info(request, "This item quantity was updated.")
 
-            messages.info(request, "This item quantity was updated.")
+                return redirect("core:order-summary")
+            else:
+                order_item = OrderItem(item=item, order=order)
+                order_item.save()
 
-            return redirect("core:order-summary")
+                messages.info(request, "This item was added to your cart.")
+
+                return redirect("core:order-summary")
+            
         else:
-            order_item = OrderItem(item=item, order=order)
-            order_item.save()
-
-            messages.info(request, "This item was added to your cart.")
-
+            messages.info(request, "Plese finish your order from the previous vendor before you order from a second")
+            #messages.push( "Plese finish your order from the previous vendor before you order from a second")
             return redirect("core:order-summary")
     else:
         ordered_date = timezone.now()
-
-        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        
+        #create new order marked for vendor of inintial Item
+        order = Order.objects.create(user=request.user, ordered_date=ordered_date, vendor_id=item.vendor)
 
         order_item = OrderItem(item=item, order=order)
         order_item.save()
@@ -533,6 +543,11 @@ def remove_from_cart(request, slug):
         if order.get_items(order).filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(item=item, order=order, order__ordered=False)[0]
             order_item.delete()
+            #if order is empty
+            if order.get_items(order).filter().exists():
+                print('I do nothing')
+            else:
+                order.delete()
 
             messages.info(request, "This item was removed from your cart.")
 
@@ -566,6 +581,11 @@ def remove_single_item_from_cart(request, slug):
                 order_item.save()
             else:
                 order_item.delete()
+                 #if order is empty
+                if order.get_items(order).filter().exists():
+                    print('I do nothing')
+                else:
+                    order.delete()
 
             messages.info(request, "This item quantity was updated.")
 
