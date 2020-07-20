@@ -45,23 +45,23 @@
 								<input id = "shipping_zip" class = "field-input" type = "text" name = "shipping_zip" placeholder = "Zip">
 							</div>
 						</div>
-						<div class = "form-field row left">
+						{% comment %} <div class = "form-field row left">
 							<input class = "form-checkbox" id = "same_billing_address" type = "checkbox" name = "same_billing_address">
 							<label for = "same_billing_address">Use for billing address</label>
 						</div>
 						<div class = "form-field row left">
 							<input class = "form-checkbox" id = "set_default_shipping" type = "checkbox" name = "set_default_shipping">
-							<label for = "set_default_shipping">Save as default shipping address</label>
+							<label for = "set_default_shipping">Save as default shipping address</label> {% endcomment %}
 						</div>
 					</div>
-					{% if default_shipping_address %}
+					{% comment %} {% if default_shipping_address %}
 					  <div class = "form-field row left">
 							<input type = "checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping">
 							<label class = "custom-control-label" for="use_default_shipping">Use default shipping address: {{ default_shipping_address.street_address|truncatechars:10 }}</label>
 					  </div>
 					  {% else %}
-					  <p>NOPE</p>
-					  {% endif %}
+					   <p>NOPE</p> 
+					  {% endif %} {% endcomment %}
 					<div class = "form-group separator">
 						<p class = "group-title">Billing Address</p>
 						<div class = "form-field">
@@ -86,14 +86,14 @@
 								<input id = "billing_zip" class = "field-input" type = "text" name = "billing_zip" placeholder = "Zip">
 							</div>
 						</div>
-						<div class = "form-field row left">
+						{% comment %} <div class = "form-field row left">
 							<input class = "form-checkbox" id = "set_default_billing" type = "checkbox" name = "set_default_billing">
 							<label for = "set_default_billing">Save as default shipping address</label>
-						</div>
-						<div class = "form-field row left">
+						</div> {% endcomment %}
+						{% comment %} <div class = "form-field row left">
 							<input class = "form-checkbox" id = "use_default_billing" type = "checkbox" name = "use_default_billing">
 							<label for = "use_default_billing">Use default billing address</label>
-						</div>
+						</div> {% endcomment %}
 					</div>
 					<div class = "form-group separator">
 						<p class = "group-title">Payment Option</p>
