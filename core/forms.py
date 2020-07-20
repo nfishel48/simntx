@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from django_countries import countries
 
 from allauth.account.forms import SignupForm, ChangePasswordForm
 
@@ -15,20 +16,12 @@ PAYMENT_CHOICES = (
 class CheckoutForm(forms.Form):
     shipping_address = forms.CharField(required=False)
     shipping_address2 = forms.CharField(required=False)
-    shipping_country = CountryField(blank_label='(select country)').formfield(
-        required=False,
-        widget=CountrySelectWidget(attrs={
-            'class': 'custom-select d-block w-100',
-        }))
+    shipping_country = forms.ChoiceField(choices = tuple(countries), required = False)
     shipping_zip = forms.CharField(required=False)
 
     billing_address = forms.CharField(required=False)
     billing_address2 = forms.CharField(required=False)
-    billing_country = CountryField(blank_label='(select country)').formfield(
-        required=False,
-        widget=CountrySelectWidget(attrs={
-            'class': 'custom-select d-block w-100',
-        }))
+    billing_country = forms.ChoiceField(choices = tuple(countries), required = False)
     billing_zip = forms.CharField(required=False)
 
     same_billing_address = forms.BooleanField(required=False)
@@ -70,8 +63,6 @@ class UserSignUpForm(SignupForm):
     def save(self, request):
         user = super(UserSignUpForm, self).save(request)
         
-        print(self.cleaned_data)
-        
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.username = self.cleaned_data['email']
@@ -83,6 +74,15 @@ class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+
+    def save(self, request):
+        user = request.user
+
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()
+
+        return user
 
 class EditPasswordForm(ChangePasswordForm):
     def save(self):

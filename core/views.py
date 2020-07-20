@@ -206,39 +206,42 @@ class CheckoutView(View):
             return render(self.request, "checkout.html", context)
         except ObjectDoesNotExist:
             messages.info(self.request, "You do not have an active order")
+
             return redirect("core:checkout")
 
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
+
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
-            if form.is_valid():
 
-                use_default_shipping = form.cleaned_data.get(
-                    'use_default_shipping')
+            if form.is_valid():
+                use_default_shipping = form.cleaned_data.get('use_default_shipping')
+
                 if use_default_shipping:
                     print("Using the defualt shipping address")
+
                     address_qs = UserAddress.objects.filter(
                         user=self.request.user,
                         address_type='S',
                         default=True
                     )
+
                     if address_qs.exists():
                         shipping_address = address_qs[0]
+
                         order.shipping_address = shipping_address
                         order.save()
                     else:
-                        messages.info(
-                            self.request, "No default shipping address available")
+                        messages.info(self.request, "No default shipping address available")
+
                         return redirect('core:checkout')
                 else:
                     print("User is entering a new shipping address")
-                    shipping_address1 = form.cleaned_data.get(
-                        'shipping_address')
-                    shipping_address2 = form.cleaned_data.get(
-                        'shipping_address2')
-                    shipping_country = form.cleaned_data.get(
-                        'shipping_country')
+
+                    shipping_address1 = form.cleaned_data.get('shipping_address')
+                    shipping_address2 = form.cleaned_data.get('shipping_address2')
+                    shipping_country = form.cleaned_data.get('shipping_country')
                     shipping_zip = form.cleaned_data.get('shipping_zip')
 
                     if is_valid_form([shipping_address1, shipping_country, shipping_zip]):
@@ -250,25 +253,22 @@ class CheckoutView(View):
                             zip=shipping_zip,
                             address_type='S'
                         )
+
                         shipping_address.save()
 
                         order.shipping_address = shipping_address
                         order.save()
 
-                        set_default_shipping = form.cleaned_data.get(
-                            'set_default_shipping')
+                        set_default_shipping = form.cleaned_data.get('set_default_shipping')
+
                         if set_default_shipping:
                             shipping_address.default = True
                             shipping_address.save()
-
                     else:
-                        messages.info(
-                            self.request, "Please fill in the required shipping address fields")
+                        messages.info(self.request, "Please fill in the required shipping address fields")
 
-                use_default_billing = form.cleaned_data.get(
-                    'use_default_billing')
-                same_billing_address = form.cleaned_data.get(
-                    'same_billing_address')
+                use_default_billing = form.cleaned_data.get('use_default_billing')
+                same_billing_address = form.cleaned_data.get('same_billing_address')
 
                 if same_billing_address:
                     billing_address = shipping_address
@@ -296,12 +296,10 @@ class CheckoutView(View):
                         return redirect('core:checkout')
                 else:
                     print("User is entering a new billing address")
-                    billing_address1 = form.cleaned_data.get(
-                        'billing_address')
-                    billing_address2 = form.cleaned_data.get(
-                        'billing_address2')
-                    billing_country = form.cleaned_data.get(
-                        'billing_country')
+
+                    billing_address1 = form.cleaned_data.get('billing_address')
+                    billing_address2 = form.cleaned_data.get('billing_address2')
+                    billing_country = form.cleaned_data.get('billing_country')
                     billing_zip = form.cleaned_data.get('billing_zip')
 
                     if is_valid_form([billing_address1, billing_country, billing_zip]):
@@ -313,20 +311,19 @@ class CheckoutView(View):
                             zip=billing_zip,
                             address_type='B'
                         )
+
                         billing_address.save()
 
                         order.billing_address = billing_address
                         order.save()
 
-                        set_default_billing = form.cleaned_data.get(
-                            'set_default_billing')
+                        set_default_billing = form.cleaned_data.get('set_default_billing')
+
                         if set_default_billing:
                             billing_address.default = True
                             billing_address.save()
-
                     else:
-                        messages.info(
-                            self.request, "Please fill in the required billing address fields")
+                        messages.info(self.request, "Please fill in the required billing address fields")
 
                 payment_option = form.cleaned_data.get('payment_option')
 
@@ -335,13 +332,14 @@ class CheckoutView(View):
                 elif payment_option == 'P':
                     return redirect('core:payment', payment_option='paypal')
                 else:
-                    messages.warning(
-                        self.request, "Invalid payment option selected")
+                    messages.warning(self.request, "Invalid payment option selected")
+
                     return redirect('core:checkout')
             else:
                 print(form.errors)
         except ObjectDoesNotExist:
             messages.warning(self.request, "You do not have an active order")
+
             return redirect("core:order-summary")
 
 
@@ -539,7 +537,10 @@ def add_to_cart(request, slug):
         print("\n\nUSER: " + str(request.user.userprofile))
 
         #create new order marked for vendor of inintial Item
-        order = Order(user=request.user, ordered_date=ordered_date, vendor=item.vendor)
+        order = Order(user=request.user, ordered_date=ordered_date, vendor = item.vendor)
+
+        print('\n\n\n' + str(order.vendor) + '\n\n\n')
+
         order.save()
 
         order_item = OrderItem(item=item, order=order)
@@ -629,9 +630,13 @@ def remove_single_item_from_cart(request, slug):
 def get_coupon(request, code):
     try:
         coupon = Coupon.objects.get(code=code)
+
         return coupon
     except ObjectDoesNotExist:
         messages.info(request, "This coupon does not exist")
+
+        return redirect("core:checkout")
+    except:
         return redirect("core:checkout")
 
 
@@ -654,6 +659,8 @@ class AddCouponView(View):
             except ObjectDoesNotExist:
                 messages.info(self.request, "You do not have an active order")
 
+                return redirect("core:checkout")
+            except:
                 return redirect("core:checkout")
 
 
@@ -761,12 +768,9 @@ def account(request):
         form = EditUserForm(request.POST)
 
         if form.is_valid():
-            request.user.userprofile.first_name = form.cleaned_data['first_name']
-            request.user.userprofile.last_name = form.cleaned_data['last_name']
-            request.user.email = form.cleaned_data['email']
+            user = form.save(request)
 
-            request.user.save()
-            request.user.userprofile.save()
+            print(user)
         else:
             print(form.errors)
 

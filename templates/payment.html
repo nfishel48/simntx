@@ -1,10 +1,12 @@
 {% extends "home.html" %}
 
+{% load staticfiles %}
+
 {% block title %}Payment{% endblock %}
 
 {% block home_css %}
 
-	{% include 'bootstrap_css.html' %}
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/checkout.css' %}">
 
 	<style>
 		#stripeBtnLabel {
@@ -19,41 +21,17 @@
 		}
 
 		#stripeBtn {
-			border: none;
-			border-radius: 4px;
-			outline: none;
-			text-decoration: none;
-			color: #fff;
-			background: #32325d;
+			width: 100%;
+			
+			padding: 10px 0;
+		
 			white-space: nowrap;
-			display: inline-block;
-			height: 40px;
-			line-height: 40px;
-			box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
-			border-radius: 4px;
-			font-size: 15px;
-			font-weight: 600;
-			letter-spacing: 0.025em;
-			text-decoration: none;
-			-webkit-transition: all 150ms ease;
-			transition: all 150ms ease;
-			float: left;
-			width: 100%
-		}
-
-		button:hover {
-			transform: translateY(-1px);
-			box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
-			background-color: #43458b;
-		}
-
-		.stripe-form {
-			padding: 5px 30px;
 		}
 
 		#card-errors {
-			height: 20px;
-			padding: 4px 0;
+			margin-top: 6px;
+			
+			font-size: 14px;
 			color: #fa755a;
 		}
 
@@ -75,17 +53,15 @@
 			
 			padding: 10px 12px;
 			
-			border: 1px solid transparent;
-			border-radius: 4px;
+			border: 1px solid #ddd;
 			background-color: white;
 			
-			box-shadow: 0 1px 3px 0 #e6ebf1;
 			-webkit-transition: box-shadow 150ms ease;
 			transition: box-shadow 150ms ease;
 		}
 
 		.StripeElement--focus {
-			box-shadow: 0 1px 3px 0 #cfd7df;
+			border-color: var(--primary);
 		}
 
 		.StripeElement--invalid {
@@ -99,14 +75,56 @@
 		.current-card-form {
 			display: none;
 		}
-
-</style>
+	</style>
 
 {% endblock %}
 
 {% block right_panel %}
 	
-	<div class = "content-panel-container">
+	<div class = "content-panel-container content-grid two inverse" style = "--side-panel-width: 300px;">
+		<div class = "content-container">
+			<div class = "content-panel">
+				<p class = "content-title large">Payment</p>
+				
+				{% if card %}
+					<div class = "form-field row left">
+						<input class = "form-checkbox" id = "use_default_card" type = "checkbox" name = "use_default_card">
+						<label for = "use_default_card">Use default card: **** **** **** {{ card.last4 }} <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span></label>
+					</div>
+				{% endif %}
+				
+				<form action = "." method = "post" class = "stripe-form" id = "stripe-form">
+					{% csrf_token %}
+					
+					<div class = "new-card-form">
+						<div class = "form-field row left" style = "margin-top: 5px !important; margin-bottom: 5px;">
+							<input class = "form-checkbox" id = "save_card_info" type = "checkbox" name = "save">
+							<label for = "save_card_info">Save for future purchases</label>
+						</div>
+						<div id = "card-errors" role = "alert" style = "display: none;"></div>
+						<div class = "stripe-form-row" id="creditCard">
+							<div id = "card-element" class="StripeElement StripeElement--empty">
+								<div class = "__PrivateStripeElement" style = "margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;">
+									<iframe frameborder="0" allowtransparency="true" scrolling = "no" name = "__privateStripeFrame5" allowpaymentrequest="true" src="https://js.stripe.com/v3/elements-inner-card-19066928f2ed1ba3ffada645e45f5b50.html#style[base][color]=%2332325d&amp;style[base][fontFamily]=%22Helvetica+Neue%22%2C+Helvetica%2C+sans-serif&amp;style[base][fontSmoothing]=antialiased&amp;style[base][fontSize]=16px&amp;style[base][::placeholder][color]=%23aab7c4&amp;style[invalid][color]=%23fa755a&amp;style[invalid][iconColor]=%23fa755a&amp;componentName=card&amp;wait=false&amp;rtl=false&amp;keyMode=test&amp;origin=https%3A%2F%2Fstripe.com&amp;referrer=https%3A%2F%2Fstripe.com%2Fdocs%2Fstripe-js&amp;controllerId=__privateStripeController1" title="Secure payment input frame" style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; height: 19.2px;"></iframe>
+									<input class = "__PrivateStripeElement-input" aria-hidden = "true" aria-label = " " autocomplete="false" maxlength="1" style="border: none !important; display: block !important; position: absolute !important; height: 1px !important; top: 0px !important; left: 0px !important; padding: 0px !important; margin: 0px !important; width: 100% !important; opacity: 0 !important; background: transparent !important; pointer-events: none !important; font-size: 16px !important;">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id = "payment-submit" class = "form-field" style = "margin-top: 70px;">
+						<input class = "form-submit" type = "submit" value = "Submit Payment" style = "padding: 10px 0; font-size: 14px;">
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class = "content-container">
+			<div class = "content-panel">
+				{% include "order_snippet.html" %}
+			</div>
+		</div>
+	</div>
+	
+	<!--<div class = "content-panel-container">
   <main class = "content-panel">
     <div class="container wow fadeIn">
 
@@ -171,14 +189,16 @@
 
     </div>
   </main>
-  </div>
+  </div>-->
 
 {% endblock %}
 
-{% block js %}
+{% block home_js %}
 
+<script src="https://js.stripe.com/v3/"></script>
 <script nonce="">  // Create a Stripe client.
-	var stripe = Stripe('pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk');
+	//var stripe = Stripe('pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk');
+	var stripe = Stripe('pk_test_51H6HtIBIRW4ci3Bhs3n98Lmeb9sZiXLnKpKsWVxp3BU0ULH4rnv8KtPl6MgA8WzBia6Muc7ZE1E84MSHiR9HrwrJ00WpXuvaSn');
 	
 	// Create an instance of Elements.
 	var elements = stripe.elements();
@@ -190,7 +210,7 @@
 			color: '#32325d',
 			fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
 			fontSmoothing: 'antialiased',
-			fontSize: '16px',
+			fontSize: '14px',
 			'::placeholder': {
 				color: '#aab7c4'
 			}
@@ -211,10 +231,13 @@
 	card.addEventListener('change', function(event) {
 		var displayError = document.getElementById('card-errors');
 		
-		if (event.error)
+		if (event.error){
 			displayError.textContent = event.error.message;
-		else 
+			$(displayError).css('display', 'block');
+		} else {
 			displayError.textContent = '';
+			$(displayError).css('display', 'none');
+		}
 	});
 	
 	// Handle form submission.
@@ -258,10 +281,14 @@
 	use_default_card.addEventListener('change', function() {	
 		if (this.checked) {
 			newCardForm.hide();
-			currentCardForm.show()
+			currentCardForm.show();
+			
+			$('.form-submit').parent('.form-field').css('margin-top', '20px');
 		} else {
 			newCardForm.show();
-			currentCardForm.hide()
+			currentCardForm.hide();
+			
+			$('.form-submit').parent('.form-field').css('margin-top', '70px');
 		}
 	});
 

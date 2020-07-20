@@ -15,85 +15,89 @@
 
 	<div class = "content-panel-container content-grid two inverse" style = "--side-panel-width: 300px;">
 		<div class = "content-container">
-			<form method = "POST">
-				{% csrf_token %}
-			
-				<div class = "content-panel">
+			<div class = "content-panel">
+				<form method = "POST">
+					{% csrf_token %}
+					
 					<p class = "content-title large">Checkout</p>
 					<div class = "form-group separator">
 						<p class = "group-title">Shipping Address</p>
-						<div class = "form-field">
-							<input class = "field-input" id = "shipping_address" type = "text" name = "shipping_address" placeholder = "Address">
-						</div>
-						<div class = "form-field">
-							<input class = "field-input" id = "shipping_address2" type = "text" name = "shipping_address2" placeholder = "Address 2 (optional)">
-						</div>
-						<div class = "form-group row">
-							<div class = "form-field half">
-								<p class = "field-label">Country</p>
-								<select id = "id_shipping_country" class = "field-input" name = "shipping_country">
-									<option selected>(select country)</option>
-									
-									{% get_countries as countries %}
-									{% for country in countries %}
-										<option value="{{ country.code }}">{{ country.name }}</option>
-									{% endfor %}
-								</select>
+						<div class = "hideable_shipping_form">
+							<div class = "form-field">
+								<input class = "field-input" id = "shipping_address" type = "text" name = "shipping_address" placeholder = "Address">
 							</div>
-							<div class = "form-field half">
-								<p class = "field-label">Zip Code</p>
-								<input id = "shipping_zip" class = "field-input" type = "text" name = "shipping_zip" placeholder = "Zip">
+							<div class = "form-field">
+								<input class = "field-input" id = "shipping_address2" type = "text" name = "shipping_address2" placeholder = "Address 2 (optional)">
 							</div>
-						</div>
-						<div class = "form-field row left">
-							<input class = "form-checkbox" id = "same_billing_address" type = "checkbox" name = "same_billing_address">
-							<label for = "same_billing_address">Use for billing address</label>
-						</div>
-						<div class = "form-field row left">
-							<input class = "form-checkbox" id = "set_default_shipping" type = "checkbox" name = "set_default_shipping">
-							<label for = "set_default_shipping">Save as default shipping address</label>
+							<div class = "form-group row">
+								<div class = "form-field half">
+									<p class = "field-label">Country</p>
+									<select id = "id_shipping_country" class = "field-input custom-select d-block w-100" name = "shipping_country">
+										<option value = "US" selected>(select country)</option>
+										
+										{% get_countries as countries %}
+										{% for country in countries %}
+											<option value="{{ country.code }}">{{ country.name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class = "form-field half">
+									<p class = "field-label">Zip Code</p>
+									<input id = "shipping_zip" class = "field-input" type = "text" name = "shipping_zip" placeholder = "Zip">
+								</div>
+							</div>
+							<div class = "form-field row left">
+								<input class = "form-checkbox" id = "same_billing_address" type = "checkbox" name = "same_billing_address">
+								<label for = "same_billing_address">Use for billing address</label>
+							</div>
+							<div class = "form-field row left">
+								<input class = "form-checkbox" id = "set_default_shipping" type = "checkbox" name = "set_default_shipping">
+								<label for = "set_default_shipping">Save as default shipping address</label>
+							</div>
 						</div>
 					</div>
 					{% if default_shipping_address %}
-					  <div class = "form-field row left">
+						<div class = "form-field row left">
 							<input type = "checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping">
-							<label class = "custom-control-label" for="use_default_shipping">Use default shipping address: {{ default_shipping_address.street_address|truncatechars:10 }}</label>
-					  </div>
-					  {% else %}
-					  <p>NOPE</p>
-					  {% endif %}
+							<label class = "custom-control-label" for="use_default_shipping">Use default shipping address: {{ default_shipping_address.street_address }}</label>
+						</div>
+					{% endif %}
 					<div class = "form-group separator">
 						<p class = "group-title">Billing Address</p>
-						<div class = "form-field">
-							<input class = "field-input" id = "billing_address" type = "text" name = "billing_address" placeholder = "Address">
-						</div>
-						<div class = "form-field">
-							<input class = "field-input" id = "billing_address2" type = "text" name = "billing_address2" placeholder = "Address 2 (optional)">
-						</div>
-						<div class = "form-group row">
-							<div class = "form-field half">
-								<p class = "field-label">Country</p>
-								<select id = "id_billing_country" class = "field-input" name = "billing_country">
-									<option selected>(select country)</option>
-									
-									{% for country in countries %}
-										<option value="{{ country.code }}">{{ country.name }}</option>
-									{% endfor %}
-								</select>
+						<div class = "hideable_billing_form">
+							<div class = "form-field">
+								<input class = "field-input" id = "billing_address" type = "text" name = "billing_address" placeholder = "Address">
 							</div>
-							<div class = "form-field half">
-								<p class = "field-label">Zip Code</p>
-								<input id = "billing_zip" class = "field-input" type = "text" name = "billing_zip" placeholder = "Zip">
+							<div class = "form-field">
+								<input class = "field-input" id = "billing_address2" type = "text" name = "billing_address2" placeholder = "Address 2 (optional)">
+							</div>
+							<div class = "form-group row">
+								<div class = "form-field half">
+									<p class = "field-label">Country</p>
+									<select id = "id_billing_country" class = "field-input custom-select d-block w-100" name = "billing_country">
+										<option value = "US" selected>(select country)</option>
+										
+										{% for country in countries %}
+											<option value="{{ country.code }}">{{ country.name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class = "form-field half">
+									<p class = "field-label">Zip Code</p>
+									<input id = "billing_zip" class = "field-input" type = "text" name = "billing_zip" placeholder = "Zip">
+								</div>
+							</div>
+							<div class = "form-field row left">
+								<input class = "form-checkbox" id = "set_default_billing" type = "checkbox" name = "set_default_billing">
+								<label for = "set_default_billing">Save as default billing address</label>
 							</div>
 						</div>
-						<div class = "form-field row left">
-							<input class = "form-checkbox" id = "set_default_billing" type = "checkbox" name = "set_default_billing">
-							<label for = "set_default_billing">Save as default shipping address</label>
-						</div>
-						<div class = "form-field row left">
-							<input class = "form-checkbox" id = "use_default_billing" type = "checkbox" name = "use_default_billing">
-							<label for = "use_default_billing">Use default billing address</label>
-						</div>
+						{% if default_billing_address %}
+							<div class = "form-field row left">
+								<input type = "checkbox" class = "form-checkbox" name = "use_default_billing" id = "use_default_billing">
+								<label class="custom-control-label" for="use_default_billing">Use default billing address: {{ default_billing_address.street_address }}</label>
+							</div>
+						{% endif %}
 					</div>
 					<div class = "form-group separator">
 						<p class = "group-title">Payment Option</p>
@@ -103,43 +107,43 @@
 						</div>
 					</div>
 					<div class = "form-group separator">
-						<input class = "form-submit" type = "submit" value = "Checkout">
+						<input id = "checkout-submit" class = "form-submit" type = "submit" value = "Checkout">
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 		<div class = "content-container">
 			<div class = "content-panel">
-				
+				{% include "order_snippet.html" %}
 			</div>
 		</div>
 	</div>
 
 {% endblock %}
 
-{% block js %}
+{% block home_js %}
 <script>
-var hideable_shipping_form = $('.hideable_shipping_form');
-var hideable_billing_form = $('.hideable_billing_form');
+	var hideable_shipping_form = $('.hideable_shipping_form');
+	var hideable_billing_form = $('.hideable_billing_form');
 
-var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
-var use_default_billing = document.querySelector("input[name=use_default_billing]");
+	var use_default_shipping = $("#use_default_shipping");
+	var use_default_billing = $("#use_default_billing");
 
-use_default_shipping.addEventListener('change', function() {
-  if (this.checked) {
-    hideable_shipping_form.hide();
-  } else {
-    hideable_shipping_form.show();
-  }
-})
+	use_default_shipping.on('change', function() {
+		if (this.checked) {
+			hideable_shipping_form.hide();
+		} else {
+			hideable_shipping_form.show();
+		}
+	});
 
-use_default_billing.addEventListener('change', function() {
-  if (this.checked) {
-    hideable_billing_form.hide();
-  } else {
-    hideable_billing_form.show();
-  }
-})
+	use_default_billing.on('change', function() {
+		if (this.checked) {
+			hideable_billing_form.hide();
+		} else {
+			hideable_billing_form.show();
+		}
+	});
 
 </script>
 {% endblock %}
