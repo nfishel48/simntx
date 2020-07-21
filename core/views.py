@@ -41,16 +41,19 @@ def index(request):
 # View: Feed
 # The page for posts from vendors you follow
 def feed(request):
-    posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')
+    if request.user.is_authenticated == True:
+        posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')
 
-    #messages.info(request, 'Info message');
-    #messages.success(request, 'Success message');
-    #messages.warning(request, 'Warning message');
-    #messages.error(request, 'Error message');
+        #messages.info(request, 'Info message');
+        #messages.success(request, 'Success message');
+        #messages.warning(request, 'Warning message');
+        #messages.error(request, 'Error message');
 
-    return render(request, 'feed.html', {
-        'posts': posts,
-    })
+        return render(request, 'feed.html', {
+            'posts': posts,
+        })
+    else:
+        return redirect("core:landing")
 
 
 # View: Store
@@ -78,7 +81,7 @@ def store(request):
 
 # View: Store
 # This method is a overloaded version of the previous, this is called by the landing page
-def store(request, context):
+def store_landing(request, context):
     if request.user.is_authenticated == True:
         vendors = Vendor.objects.all()[:10]
         products = Item.objects.all()[:10]
@@ -883,7 +886,7 @@ def landing(request):
             context ={
                 zip_code: 'zip_code'
             }
-            return store(request, context)
+            return store_landing(request, context)
     
     form = ZipForm()
     return render(request, "landing.html", {'form': form})
