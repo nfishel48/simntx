@@ -87,3 +87,6 @@ class EditUserForm(forms.ModelForm):
 class EditPasswordForm(ChangePasswordForm):
     def save(self):
         super(EditPasswordForm, self).save()
+
+class ZipForm(forms.Form):
+    zip_code = forms.IntegerField(label='', widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'zipcode'}))

@@ -56,21 +56,63 @@ def feed(request):
 # View: Store
 # The store showing all vendors and products
 def store(request):
-    vendors = Vendor.objects.all()[:10]
-    products = Item.objects.all()[:10]
-    food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
+    if request.user.is_authenticated == True:
+        vendors = Vendor.objects.all()[:10]
+        products = Item.objects.all()[:10]
+        food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
 
-    general_tags = GeneralTag.objects.all()
+        general_tags = GeneralTag.objects.all()
 
-    for vendor in vendors:
-        vendor.general_tags = get_general_tags(vendor.id)
+        for vendor in vendors:
+            vendor.general_tags = get_general_tags(vendor.id)
 
-    return render(request, 'store.html', {
-        'vendors': vendors,
-        'products': products,
-        'food': food,
-        'general_tags': general_tags,
-    })
+        return render(request, 'store.html', {
+            'vendors': vendors,
+            'products': products,
+            'food': food,
+            'general_tags': general_tags,
+            })
+    else:
+       return render(request, 'landing.html')
+
+
+# View: Store
+# This method is a overloaded version of the previous, this is called by the landing page
+def store(request, context):
+    if request.user.is_authenticated == True:
+        vendors = Vendor.objects.all()[:10]
+        products = Item.objects.all()[:10]
+        food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
+
+        general_tags = GeneralTag.objects.all()
+
+        for vendor in vendors:
+            vendor.general_tags = get_general_tags(vendor.id)
+
+        return render(request, 'store.html', {
+            'vendors': vendors,
+            'products': products,
+            'food': food,
+            'general_tags': general_tags,
+            })
+    else:
+        zip_code = request.POST.get('zip_code')
+        vendors = Vendor.objects.filter(zip_code = zip_code)[:10]
+        # products = Item.objects.all()[:10]
+        # food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
+
+        general_tags = GeneralTag.objects.all()
+
+        for vendor in vendors:
+            vendor.general_tags = get_general_tags(vendor.id)
+
+        return render(request, 'store.html', {
+            'vendors': vendors,
+            # 'products': products,
+            # 'food': food,
+            'general_tags': general_tags,
+            })
+
 
 
 # View: Vendor
@@ -828,7 +870,19 @@ change_password = login_required(ChangePassView.as_view())
 # View: Landing
 # The page that shows when youre not logged in; asks the user for their zip code for better results
 def landing(request):
-    return render(request, "landing.html")
+    if request.method == 'POST':
+
+        form = ZipForm(request.POST)
+
+        if form.is_valid():
+            zip_code = form.cleaned_data['zip_code']
+            context ={
+                zip_code: 'zip_code'
+            }
+            return store(request, context)
+    
+    form = ZipForm()
+    return render(request, "landing.html", {'form': form})
 
 
 # View: Read Notifications

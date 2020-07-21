@@ -153,6 +153,7 @@ LOGIN_REDIRECT_URL = '/'
 # CRISPY FORMS
 
 LOGIN_EXEMPT_URLS = (
+    r'^store',
     r'^account/login/$',
     r'^accounts/login/$',
     r'^account/logout/$',

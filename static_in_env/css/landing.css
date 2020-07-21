@@ -7,7 +7,7 @@ html {
   }
 
 body{
-    background: url(landing.jpg) no-repeat center center fixed; 
+    background: url(https://simntx.s3.us-east-2.amazonaws.com/img/landing.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
