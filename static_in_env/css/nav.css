@@ -4,8 +4,6 @@
 	position: absolute;
 	top: 100%;
 	left: 0;
-	
-	z-index: 100;
 }
 .message{
 	display: flex;
@@ -14,6 +12,7 @@
 	
 	padding: 10px var(--spacing);
 	
+	font-size: 14px;
 	color: rgba(0, 0, 0, .9);
 	
 	box-sizing: border-box;

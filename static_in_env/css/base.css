@@ -1,16 +1,3 @@
-@font-face {
-	font-family: Roboto-Thin;
-	src: url(../font/roboto/Roboto-Thin.ttf);
-}
-@font-face {
-	font-family: Roboto-Regular;
-	src: url(../font/roboto/Roboto-Regular.ttf);
-}
-@font-face {
-	font-family: Roboto-Medium;
-	src: url(../font/roboto/Roboto-Medium.ttf);
-}
-
 :root{
 	--safe: 100%;
 	
@@ -736,6 +723,8 @@ select.field-input{
 }
 .form-field label{
 	margin-left: 5px;
+	
+	font-size: 15px;
 }
 .form-field:not(:first-child):not(#extra-options){
 	margin-top: 15px;
