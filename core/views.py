@@ -913,6 +913,7 @@ def read_notifications(request):
 
 # View: Clear Notifications
 # The function to clear all of a users notifications
+@login_required
 def clear_notifications(request):
     response = {}
 
@@ -925,7 +926,7 @@ def clear_notifications(request):
 
     return JsonResponse(response)
 
-
+@login_required
 def follow_action(request, slug):
     data = {}
 
@@ -945,7 +946,7 @@ def follow_action(request, slug):
 
     return JsonResponse(data)
 
-
+@login_required
 def like_action(request, id):
     data = {}
 
@@ -969,7 +970,7 @@ def like_action(request, id):
 
     return JsonResponse(data)
 
-
+@login_required
 def comment(request):
     data = {
         'success': False,
@@ -998,7 +999,7 @@ def comment(request):
 
     return JsonResponse(data)
 
-
+@login_required
 def comments(request):
     data = {}
 
