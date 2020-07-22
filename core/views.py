@@ -820,7 +820,7 @@ def account(request):
 
         return redirect('core:account')
 
-    if request.user.userprofile.vendor_owner:
+    if request.user.userprofile.vendor_owner == True:
         data['vendor'] = get_vendors(request.user.userprofile)
 
     return render(request, 'account.html', data)
