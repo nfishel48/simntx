@@ -1043,7 +1043,6 @@ def comments(request):
 
 # Function: Search
 # The generic search function for any page to use
-@login_required
 def search(request, optional_qs):
     data = {}
 
@@ -1126,7 +1125,6 @@ def search(request, optional_qs):
 
 # Function: Get Search Items
 # The generic function to get search items from a set of variables
-@login_required
 def get_search_items(query, general_tags, price_floor, price_ceiling, type, optional_qs):
     # Creates select statements that can be dynamically used
 
@@ -1220,7 +1218,6 @@ def is_valid_form(values):
 # The function to get every vendor that a user owns
 #
 # * Doesnt support multiple vendors
-@login_required
 def get_vendors(owner):
     return Vendor.objects.get(owner = owner)
 
@@ -1228,7 +1225,6 @@ def get_vendors(owner):
 # Function : approve delivery
 # This function is used by vendors to aprove a delivery and 
 # allow a driver too assigan the delivery
-@login_required
 def approve_order(request, ref_code):
     order = Order.objects.filter(ref_code = ref_code)
     
