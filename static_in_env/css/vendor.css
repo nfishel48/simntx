@@ -118,3 +118,21 @@
 	display: flex;
 	flex-direction: column;
 }
+
+.other-vendors{
+	display: flex;
+	flex-direction: column;
+}
+.other-vendor{
+	display: flex;
+	align-items: center;
+	
+	margin: 4px 0;
+}
+.other-vendor p{
+	margin-left: 5px;
+	
+	font-size: 14px;
+	
+	text-overflow: ellipsis;
+}

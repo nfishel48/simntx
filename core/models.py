@@ -43,9 +43,7 @@ class Vendor(models.Model):
     owner = models.ForeignKey('UserProfile', null = True, on_delete = models.SET_NULL)
     address = models.ForeignKey('Address', null = True, on_delete = models.SET_NULL, related_name = 'address')
     phone_number = PhoneNumberField(null = True, blank = True)
-    zip_code = models.CharField(max_length=100)
     hours = models.ForeignKey('VendorHours', null = True, blank = True, on_delete = models.SET_NULL, related_name = 'hours')
-    
 
     def __str__(self):
         return self.title

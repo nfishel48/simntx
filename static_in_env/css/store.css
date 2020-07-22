@@ -12,6 +12,8 @@
 	width: 100%;
 	
 	display: flex;
+	
+	overflow: hidden;
 }
 .tag-link{
 	display: flex;

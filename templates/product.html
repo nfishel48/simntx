@@ -20,7 +20,7 @@
 			<div id = "product-directory">
 				<a class = "underline" href = "{% url 'core:store' %}">Store</a> / <a class = "underline" href = "{{ product.vendor.get_absolute_url }}">{{ product.vendor.title }}</a> / <a class = "underline" href = "{{ product.get_absolute_url }}">{{ product.title }}</a>
 			</div>
-			<div id = "product-details">
+			<div id = "product-details" class = "content-grid two inverse" style = "--side-panel-width: 350px">
 				<div id = "image-gallery">
 					<div id = "gallery-image">
 						<img src = "{{ product.image.url }}">

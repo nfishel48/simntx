@@ -1,3 +1,18 @@
+{% load tags %}
+
 <div class = "content-panel">
-	<p class = "content-title">Similar Vendors</p>
+	<p class = "content-title">Other Vendors</p>
+	<div class = "other-vendors">
+		{% get_other_vendors vendor as other_vendors %}
+		{% for vend in other_vendors %}
+			<div class = "other-vendor">
+				<a href = "{{ vend.get_absolute_url }}">
+					<div class = "vendor-image" style = "background-image: url({{ vend.profile_image.url }})"></div>
+				</a>
+				<a href = "{{ vend.get_absolute_url }}">
+					<p class = "underline">{{ vend.title }}</p>
+				</a>
+			</div>
+		{% endfor %}
+	</div>
 </div>

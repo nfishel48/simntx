@@ -19,7 +19,7 @@
 			{% url 'core:search' as page %}
 			{% include 'blocks/searchbar.html' with query=query page=page search_bar=True form_id='search-form' %}
 		</div>
-		<div id = "search-details-container">
+		<div id = "search-details-container" class = "content-grid two">
 			<div id = "filters-container" class = "content-panel">
 				<p class = "content-title">Filters</p>
 				

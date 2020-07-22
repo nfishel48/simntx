@@ -1,5 +1,6 @@
 from django import template
 from django.contrib.auth.models import User
+from random import shuffle
 
 import arrow
 
@@ -98,3 +99,11 @@ def get_latest_comment(post):
 @register.simple_tag
 def get_comment_count(post):
     return get_comments(post).count()
+
+
+@register.simple_tag
+def get_other_vendors(vendor):
+    other_vendors = list(Vendor.objects.exclude(id = vendor.id)[:5])
+    shuffle(other_vendors)
+
+    return other_vendors

@@ -2,7 +2,7 @@ input::placeholder{
 	color: var(--light-text);
 }
 
-.form-field:not(#payment-submit):not(:first-child){ margin-top: 10px !important; }
+.form-field:not(#payment-submit):not(.form-group.row .form-field):not(:first-child){ margin-top: 10px !important; }
 .form-group.row .form-field:not(:first-child){ margin-top: 0 !important; }
 
 #checkout-submit{
