@@ -39,7 +39,7 @@
 				</span>
 				<div class = "products-container">
 					{% for product in results %}
-						{% include 'blocks/listing_item.html' with item=product vendor=None %}
+						{% include 'blocks/listing_item.html' with item=product vendor=None grid_item=True height='250px' %}
 					{% endfor %}
 				</div>
 			
@@ -53,5 +53,6 @@
 {% block vendor_js %}
 
 	<script type = "text/javascript" src = "{% static 'js/search_helper.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/listings.js' %}"></script>
 
 {% endblock %}

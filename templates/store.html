@@ -17,22 +17,53 @@
 {% block right_panel %}
 
 	<div class = "content-panel-container column">
-		<div class = "tag-link-container">
-			{% for tag in general_tags.all %}
-				<a class = "tag-link" style = "background-color: {{ tag.color }};" href = "{% url 'core:search' %}?t={{ tag.name }}">{{ tag.name }}</a>
-			{% endfor %}
-		</div>
+		{% if store_sponsors %}
+			<div id = "sponsored-vendors" class = "content-panel">
+				{% for sponsor in store_sponsors %}
+					<div class = "sponsor">
+						<div class = "vendor-info">
+							<a class = "vendor-image-container" href = "{{ sponsor.vendor.get_absolute_url }}">
+								<div class = "vendor-image" style = "background-image: url({{ sponsor.vendor.profile_image.url }})"></div>
+							</a>
+							<div class = "vendor-details">
+								<a href = "{{ sponsor.vendor.get_absolute_url }}">
+									<p class = "underline">{{ sponsor.vendor.title }}</p>
+								</a>
+								<a href = "{{ sponsor.vendor.get_absolute_url }}">
+									<input class = "form-submit inverted rounded" type = "submit" value = "View Store">
+								</a>
+							</div>
+						</div>
+						<div class = "vendor-products-container">
+							<div class = "vendor-products">
+								{% for product in sponsor.products.all %}
+									{% include 'blocks/listing_item.html' with item=product vendor=None %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
 	
 		{% url 'core:search' as search %}
 		{% include 'blocks/product_row.html' with label='All Vendors' items=vendors vendor=True more_link=search|add:'?tp=vendors' %}
+		
+		<div class = "tag-link-container">
+			{% for tag in general_tags.all %}
+				<a class = "tag-link rounded" style = "--color: {{ tag.color }};" href = "{% url 'core:search' %}?t={{ tag.name }}">{{ tag.name }}</a>
+			{% endfor %}
+		</div>
+		
 		{% include 'blocks/product_row.html' with label='All Products' items=products vendor=None more_link=search|add:'?tp=products' %}
 		{% include 'blocks/product_row.html' with label='Food' items=food vendor=None more_link=search|add:'?t=food' %}
 	</div>
 
 {% endblock %}
 
-{% block js %}
+{% block home_js %}
 
+	<script src = "{% static 'js/store.js' %}"></script>
 	<script src = "{% static 'js/listings.js' %}"></script>
 
 {% endblock %}

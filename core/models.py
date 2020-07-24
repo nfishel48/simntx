@@ -57,6 +57,22 @@ class Vendor(models.Model):
         return self.owner
 
 
+class Promotion(models.Model):
+    vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE, related_name='promotion_vendor')
+
+
+class StorePromotion(Promotion):
+    products = models.ManyToManyField('Item')
+
+
+class PostPromotion(Promotion):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='promotion_post')
+
+
+class ProductPromotion(Promotion):
+    product = models.ForeignKey('Item', on_delete=models.CASCADE, related_name='promotion_product')
+
+
 class VendorHours(models.Model):
     sunday_start = models.TimeField()
     sunday_end = models.TimeField()
@@ -229,11 +245,12 @@ class Order(models.Model):
 class Address(models.Model):
     street_address = models.CharField(max_length=100)
     apartment_address = models.CharField(max_length=100, blank = True)
+    city = models.CharField(max_length = 50, default = "Ypsilanti")
     country = CountryField(multiple=False)
     zip = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.street_address + ', ' + self.country.name + ', ' + self.zip
+        return self.street_address + ', ' + self.city + ', ' + self.country.code + ', ' + self.zip
 
     class Meta:
         verbose_name_plural = 'Addresses'

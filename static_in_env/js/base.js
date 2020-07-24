@@ -167,25 +167,26 @@ $(document).ready(function(){
 		}
 	});
 	
-	$('#follow').on('click', function(){
+	$('.follow').on('click', function(){
 		var following = $(this).hasClass('following'),
-			slug = $(this).parent('#follow-container').find('.vendor-slug').val(),
-			button = $(this);
+			slug = $(this).parent('.follow-container').find('.vendor-slug').val(),
+			button = $(this),
+			countDiv = $(this).siblings('.follow-count').find('.follower-count');
 		
 		if (following){
 			button.removeClass('following');
 			button.html('Follow');
 			
-			var count = parseInt($('#follower-count').text()) - 1;
+			var count = parseInt(countDiv.text()) - 1;
 			
-			$('#follower-count').text(count);
+			countDiv.text(count);
 		} else {
 			button.addClass('following');
 			button.html('Following');
 			
-			var count = parseInt($('#follower-count').text()) + 1;
+			var count = parseInt(countDiv.text()) + 1;
 			
-			$('#follower-count').text(count);
+			countDiv.text(count);
 		}
 		
 		$.ajax({

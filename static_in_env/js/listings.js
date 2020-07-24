@@ -50,4 +50,17 @@ $(document).ready(function(){
 		
 		$(this).siblings('.slide-left').css('display', 'flex');
 	});
+	
+	windowResize();
+	
+	$(window).resize(windowResize);
 });
+
+function windowResize(){
+	$('.products-container .listing-item').each(function(){
+		$(this).css('height', $(this).width() + "px");
+	});
+	$('.listing-image-container').each(function(){
+		$(this).css('width', $(this).height() + "px");
+	});
+}

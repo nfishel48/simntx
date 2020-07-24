@@ -770,8 +770,16 @@ select.field-input{
 	
 	box-sizing: border-box;
 }
+.form-submit.inverted{
+	color: var(--primary);
+	
+	background-color: white;
+}
 .form-submit.small{
 	width: auto;
+}
+.rounded{
+	border-radius: 50px;
 }
 
 .content-grid{
@@ -794,13 +802,13 @@ select.field-input{
 	grid-template-columns: 1fr var(--side-panel-width);
 }
 
-#follow-container{
+.follow-container{
 	height: 30px;
 	
 	display: flex;
 	align-items: center;
 }
-#follow-count, #follow{
+.follow-count, .follow{
 	height: 100%;
 	
 	display: flex;
@@ -809,7 +817,7 @@ select.field-input{
 	
 	box-sizing: border-box;
 }
-#follow-count{
+.follow-count{
 	font-family: Roboto-Medium;
 	font-size: 12px;
 	
@@ -817,7 +825,7 @@ select.field-input{
 	border-style: solid;
 	border-color: #aaa;
 }
-#follow{
+.follow{
 	width: fit-content;
 	
 	background-color: var(--primary);
@@ -833,12 +841,12 @@ select.field-input{
 	
 	cursor: pointer;
 }
-#follow-count, #follow{
+.follow-count, .follow{
 	padding: 0 12px;
 	
 	box-sizing: border-box;
 }
-#follow.following{
+.follow.following{
 	background: transparent;
 	
 	color: var(--primary);

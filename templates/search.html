@@ -38,11 +38,11 @@
 				<div class = "products-container">
 					{% if type == 'vendors' %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=True grid_item=True %}
+							{% include 'blocks/listing_item.html' with item=item vendor=True grid_item=True height='250px' %}							%}
 						{% endfor %}
 					{% else %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=None grid_item=True %}
+							{% include 'blocks/listing_item.html' with item=item vendor=None grid_item=True height='250px' %}
 						{% endfor %}
 					{% endif %}
 				</div>
@@ -57,6 +57,7 @@
 {% block js %}
 	
 	<script type = "text/javascript" src = "{% static 'js/search.js' %}"></script>
+	<script type = "text/javascript" src = "{% static 'js/listings.js' %}"></script>
 	<script type = "text/javascript" src = "{% static 'js/search_helper.js' %}"></script>
 	
 {% endblock %}

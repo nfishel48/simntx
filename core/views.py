@@ -13,7 +13,6 @@ from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 
-
 from allauth.account.views import PasswordChangeView
 from allauth.account.forms import ChangePasswordForm
 
@@ -29,9 +28,12 @@ import stripe
 import arrow
 import math
 
+from random import shuffle
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 load_amount = 15
+store_sponsors_limit = 5
 
 # View: Index
 # The view that redirects to the front page
@@ -64,6 +66,8 @@ def store(request):
         products = Item.objects.all()[:10]
         food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
 
+        store_sponsors = get_store_sponsors()
+
         general_tags = GeneralTag.objects.all()
 
         for vendor in vendors:
@@ -74,7 +78,8 @@ def store(request):
             'products': products,
             'food': food,
             'general_tags': general_tags,
-            })
+            'store_sponsors': store_sponsors,
+        })
     else:
        return render(request, 'landing.html')
 
@@ -100,7 +105,7 @@ def store_landing(request, context):
             })
     else:
         zip_code = request.POST.get('zip_code')
-        vendors = Vendor.objects.filter(zip_code = zip_code)[:10]
+        vendors = Vendor.objects.filter(address__zip = zip_code)[:10]
         # products = Item.objects.all()[:10]
         # food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
 
@@ -1244,3 +1249,11 @@ def approve_order(request, ref_code):
                reverse('core:order', args=(order.ref_code,)))
 
     return redirect('dashboards:vendor')
+
+
+def get_store_sponsors():
+    sponsors = StorePromotion.objects.all()
+
+    shuffle(sponsors)
+
+    return sponsors[:store_sponsors_limit]

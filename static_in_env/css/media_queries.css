@@ -125,6 +125,19 @@
 	.content-grid .content-container.main{
 		grid-row: 1 !important;
 	}
+	
+	#sponsored-vendors{
+		height: 600px !important;
+	}
+	.sponsor{
+		flex-direction: column;
+	}
+	.vendor-info{
+		height: 50%;
+	}
+	.vendor-products-container{
+		height: 50% !important;
+	}
 }
 @media only screen and (min-width: 768px)and (max-width: 1200px){
 	.content-grid.three{

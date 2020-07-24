@@ -6,6 +6,6 @@
 	width: auto;
 }
 
-select.field-input{
+select[multiple].field-input{
 	height: 150px;
 }

@@ -25,20 +25,37 @@ def vendor(request):
 
         if form.is_valid():
             v = form.save()
-            v.hours.sunday_start = datetime.strptime(request.POST['sunday_start'], '%H:%S')
-            v.hours.sunday_end = datetime.strptime(request.POST['sunday_end'], '%H:%S')
-            v.hours.monday_start = datetime.strptime(request.POST['monday_start'], '%H:%S')
-            v.hours.monday_end = datetime.strptime(request.POST['monday_end'], '%H:%S')
-            v.hours.tuesday_start = datetime.strptime(request.POST['tuesday_start'], '%H:%S')
-            v.hours.tuesday_end = datetime.strptime(request.POST['tuesday_end'], '%H:%S')
-            v.hours.wednesday_start = datetime.strptime(request.POST['wednesday_start'], '%H:%S')
-            v.hours.wednesday_end = datetime.strptime(request.POST['wednesday_end'], '%H:%S')
-            v.hours.thursday_start = datetime.strptime(request.POST['thursday_start'], '%H:%S')
-            v.hours.thursday_end = datetime.strptime(request.POST['thursday_end'], '%H:%S')
-            v.hours.friday_start = datetime.strptime(request.POST['friday_start'], '%H:%S')
-            v.hours.friday_end = datetime.strptime(request.POST['friday_end'], '%H:%S')
-            v.hours.saturday_start = datetime.strptime(request.POST['saturday_start'], '%H:%S')
-            v.hours.saturday_end = datetime.strptime(request.POST['saturday_end'], '%H:%S')
+
+            if v.address:
+                v.address.delete()
+
+            if v.hours:
+                v.hours.delete()
+
+            address = Address(street_address = request.POST['street_address'],
+                              country = request.POST['country'],
+                              zip = request.POST['zip'])
+
+            hours = VendorHours(sunday_start = datetime.strptime(request.POST['sunday_start'], '%H:%S'),
+                                  sunday_end = datetime.strptime(request.POST['sunday_end'], '%H:%S'),
+                                  monday_start = datetime.strptime(request.POST['monday_start'], '%H:%S'),
+                                  monday_end = datetime.strptime(request.POST['monday_end'], '%H:%S'),
+                                  tuesday_start = datetime.strptime(request.POST['tuesday_start'], '%H:%S'),
+                                  tuesday_end = datetime.strptime(request.POST['tuesday_end'], '%H:%S'),
+                                  wednesday_start = datetime.strptime(request.POST['wednesday_start'], '%H:%S'),
+                                  wednesday_end = datetime.strptime(request.POST['wednesday_end'], '%H:%S'),
+                                  thursday_start = datetime.strptime(request.POST['thursday_start'], '%H:%S'),
+                                  thursday_end = datetime.strptime(request.POST['thursday_end'], '%H:%S'),
+                                  friday_start = datetime.strptime(request.POST['friday_start'], '%H:%S'),
+                                  friday_end = datetime.strptime(request.POST['friday_end'], '%H:%S'),
+                                  saturday_start = datetime.strptime(request.POST['saturday_start'], '%H:%S'),
+                                  saturday_end = datetime.strptime(request.POST['saturday_end'], '%H:%S'))
+
+            address.save()
+            hours.save()
+
+            v.hours = hours
+            v.address = address
 
             v.save()
         else:

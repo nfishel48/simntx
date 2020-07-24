@@ -1,6 +1,7 @@
 {% extends 'with_side_panel.html' %}
 
 {% load staticfiles %}
+{% load countries %}
 
 {% block title %}Vendor Dashboard{% endblock %}
 
@@ -16,7 +17,7 @@
 {% block left_panel %}
 
 	<div class = "left-panel-group">
-		<p class = "title">Vendor Dashboard</p>
+		<p class = "title">Vendor Profile</p>
 		<div class = "links">
 			<a href = "{% url 'dashboards:vendor' %}">
 				<div class = "link {% block select_home %}selected{% endblock %}">
@@ -37,7 +38,7 @@
 			<a href = "{% url 'dashboards:vendor_page' 'orders' %}">
 				<div class = "link {% block select_orders %}{% endblock %}">
 					<div class = "link-image">
-						<img src = "{% static 'img/icons/posts-color-48.png' %}"{>
+						<img src = "{% static 'img/icons/drivers-color-48.png' %}"{>
 					</div>
 					<p>Orders</p>
 				</div>
@@ -79,11 +80,11 @@
 			
 				<div class = "form-field">
 					<p class = "field-label">Name</p>
-					<input class = "field-input" name = "title" value = "{{ vendor.title }}" required>
+					<input class = "field-input" name = "title" value = "{{ vendor.title }}" >
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Description</p>
-					<textarea class = "field-input" name = "description" required>{{ vendor.description }}</textarea>
+					<textarea class = "field-input" name = "description" >{{ vendor.description }}</textarea>
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Profile Image</p>
@@ -98,64 +99,71 @@
 				<div class = "form-field">
 					<p class = "field-label">Address</p>
 					<div class = "field-inputs">
-						<input class = "field-input quarter" name = "street_address" value = "{{ vendor.address.street_address }}" required>
-						<input class = "field-input ten" name = "country" value = "{{ vendor.address.country.name }}" required>
-						<input class = "field-input ten" name = "zip" value = "{{ vendor.address.zip }}" required>
+						<input class = "field-input quarter" name = "street_address" value = "{{ vendor.address.street_address }}" >
+						<select id = "id_shipping_country" class = "field-input custom-select d-block w-100" name = "country">
+							<option value = "US" {% if vendor.address.country == None %}selected{% endif %}>(select country)</option>
+							
+							{% get_countries as countries %}
+							{% for country in countries %}
+								<option value = "{{ country.code }}" {% if country.name == vendor.address.country.name %}selected{% endif %}>{{ country.name }}</option>
+							{% endfor %}
+						</select>
+						<input class = "field-input ten" name = "zip" value = "{{ vendor.address.zip }}" >
 					</div>
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Phone Number</p>
-					<input class = "field-input" type = "text" name = "phone_number" placeholder = "888-888-8888" value = "{{ vendor.phone_number.as_e164 }}" required>
+					<input class = "field-input" type = "text" name = "phone_number" placeholder = "888-888-8888" value = "{{ vendor.phone_number.as_e164 }}" >
 				</div>
 				<div class = "form-field">
 					<p class = "field-label">Hours</p>
 					<div class = "field-inputs" style = "align-items: center;">
 						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Sunday</p>
 						<div class = "field-inputs">
-							<input class = "field-input ten" type = "time" name = "sunday_start" value = "{{ vendor.hours.sunday_start|time:'H:i' }}" required>
-							<input class = "field-input ten" type = "time" name = "sunday_end" value = "{{ vendor.hours.sunday_end|time:'H:i' }}" required>
+							<input class = "field-input quarter" type = "time" name = "sunday_start" value = "{{ vendor.hours.sunday_start|time:'H:i' }}" >
+							<input class = "field-input quarter" type = "time" name = "sunday_end" value = "{{ vendor.hours.sunday_end|time:'H:i' }}" >
 						</div>
 					</div>
 					<div class = "field-inputs" style = "align-items: center;">
 						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Monday</p>
 						<div class = "field-inputs">
-							<input class = "field-input ten" type = "time" name = "monday_start" value = "{{ vendor.hours.monday_start|time:'H:i' }}" required>
-							<input class = "field-input ten" type = "time" name = "monday_end" value = "{{ vendor.hours.monday_end|time:'H:i' }}" required>
+							<input class = "field-input quarter" type = "time" name = "monday_start" value = "{{ vendor.hours.monday_start|time:'H:i' }}" >
+							<input class = "field-input quarter" type = "time" name = "monday_end" value = "{{ vendor.hours.monday_end|time:'H:i' }}" >
 						</div>
 					</div>
 					<div class = "field-inputs" style = "align-items: center;">
 						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Tuesday</p>
 						<div class = "field-inputs">
-							<input class = "field-input ten" type = "time" name = "tuesday_start" value = "{{ vendor.hours.tuesday_start|time:'H:i' }}" required>
-							<input class = "field-input ten" type = "time" name = "tuesday_end" value = "{{ vendor.hours.tuesday_end|time:'H:i' }}" required>
+							<input class = "field-input quarter" type = "time" name = "tuesday_start" value = "{{ vendor.hours.tuesday_start|time:'H:i' }}" >
+							<input class = "field-input quarter" type = "time" name = "tuesday_end" value = "{{ vendor.hours.tuesday_end|time:'H:i' }}" >
 						</div>
 					</div>
 					<div class = "field-inputs" style = "align-items: center;">
 						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Wednesday</p>
 						<div class = "field-inputs">
-							<input class = "field-input ten" type = "time" name = "wednesday_start" value = "{{ vendor.hours.wednesday_start|time:'H:i' }}" required>
-							<input class = "field-input ten" type = "time" name = "wednesday_end" value = "{{ vendor.hours.wednesday_end|time:'H:i' }}" required>
+							<input class = "field-input quarter" type = "time" name = "wednesday_start" value = "{{ vendor.hours.wednesday_start|time:'H:i' }}" >
+							<input class = "field-input quarter" type = "time" name = "wednesday_end" value = "{{ vendor.hours.wednesday_end|time:'H:i' }}" >
 						</div>
 					</div>
 					<div class = "field-inputs" style = "align-items: center;">
 						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Thursday</p>
 						<div class = "field-inputs">
-							<input class = "field-input ten" type = "time" name = "thursday_start" value = "{{ vendor.hours.thursday_start|time:'H:i' }}" required>
-							<input class = "field-input ten" type = "time" name = "thursday_end" value = "{{ vendor.hours.thursday_end|time:'H:i' }}" required>
+							<input class = "field-input quarter" type = "time" name = "thursday_start" value = "{{ vendor.hours.thursday_start|time:'H:i' }}" >
+							<input class = "field-input quarter" type = "time" name = "thursday_end" value = "{{ vendor.hours.thursday_end|time:'H:i' }}" >
 						</div>
 					</div>
 					<div class = "field-inputs" style = "align-items: center;">
 						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Friday</p>
 						<div class = "field-inputs">
-							<input class = "field-input ten" type = "time" name = "friday_start" value = "{{ vendor.hours.friday_start|time:'H:i' }}" required>
-							<input class = "field-input ten" type = "time" name = "friday_end" value = "{{ vendor.hours.friday_end|time:'H:i' }}" required>
+							<input class = "field-input quarter" type = "time" name = "friday_start" value = "{{ vendor.hours.friday_start|time:'H:i' }}" >
+							<input class = "field-input quarter" type = "time" name = "friday_end" value = "{{ vendor.hours.friday_end|time:'H:i' }}" >
 						</div>
 					</div>
 					<div class = "field-inputs" style = "align-items: center;">
 						<p class = "field-label adjusted" style = "font-family: Roboto-Regular; font-size: 14px; margin-right: 10px;">Saturday</p>
 						<div class = "field-inputs">
-							<input class = "field-input ten" type = "time" name = "saturday_start" value = "{{ vendor.hours.saturday_start|time:'H:i' }}" required>
-							<input class = "field-input ten" type = "time" name = "saturday_end" value = "{{ vendor.hours.saturday_end|time:'H:i' }}" required>
+							<input class = "field-input quarter" type = "time" name = "saturday_start" value = "{{ vendor.hours.saturday_start|time:'H:i' }}" >
+							<input class = "field-input quarter" type = "time" name = "saturday_end" value = "{{ vendor.hours.saturday_end|time:'H:i' }}" >
 						</div>
 					</div>
 				</div>

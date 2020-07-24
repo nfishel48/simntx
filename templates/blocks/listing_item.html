@@ -2,8 +2,8 @@
 
 {% if vendor == True %}
 	
-	<div class = "listing-item vendor {% if grid_item %}grid-item{% endif %}">
-		<a href = "{{ item.get_absolute_url }}">
+	<div class = "listing-item vendor {% if grid_item %}grid-item{% endif %}" {% if height %}style = "height: {{ height }};"{% endif %}>
+		<a class = "listing-image-container" href = "{{ item.get_absolute_url }}">
 			<div class = "listing-image" {% if item.cover_image %}style = "background-image: url({{item.cover_image.url}})"{% endif %}>
 
 			</div>
@@ -24,10 +24,10 @@
 	
 {% else %}
 
-	<div class = "listing-item product {% if grid_item %}grid-item{% endif %}">
-		<a href = "{{ item.get_absolute_url }}">
-			<div class = "listing-image">
-				<img src = "{{item.image.url}}">
+	<div class = "listing-item product {% if grid_item %}grid-item{% endif %}" {% if height %}style = "height: {{ height }};"{% endif %}>
+		<a class = "listing-image-container" href = "{{ item.get_absolute_url }}">
+			<div class = "listing-image" style = "background-image: url({{item.image.url}})">
+				
 			</div>
 		</a>
 		<div class = "listing-info">

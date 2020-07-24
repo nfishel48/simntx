@@ -1,22 +1,22 @@
 {% load tags %}
 
-<div id = "follow-container">
+<div class = "follow-container">
 	<input class = "vendor-slug" type = "text" value = "{{ vendor.slug }}" hidden style = "display: none;">
 
 	{% if show_count %}
-		<div id = "follow-count">
+		<div class = "follow-count">
 			<span style = "display: flex; align-items: baseline;">
-				<p id = "follower-count">{% get_follower_count vendor %}</p>
+				<p class = "follower-count">{% get_follower_count vendor %}</p>
 			</span>
 		</div>
 	{% endif %}
 	
 	{% if vendor in user.userprofile.following.all %}
-		<div id = "follow" class = "following">
+		<div class = "follow following">
 			Following
 		</div>
 	{% else %}
-		<div id = "follow">
+		<div class = "follow">
 			Follow
 		</div>
 	{% endif %}
