@@ -32,7 +32,7 @@ from random import shuffle
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-load_amount = 15
+search_load_amount = 15
 store_sponsors_limit = 5
 
 # View: Index
@@ -1109,13 +1109,13 @@ def search(request, optional_qs):
     else:
         results = product_results
 
-    total_pages = math.ceil(len(results) / load_amount)
+    total_pages = math.ceil(len(results) / search_load_amount)
 
     lower_bound = page - 4 if page - 4 > 0 else 1
     upper_bound = page + 4 if page + 4 <= total_pages else total_pages
 
-    shown_lower = (page - 1) * load_amount
-    shown_upper = page * load_amount
+    shown_lower = (page - 1) * search_load_amount
+    shown_upper = page * search_load_amount
 
     data['total_pages'] = total_pages
     data['bound'] = range(lower_bound, upper_bound + 1)
@@ -1252,7 +1252,7 @@ def approve_order(request, ref_code):
 
 
 def get_store_sponsors():
-    sponsors = StorePromotion.objects.all()
+    sponsors = list(StorePromotion.objects.all())
 
     shuffle(sponsors)
 

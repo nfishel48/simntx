@@ -1,7 +1,8 @@
 .listing-item{
-	max-width: 350px;
-	width: auto;
+	width: 100%;
 	height: 100%;
+	
+	max-width: 350px;
 	
 	display: flex;
 	flex-direction: column;
@@ -21,7 +22,12 @@
 .listing-item .follow{
 	padding: 0 4px;
 }
+.listing-image-container{
+	width: 100%;
+	height: 100%;
+}
 .listing-image{
+	width: 100%;
 	height: 100%;
 	
 	display: flex;
@@ -31,6 +37,7 @@
 	
 	background-position: center;
 	background-size: cover;
+	background-repeat: no-repeat;
 	
 	overflow: hidden;
 }
@@ -41,6 +48,7 @@
 }
 .listing-info{
 	width: 100%;
+	min-height: 58px;
 
 	display: flex;
 	flex-direction: column;
@@ -99,6 +107,9 @@
 	height: 16px;
 }
 .listing-title{
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	
 	position: relative;
 	
 	font-family: Roboto-Medium;
@@ -106,8 +117,8 @@
 	
 	box-sizing: border-box;
 	
-	--white-space: nowrap;
 	text-overflow: ellipsis;
+	-webkit-line-clamp: 2;
 	
 	overflow: hidden;
 }
@@ -119,10 +130,11 @@
 	justify-content: flex-end;
 	flex: 1;
 	
+	margin-left: 10px;
+	
 	color: var(--price);
 	
 	align-self: flex-start;
-	float: right;
 }
 .listing-vendor{
 	font-family: Roboto-Regular;
@@ -144,6 +156,7 @@
 }
 .slider-container{
 	width: 100%;
+	height: 100%;
 	flex: 1;
 	
 	display: flex;
@@ -151,6 +164,9 @@
 	overflow: hidden;
 
 	box-sizing: border-box;
+}
+.slider-container.indexed .slider{
+	transition: all .5s ease;
 }
 .slider{
 	display: flex;

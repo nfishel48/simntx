@@ -19,30 +19,43 @@
 	<div class = "content-panel-container column">
 		{% if store_sponsors %}
 			<div id = "sponsored-vendors" class = "content-panel">
-				{% for sponsor in store_sponsors %}
-					<div class = "sponsor">
-						<div class = "vendor-info">
-							<a class = "vendor-image-container" href = "{{ sponsor.vendor.get_absolute_url }}">
-								<div class = "vendor-image" style = "background-image: url({{ sponsor.vendor.profile_image.url }})"></div>
-							</a>
-							<div class = "vendor-details">
-								<a href = "{{ sponsor.vendor.get_absolute_url }}">
-									<p class = "underline">{{ sponsor.vendor.title }}</p>
-								</a>
-								<a href = "{{ sponsor.vendor.get_absolute_url }}">
-									<input class = "form-submit inverted rounded" type = "submit" value = "View Store">
-								</a>
+				<div class = "slider-container indexed">
+					<div class = "slider">
+						{% for sponsor in store_sponsors %}
+							<div class = "sponsor">
+								<div class = "vendor-info">
+									<a class = "vendor-image-container" href = "{{ sponsor.vendor.get_absolute_url }}">
+										<div class = "vendor-image" style = "background-image: url({{ sponsor.vendor.profile_image.url }})"></div>
+									</a>
+									<div class = "vendor-details">
+										<a href = "{{ sponsor.vendor.get_absolute_url }}">
+											<p class = "underline">{{ sponsor.vendor.title }}</p>
+										</a>
+										<a href = "{{ sponsor.vendor.get_absolute_url }}">
+											<input class = "form-submit inverted rounded" type = "submit" value = "View Store">
+										</a>
+									</div>
+								</div>
+								<div class = "vendor-products-container">
+									<p class = "content-title">Products</p>
+									<div class = "vendor-products-wrapper">
+										<div class = "vendor-products">
+											{% for product in sponsor.products.all %}
+												{% include 'blocks/listing_item.html' with item=product vendor=None %}
+											{% endfor %}
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class = "vendor-products-container">
-							<div class = "vendor-products">
-								{% for product in sponsor.products.all %}
-									{% include 'blocks/listing_item.html' with item=product vendor=None %}
-								{% endfor %}
-							</div>
-						</div>
+						{% endfor %}
 					</div>
-				{% endfor %}
+				</div>
+				<div class = "slide-left">
+					<img src = "{% static 'img/icons/right-filled-48.png' %}">
+				</div>
+				<div class = "slide-right">
+					<img src = "{% static 'img/icons/right-filled-48.png' %}">
+				</div>
 			</div>
 		{% endif %}
 	

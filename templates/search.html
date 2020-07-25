@@ -15,7 +15,6 @@
 
 	<div class = "content-panel-container">
 		<div id = "search-bar-container" class = "content-panel">
-			
 			{% url 'core:search' as page %}
 			{% include 'blocks/searchbar.html' with query=query page=page search_bar=True form_id='search-form' %}
 		</div>
@@ -35,14 +34,14 @@
 					Products
 					<p class = "content-subtitle"> Results {{ shown_lower }}-{{ shown_upper }} of {{ total_results }}</p>
 				</span>
-				<div class = "products-container">
+				<div class = "products-container four">
 					{% if type == 'vendors' %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=True grid_item=True height='250px' %}							%}
+							{% include 'blocks/listing_item.html' with item=item vendor=True grid_item=True %}
 						{% endfor %}
 					{% else %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=None grid_item=True height='250px' %}
+							{% include 'blocks/listing_item.html' with item=item vendor=None grid_item=True %}
 						{% endfor %}
 					{% endif %}
 				</div>

@@ -215,9 +215,11 @@
 }
 
 .products-container{
+	--num-in-row: 4;
+	
 	display: grid;
 	align-items: center;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	grid-template-columns: repeat(var(--num-in-row), 1fr);
 	grid-gap: 15px;
 	
 	justify-content: space-around;

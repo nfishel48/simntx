@@ -37,7 +37,7 @@
 					Products
 					<p class = "content-subtitle"> Results {{ shown_lower }}-{{ shown_upper }} of {{ total_results }}</p>
 				</span>
-				<div class = "products-container">
+				<div class = "products-container four">
 					{% for product in results %}
 						{% include 'blocks/listing_item.html' with item=product vendor=None grid_item=True height='250px' %}
 					{% endfor %}
