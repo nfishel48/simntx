@@ -1084,25 +1084,10 @@ def search(request, optional_qs):
             if request.GET['tp'] == 'vendors':
                 type = 'vendors'
 
-        '''print('QUERY: ' + query)
-        print('TAGS: ' + str(tags))
-        print('PRICE: ' + str(price))
-        print('PRICE FLOOR: ' + str(price_floor))
-        print('PRICE FLOOR: ' + str(price_ceiling))'''
-
-        print('\n\nPAGE: ' + str(page) + '\n\n')
-
         product_results, vendor_results = get_search_items(query, general_tags, price_floor, price_ceiling, type, None)
 
     if optional_qs:
         product_results, vendor_results = get_search_items(query, general_tags, price_floor, price_ceiling, type, optional_qs)
-
-    data['query'] = query
-    data['price'] = price
-    data['page_num'] = page
-    data['all_tags'] = GeneralTag.objects.all()
-    data['selected_tags'] = general_tags
-    data['type'] = type
 
     if type == 'vendors':
         results = vendor_results
@@ -1117,11 +1102,18 @@ def search(request, optional_qs):
     shown_lower = (page - 1) * search_load_amount
     shown_upper = page * search_load_amount
 
+    data['query'] = query
+    data['price'] = price
+    data['page_num'] = page
+    data['all_tags'] = GeneralTag.objects.all()
+    data['selected_tags'] = general_tags
+    data['type'] = type
+
     data['total_pages'] = total_pages
     data['bound'] = range(lower_bound, upper_bound + 1)
-    data['shown_lower'] = shown_lower + 1
+    data['shown_lower'] = shown_lower + (1 if len(results) > 0 else 0)
     data['shown_upper'] = shown_lower + len(results[shown_lower:shown_upper])
-    data['total_results'] = len(product_results)
+    data['total_results'] = len(results)
 
     data['results'] = results[shown_lower:shown_upper]
 
@@ -1159,29 +1151,27 @@ def get_search_items(query, general_tags, price_floor, price_ceiling, type, opti
     product_results = Item.objects.filter(qs_products)
     vendor_results = Vendor.objects.filter(qs_vendors)
 
+    product_results, vendor_results = highlight_promoted_items(product_results, vendor_results)
+
     return product_results, vendor_results
 
 
-# Function: Serialize Items
-# The function to turn search QuerySets into JSON friendly objects
-def serialize_items(product_results, vendor_results):
-    product_json = []
-    vendor_json = []
+def highlight_promoted_items(product_results, vendor_results):
+    product_results = list(product_results)
+    promoted_items = list(ProductPromotion.objects.filter(product__in = product_results))
 
-    for item in product_results:
-        product_json.append({
-            'url': item.get_absolute_url(),
-            'image_url': item.image.url,
-            'title': item.title,
-            'vendor': {
-                'title': item.vendor.title,
-                'vendor_url': item.vendor.get_absolute_url(),
-            },
-            'price': item.price,
-            'general_tags': list(item.general_tags.all().values_list('name', 'color'))
-        })
+    shuffle(promoted_items)
 
-    return product_json, vendor_json
+    for item in promoted_items[:3]:
+        product_results.remove(item.product)
+
+        item.product.promotion = True
+
+        product_results = [item.product] + product_results
+
+    print(product_results)
+
+    return product_results, vendor_results
 
 
 # Function: Get Tags

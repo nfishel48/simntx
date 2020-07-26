@@ -37,11 +37,11 @@
 				<div class = "products-container four">
 					{% if type == 'vendors' %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=True grid_item=True %}
+							{% include 'blocks/listing_item.html' with item=item vendor=True grid_item=True show_promotions=True %}
 						{% endfor %}
 					{% else %}
 						{% for item in results %}
-							{% include 'blocks/listing_item.html' with item=item vendor=None grid_item=True %}
+							{% include 'blocks/listing_item.html' with item=item vendor=None grid_item=True show_promotions=True %}
 						{% endfor %}
 					{% endif %}
 				</div>
