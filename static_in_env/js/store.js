@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	$('#store-link').addClass('selected');
 	
-	$('.sponsor .vendor-image-container').each(function(){
-		$(this).css('width', $(this).height() + "px");
+	$('.sponsor').each(function(){
+		$(this).find('.vendor-image-container').css('width', $(this).find('.vendor-image-container').css('height'));
+		$(this).find('.vendor-image-container').css('width', $(this).find('.vendor-image-container').css('height'));
 	});
 });

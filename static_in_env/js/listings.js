@@ -20,52 +20,26 @@ $(document).ready(function(){
 	});
 	
 	$('.slide-left').on('click', function(){
-		var sliderContainer = $(this).siblings('.slider-container'),
-			slider = sliderContainer.find('.slider'),
-			left;
-		
-		if ($(this).siblings('.slider-container').hasClass('indexed'))
-			left = $(this).siblings('.slider-container').width();
-		else
-			left = parseInt(slider.css('margin-left').slice(0, -2)) + sliderContainer.width() / 2 * sliderStrength;
-		
-		if (left > 0){
-			left = 0;
-			
-			$(this).css('display', 'none');
-		}
-		
-		slider.css('margin-left', left + 'px');
-		
-		$(this).siblings('.slide-right').css('display', 'flex');
+		slideSponsors($(this).siblings('.slider-container'), true);
 	});
 	$('.slide-right').on('click', function(){
-		var sliderContainer = $(this).siblings('.slider-container'),
-			slider = sliderContainer.find('.slider'),
-			left;
-		
-		var outer = sliderContainer.width(),
-			inner = slider.width();
-		
-		var width = inner - outer;
-		
-		if ($(this).siblings('.slider-container').hasClass('indexed'))
-			left = -$(this).siblings('.slider-container').width();
-		else
-			left = parseInt(slider.css('margin-left').slice(0, -2)) - sliderContainer.width() / 2 * sliderStrength;
-		
-		if (left <= -width){
-			left = -width;
-			
-			$(this).css('display', 'none');
-		}
-		
-		slider.css('margin-left', left + 'px');
-		
-		$(this).siblings('.slide-left').css('display', 'flex');
+		slideSponsors($(this).siblings('.slider-container'), false);
 	});
 	
 	$(window).resize(windowResize);
+	
+	if ($('#sponsored-vendors .slider').children().length > 1){
+		var timer = new IntervalTimer(function(){
+			slideSponsors($('#sponsored-vendors .slider-container'));
+		}, 7500);
+	}
+	
+	$('#sponsored-vendors').on('mouseenter', function(){
+		timer.pause();
+	});
+	$('#sponsored-vendors').on('mouseleave', function(){
+		timer.resume();
+	});
 });
 
 function windowResize(){
@@ -81,4 +55,78 @@ function windowResize(){
 		
 		imageContainer.css('width', imageContainer.height() + "px");
 	});
+}
+
+function slideSponsors(sliderContainer, left){
+	var slider = sliderContainer.find('.slider'),
+		slideLeft = sliderContainer.siblings('.slide-left'),
+		slideRight = sliderContainer.siblings('.slide-right'),
+		leftMargin = parseInt(slider.css('margin-left').slice(0, -2)),
+		outer = sliderContainer.width(),
+		inner = slider.width(),
+		width = inner - outer,
+		indexed = sliderContainer.hasClass('indexed');
+	
+	if (indexed)
+		leftMargin += sliderContainer.width() * (left ? 1 : -1);
+	else
+		leftMargin += sliderContainer.width() * (left ? 1 : -1) / 2 * sliderStrength;
+
+	console.log(outer + ' // ' + inner);
+	console.log('LEFT MARGIN: ' + leftMargin + ' // WIDTH: ' + width);
+
+	if (leftMargin > 0){
+		leftMargin = 0;
+		
+		slideLeft.css('display', 'none');
+	} else if (leftMargin < -width){
+		if (indexed)
+			leftMargin = 0;
+		else {
+			leftMargin = -width;
+		
+			slideRight.css('display', 'none');
+		}
+	}
+	
+	slider.css('margin-left', leftMargin + 'px');
+	
+	if (left)
+		slideRight.css('display', 'flex');
+	else
+		slideLeft.css('display', 'flex');
+}
+
+ function IntervalTimer(callback, interval) {
+	var timerId, startTime, remaining = 0;
+	var state = 0; //  0 = idle, 1 = running, 2 = paused, 3= resumed
+
+	this.pause = function () {
+		if (state != 1) return;
+
+		remaining = interval - (new Date() - startTime);
+		window.clearInterval(timerId);
+		state = 2;
+	};
+
+	this.resume = function () {
+		if (state != 2) return;
+
+		state = 3;
+		window.setTimeout(this.timeoutCallback, remaining);
+	};
+
+	this.timeoutCallback = function () {
+		if (state != 3) return;
+
+		callback();
+
+		startTime = new Date();
+		timerId = window.setInterval(callback, interval);
+		state = 1;
+	};
+
+	startTime = new Date();
+	timerId = window.setInterval(callback, interval);
+	state = 1;
 }
