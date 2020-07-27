@@ -2,13 +2,11 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(Item)
-admin.site.register(OrderItem)
 admin.site.register(Order)
 admin.site.register(Vendor)
 admin.site.register(UserProfile)
 admin.site.register(Post)
 admin.site.register(GeneralTag)
-admin.site.register(Notification)
 admin.site.register(Address)
 admin.site.register(UserAddress)
 admin.site.register(VendorHours)

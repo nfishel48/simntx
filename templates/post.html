@@ -21,6 +21,10 @@
 			</div>
 			<div class = "content-container">
 				{% include 'blocks/post.html' with post=post %}
+				
+				{% if promoted_post %}
+					{% include 'blocks/post.html' with post=promoted_post.post %}
+				{% endif %}
 			</div>
 		</div>
 	</div>

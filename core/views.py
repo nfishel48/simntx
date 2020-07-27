@@ -33,7 +33,9 @@ from random import shuffle
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 search_load_amount = 15
-store_sponsors_limit = 5
+store_promotions_limit = 5
+post_promotions_limit = 3
+feed_post_limit = 10
 
 # View: Index
 # The view that redirects to the front page
@@ -44,12 +46,15 @@ def index(request):
 # The page for posts from vendors you follow
 def feed(request):
     if request.user.is_authenticated == True:
-        posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')
+        posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')[:feed_post_limit]
+        promoted_posts = get_post_promotions(posts)
 
-        #messages.info(request, 'Info message');
-        #messages.success(request, 'Success message');
-        #messages.warning(request, 'Warning message');
-        #messages.error(request, 'Error message');
+        posts = posts[:feed_post_limit - len(promoted_posts)]
+
+        for x in range(0, len(promoted_posts)):
+            promoted_posts[x].promoted = True
+
+            posts.insert((x + 1) * 4, promoted_posts[x].post)
 
         return render(request, 'feed.html', {
             'posts': posts,
@@ -66,7 +71,7 @@ def store(request):
         products = Item.objects.all()[:10]
         food = Item.objects.filter(general_tags = GeneralTag.objects.get(name ='food'))[:10]
 
-        store_sponsors = get_store_sponsors()
+        store_sponsors = get_store_promotions()
 
         general_tags = GeneralTag.objects.all()
 
@@ -190,7 +195,10 @@ def post(request, id):
     if post.exists():
         post = post[0]
 
+        promoted_post = get_post_promotions(None)[0]
+
         data['post'] = post
+        data['promoted_post'] = promoted_post
     else:
         return redirect('core:feed')
 
@@ -1241,9 +1249,23 @@ def approve_order(request, ref_code):
     return redirect('dashboards:vendor')
 
 
-def get_store_sponsors():
-    sponsors = list(StorePromotion.objects.all())
+def get_store_promotions():
+    promotions = list(StorePromotion.objects.all())
 
-    shuffle(sponsors)
+    shuffle(promotions)
 
-    return sponsors[:store_sponsors_limit]
+    return promotions[:store_promotions_limit]
+
+
+def get_post_promotions(feed_posts):
+    if feed_posts:
+        promotions = list(PostPromotion.objects.all().exclude(post__pk__in = [post.pk for post in feed_posts]))
+    else:
+        promotions = list(PostPromotion.objects.all())
+
+    for promotion in promotions:
+        promotion.post.promoted = True
+
+    shuffle(promotions)
+
+    return promotions[:post_promotions_limit]
