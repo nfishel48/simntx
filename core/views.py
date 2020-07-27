@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.db.models import Q
 from django.http import JsonResponse
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 
@@ -34,7 +34,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 search_load_amount = 15
 store_promotions_limit = 5
-post_promotions_limit = 3
+post_promotions_limit = 2
 feed_post_limit = 10
 
 # View: Index
@@ -46,18 +46,13 @@ def index(request):
 # The page for posts from vendors you follow
 def feed(request):
     if request.user.is_authenticated == True:
-        posts = Post.objects.filter(vendor__in = request.user.userprofile.following.all()).order_by('-posted')[:feed_post_limit]
-        promoted_posts = get_post_promotions(posts)
+        posts, more_to_load = get_feed_posts(request, index = 0)
 
-        posts = posts[:feed_post_limit - len(promoted_posts)]
-
-        for x in range(0, len(promoted_posts)):
-            promoted_posts[x].promoted = True
-
-            posts.insert((x + 1) * 4, promoted_posts[x].post)
+        print(more_to_load)
 
         return render(request, 'feed.html', {
             'posts': posts,
+            'more_to_load': more_to_load
         })
     else:
         return redirect("core:landing")
@@ -1263,9 +1258,48 @@ def get_post_promotions(feed_posts):
     else:
         promotions = list(PostPromotion.objects.all())
 
+    shuffle(promotions)
+
+    promotions = promotions[:post_promotions_limit]
+
     for promotion in promotions:
         promotion.post.promoted = True
 
-    shuffle(promotions)
+    return promotions
 
-    return promotions[:post_promotions_limit]
+
+def get_feed_posts(request, **args):
+    if request.GET and 'index' in request.GET:
+        index = int(request.GET['index'])
+    else:
+        index = args['index']
+
+    following_posts = Post.objects.filter(vendor__in=request.user.userprofile.following.all()).order_by('-posted')
+    all_posts = following_posts[:(index * feed_post_limit) + feed_post_limit]
+    posts = list(all_posts[index * feed_post_limit:])
+
+    more_to_load = following_posts.count() > len(all_posts)
+
+    print(str(following_posts.count()) + ' =-= ' + str(len(all_posts)))
+
+    promoted_posts = get_post_promotions(all_posts)
+
+    for x in range(0, len(promoted_posts)):
+        posts.insert((x + 1) * 5 - 1, promoted_posts[x].post)
+
+    if request.GET and 'index' in request.GET:
+        new_posts = []
+
+        for post in posts:
+            new_post = render_to_string('blocks/post.html', {
+                'post': post
+            })
+
+            new_posts.append(new_post)
+
+        return JsonResponse({
+            'posts': new_posts,
+            'more_to_load': more_to_load
+        })
+
+    return posts, more_to_load

@@ -15,9 +15,25 @@
 {% block right_panel %}
 
 	<div class = "content-panel-container column">
-		{% for post in posts %}
-			{% include 'blocks/post.html' with post=post %}
-		{% endfor %}
+		<div id = "feed-posts">
+			{% for post in posts %}
+				{% include 'blocks/post.html' with post=post %}
+			{% endfor %}
+		</div>
+		
+		{% if more_to_load %}
+			<div id = "load-more-posts" class = "content-panel underline">
+				Load More Posts
+			</div>
+		{% endif %}
+		
+		<p id = "end-of-posts" {% if more_to_load %}style = "display: none;"{% endif %}>No more posts</p>
 	</div>
+
+{% endblock %}
+
+{% block home_js %}
+
+	<script type = "text/javascript" src = "{% static 'js/feed.js' %}"></script>
 
 {% endblock %}

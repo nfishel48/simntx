@@ -7,6 +7,20 @@
 {% block home_css %}
 	
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/content-panels.css' %}">
+	
+	<style>
+		hr{
+			max-width: 1000px;
+			
+			height: 1px;
+			
+			margin-top: var(--content-panel-spacing);
+			
+			border: none;
+			
+			background-color: #ddd;
+		}
+	</style>
 
 {% endblock %}
 
@@ -23,6 +37,8 @@
 				{% include 'blocks/post.html' with post=post %}
 				
 				{% if promoted_post %}
+					<hr>
+				
 					{% include 'blocks/post.html' with post=promoted_post.post %}
 				{% endif %}
 			</div>
