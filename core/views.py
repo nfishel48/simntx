@@ -212,13 +212,14 @@ class OrderSummaryView(LoginRequiredMixin, View):
         data = {}
 
         try:
-            order = Order.objects.filter(user=self.request.user, ordered=False)
-
-            data['order'] = order
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'order': order
+            }
         except ObjectDoesNotExist:
             pass
 
-        return render(self.request, 'order_summary.html', data)
+        return render(self.request, 'order_summary.html', context)
 
 
 # View: Checkout

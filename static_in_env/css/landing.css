@@ -1,5 +1,6 @@
 html { 
-    background: url(landing.jpg) no-repeat center center fixed; 
+    /* background: url(s3://simntx/img/landing.jpg) no-repeat center center fixed;  */
+    background-color: #f7f8fa;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -7,7 +8,8 @@ html {
   }
 
 body{
-    background: url(https://simntx.s3.us-east-2.amazonaws.com/img/landing.jpg) no-repeat center center fixed; 
+    /* background: url(s3://simntx/img/landing.jpg) no-repeat center center fixed;  */
+    background-color: #f7f8fa;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

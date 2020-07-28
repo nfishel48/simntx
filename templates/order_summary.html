@@ -23,6 +23,7 @@
 						<th>Vendor</th>
 						<th>Price</th>
 						<th>Quantity</th>
+						<th>Tax</th>
 						<th>Total Price</th>
 						<th></th>
 					</tr>
@@ -44,6 +45,13 @@
 							</td>
 							<td>
 								{% if order_item.item.discount_price %}
+									{{ product.get_discount_tax }}
+								{% else %}
+									{{ product.get_tax }}
+								{% endif %}
+							</td>
+							<td>
+								{% if order_item.item.discount_price %}
 									{{ product.get_total_discount_item_price }}
 								{% else %}
 									{{ product.get_total_item_price }}
@@ -58,11 +66,24 @@
 					{% endfor %}
 				</tbody>
 			</table>
+			<table>
+				<tbody>
+					<tr>
+						<td>Price: ${{ order.get_total_before_fee }}</td>
+					</tr>
+					<tr>
+						<td>Delivery fee: $5.00</td>
+					</tr>
+					<tr>
+						<td>Final Price: ${{ order.get_total }}</td>
+					</tr>
+				</tbody>
+			</table>
 			{% get_cart_count user as cart_count %}
 			{% if cart_count == 0 %}
 				<div class = "form-end">
 					<a href = "{% url 'core:store' %}">
-						<input id = "continue-shopping" class = "form-submit" type = "submit" value = "Continue Shopping">
+						<input id = "continue-shopping" class = "submit" type = "submit" value = "Continue Shopping">
 					</a>
 				</div>
 			{% else %}
