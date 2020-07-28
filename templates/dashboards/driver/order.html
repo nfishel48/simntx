@@ -45,6 +45,19 @@
 					{% endfor %}
 				</tbody>
 			</table>
+			<table>
+				<tbody>
+					<tr>
+						<td>Price: ${{ order.get_total_before_fee }}</td>
+					</tr>
+					<tr>
+						<td>Delivery fee: $5.00</td>
+					</tr>
+					<tr>
+						<td>Final Price: ${{ order.get_total }}</td>
+					</tr>
+				</tbody>
+			</table>
 			
 			{% if not order.delivered and request.user.userprofile == order.driver %}
 				<div class = "form-end start">

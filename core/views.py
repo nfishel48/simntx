@@ -212,17 +212,20 @@ def search_view(request):
 # The order summary page
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        data = {}
-
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
             context = {
                 'order': order
-            }
+                }
+            exists = True
         except ObjectDoesNotExist:
+            exists = False
             pass
 
-        return render(self.request, 'order_summary.html', context)
+        if exists == True:
+            return render(self.request, 'order_summary.html', context)
+        else:
+            return render(self.request, 'order_summary.html')
 
 
 # View: Checkout

@@ -66,19 +66,24 @@
 					{% endfor %}
 				</tbody>
 			</table>
-			<table>
-				<tbody>
-					<tr>
-						<td>Price: ${{ order.get_total_before_fee }}</td>
-					</tr>
-					<tr>
-						<td>Delivery fee: $5.00</td>
-					</tr>
-					<tr>
-						<td>Final Price: ${{ order.get_total }}</td>
-					</tr>
-				</tbody>
-			</table>
+			{% get_cart_count user as cart_count %}
+			{% if cart_count == 0 %}
+				<table></table>
+			{% else %}
+				<table>
+					<tbody>
+						<tr>
+							<td>Price: ${{ order.get_total_before_fee }}</td>
+						</tr>
+						<tr>
+							<td>Delivery fee: $5.00</td>
+						</tr>
+						<tr>
+							<td>Final Price: ${{ order.get_total }}</td>
+						</tr>
+					</tbody>
+				</table>
+			{% endif %}
 			{% get_cart_count user as cart_count %}
 			{% if cart_count == 0 %}
 				<div class = "form-end">
