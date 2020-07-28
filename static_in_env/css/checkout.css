@@ -52,7 +52,7 @@ hr{
 .cart-item .price{
 	color: var(--dark-text);
 }
-.cart-item .price, .coupon .amount, .cart-total .price{
+.cart-item .price, .coupon .amount{
 	font-size: 14px;
 }
 
@@ -68,7 +68,10 @@ hr{
 	align-items: baseline;
 	justify-content: space-between;
 	
+	margin-top: 5px;
+	
 	font-family: Roboto-Medium;
+	font-size: 16px;
 }
 .cart-total .price{
 	font-family: Roboto-Medium;

@@ -1,5 +1,5 @@
 <div class = "header" style = "display: flex; align-items: baseline;">
-	<p class = "content-title">Cart</p>
+	<p class = "content-title large">Order</p>
 	<p class = "content-subtitle">{% get_cart_count user as cart_count %}{{ cart_count }} item{% if cart_count > 1 %}s{% endif %}</p>
 </div>
 <div class = "cart-items">
@@ -13,13 +13,6 @@
 			<p class = "price">${{ item.get_final_price }}</p>
 		</div>
 	{% endfor %}
-		<div class = "cart-item">
-			<div class = "item-details">
-				<p class = "title">Delivery Fee</p>
-				<p class = "quantity">x1</p>
-			</div>
-			<p class = "price">$5.00</p>
-		</div>
 </div>
 <hr>
 
@@ -34,9 +27,17 @@
 	<hr>
 {% endif %}
 
-<div class = "cart-total">
-	<p style = "font-size: 14px;">Total (USD)</p>
-	<p class = "price">${{ order.get_total }}</p>
+<div class = "cart-final-prices">
+	<div class = "cart-item">
+		<div class = "item-details">
+			<p class = "title">Delivery Fee</p>
+		</div>
+		<p class = "price">$5.00</p>
+	</div>
+	<div class = "cart-total">
+		<p class = "title">Total (USD)</p>
+		<p class = "price">${{ order.get_total }}</p>
+	</div>
 </div>
 
 {% if DISPLAY_COUPON_FORM %}
