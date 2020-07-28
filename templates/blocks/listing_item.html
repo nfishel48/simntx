@@ -34,19 +34,6 @@
 			<div class = "listing-main">
 				<span class = "listing-title">
 					<a href = "{{ item.get_absolute_url }}">
-						{% if show_promotions and item.promotion %}
-							<span style="
-								font-family: Roboto-Medium;
-								font-size: 10px;
-								color: var(--primary);
-								border: 1px solid var(--primary);
-								padding: 0px 4px;
-								border-radius: 4px;
-								box-sizing: border-box;
-								position: relative;
-								top: -1px;
-							">Ad</span>
-						{% endif %}
 						<span>{{ item.title }}</span>
 					</a>
 				</span>
@@ -56,8 +43,9 @@
 				<a href = "{{ item.vendor.get_absolute_url }}">
 					<p class = "listing-vendor">
 						{% if show_promotions and item.promotion %}
-							
+							{% include 'blocks/promoted-tag.html' %}
 						{% endif %}
+						
 						<span>{{ item.vendor.title }}</span></p>
 				</a>
 			</div>

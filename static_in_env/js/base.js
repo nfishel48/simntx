@@ -154,8 +154,11 @@ $(document).ready(function(){
 					newComment.find('.comment-image p').text(data['first_name'][0]);
 					newComment.find('.comment-text').text(text);
 					newComment.find('.comment-posted').text('just now');
-						
-					$(newComment).insertBefore(commentBox.closest('.add-comment'));
+					
+					if (post.find('.post-comments').length == 0)
+						$(newComment).insertBefore(commentBox.closest('.add-comment'));
+					else
+						$('.post-comments').append(newComment);
 					
 					newCount++;
 					

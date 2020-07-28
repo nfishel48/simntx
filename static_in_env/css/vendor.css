@@ -136,3 +136,8 @@
 	
 	text-overflow: ellipsis;
 }
+
+#load-more-posts{
+	width: fit-content;
+	
+}

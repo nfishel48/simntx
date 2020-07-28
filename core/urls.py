@@ -45,5 +45,6 @@ urlpatterns = [
     path('like-action/<int:id>', views.like_action, name = 'like-action'),
     path('comment', views.comment, name = 'comment'),
     path('comments/', views.comments, name = 'comments'),
+    path('get_feed_posts/', views.get_feed_posts, name = 'get_feed_posts'),
     path('approve-order/<ref_code>', views.approve_order, name='approve-order'),
 ]
