@@ -58,6 +58,17 @@
 					</tr>
 				</tbody>
 			</table>
+
+			{% if request.user.userprofile.vendor_owner == True %}
+				<table>
+					<tbody>
+						<tr>
+							<td style="color:green">What you make ${{ order.get_vendor_keep }}</td>
+							<td style="color:red">What you pay Simntx ${{ order.get_simntx_keep }}</td>
+						</tr>
+					</tbody>
+				</table>
+			{% endif %}
 			
 			{% if not order.delivered and request.user.userprofile == order.driver %}
 				<div class = "form-end start">

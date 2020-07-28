@@ -251,6 +251,13 @@ class Order(models.Model):
             'ref_code': self.ref_code
         })
 
+    def get_vendor_keep(self):
+        return self.get_total_before_fee() * .8
+
+    def get_simntx_keep(self):
+        return self.get_total_before_fee() * .2
+
+
     @classmethod
     def get_items(cls, order):
         return OrderItem.objects.filter(order = order)
