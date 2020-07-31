@@ -109,7 +109,7 @@
 		padding-bottom: 20px !important;
 	}
 	
-	.slider{
+	.slider-container:not(.indexed) .slider{
 		overflow-x: scroll;
 	}
 	
@@ -141,12 +141,17 @@
 	}
 	.sponsor{
 		flex-direction: column;
+		align-items: flex-start !important;
 	}
 	.vendor-info{
-		height: 50%;
+		width: 100%;
+		height: 50% !important;
 	}
 	.vendor-products-container{
+		width: 100%;
 		height: 50% !important;
+		
+		flex: unset;
 	}
 }
 @media only screen and (min-width: 768px)and (max-width: 1200px){

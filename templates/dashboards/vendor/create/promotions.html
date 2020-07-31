@@ -1,0 +1,83 @@
+{% extends 'dashboards/vendor.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Start Promotion{% endblock %}
+
+{% block select_home %}{% endblock %}
+{% block select_promotions %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header">
+			<p class = "name">Start Promotion</p>
+		</div>
+		<div class = "section">
+			{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+					{{ field }} - {{ error }}
+				{% endfor %}
+			{% endfor %}
+			
+			<p id = "promotion-choose" class = "content-title" style = "align-self: center;">Choose a promotion:</p>
+			<div id = "promotion-choices">
+				<div class = "promotion-choice">Store</div>
+				<div class = "promotion-choice">Post</div>
+				<div class = "promotion-choice">Product</div>
+			</div>
+			<div id = "promotion-options">
+				<div class = "promotion-option">
+					<form method = 'POST' enctype='multipart/form-data'>
+						{% csrf_token %}
+						
+						<p class = "field-label">Promotion products (max 5)</p>
+						<select class = "field-input limited" name = "products" multiple>
+							{% for product in all_products %}
+								<option value = "{{ product.id }}">{{ product.title }}</option>
+							{% endfor %}
+						</select>
+						<div class = "form-end start">
+							<input class = "form-submit" type = "submit" value = "Start">
+						</div>
+					</form>
+				</div>
+				<div class = "promotion-option">
+					<form method = 'POST' enctype='multipart/form-data'>
+						{% csrf_token %}
+						
+						<p class = "field-label">Promotion post</p>
+						<select class = "field-input" name = "post">
+							{% for post in all_posts %}
+								<option value = "{{ post.id }}">{{ post.get_title }} - {% get_normal_time post.posted %}</option>
+							{% endfor %}
+						</select>
+						<div class = "form-end start">
+							<input class = "form-submit" type = "submit" value = "Start">
+						</div>
+					</form>
+				</div>
+				<div class = "promotion-option">
+					<form method = 'POST' enctype='multipart/form-data'>
+						{% csrf_token %}
+						
+						<p class = "field-label">Promotion product</p>
+						<select class = "field-input limited" name = "product">
+							{% for product in all_products %}
+								<option value = "{{ product.id }}">{{ product.title }}</option>
+							{% endfor %}
+						</select>
+						<div class = "form-end start">
+							<input class = "form-submit" type = "submit" value = "Start">
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<form method = 'POST' enctype='multipart/form-data'>
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

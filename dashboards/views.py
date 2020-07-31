@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.contrib import messages
 
 from core.models import *
-from core.views import get_general_tags
+from core.views import get_general_tags, get_vendors, can_create_promotion
 
 from datetime import datetime
 
@@ -14,8 +14,7 @@ from . import forms
 def vendor(request):
     data = {}
     
-    vendor = Vendor.objects.get(owner = request.user.userprofile)
-
+    vendor = get_vendors(request.user.userprofile)
     vendor.general_tags = get_general_tags(vendor)
 
     if request.method == 'POST':
@@ -69,8 +68,7 @@ def vendor(request):
 def vendor_page(request, page):
     data = {}
 
-    profile = request.user.userprofile
-    vendor = Vendor.objects.get(owner = profile)
+    vendor = get_vendors(request.user.userprofile)
 
     template = 'dashboards/vendor/' + page + '.html'
 
@@ -87,11 +85,16 @@ def vendor_page(request, page):
         products = Item.objects.filter(vendor = vendor)
 
         data['products'] = products
-        print('products')
-
     elif page == 'orders':
-        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = False, authorized = False, vendor_id = vendor)
+        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = False, authorized = False, vendor = vendor)
+
         data['orders'] = orders
+    elif page == 'promotions':
+        promotions = list(StorePromotion.objects.filter(vendor = vendor)) + \
+                     list(ProductPromotion.objects.filter(vendor = vendor)) + \
+                     list(PostPromotion.objects.filter(vendor=vendor))
+
+        data['promotions'] = promotions
 
     data['vendor'] = vendor
 
@@ -164,7 +167,7 @@ def edit_page(request, page, id):
 
         return redirect('dashboards:vendor_page', page=page)
 
-    vendor = Vendor.objects.get(owner=request.user.userprofile)
+    vendor = get_vendors(request.user.userprofile)
 
     template = 'dashboards/vendor/edit/' + page + '.html'
 
@@ -195,7 +198,7 @@ def edit_page(request, page, id):
 def create_page(request, page):
     data = {}
 
-    vendor = Vendor.objects.get(owner=request.user.userprofile)
+    vendor = get_vendors(request.user.userprofile)
 
     template = 'dashboards/vendor/create/' + page + '.html'
 
@@ -204,6 +207,11 @@ def create_page(request, page):
 
     if page == 'products':
         data['all_tags'] = GeneralTag.objects.all()
+    elif page == 'promotions':
+
+
+        data['all_products'] = Item.objects.filter(vendor = vendor)
+        data['all_posts'] = Post.objects.filter(vendor = vendor)
 
     if request.method == 'POST':
         if page == 'posts':
@@ -250,6 +258,28 @@ def create_page(request, page):
                 data['form'] = form
 
                 return render(request, template, data)
+        elif page == 'promotions':
+            if request.POST and can_create_promotion(vendor):
+                if 'products' in request.POST:
+                    products = Item.objects.filter(id__in = [int(id) for id in request.POST.getlist('products')], vendor = vendor)
+
+                    promotion = StorePromotion(vendor = vendor)
+                    promotion.save()
+
+                    promotion.products.set(products)
+                    promotion.save()
+                elif 'product' in request.POST:
+                    product = Item.objects.filter(id = int(request.POST.get('product')), vendor = vendor)
+
+                    if product.exists():
+                        promotion = ProductPromotion(vendor = vendor, product = product[0])
+                        promotion.save()
+                elif 'post' in request.POST:
+                    post = Post.objects.filter(id = int(request.POST.get('post')), vendor=vendor)
+
+                    if post.exists():
+                        promotion = PostPromotion(vendor = vendor, post = post[0])
+                        promotion.save()
 
         return redirect('dashboards:vendor_page', page=page)
 
@@ -258,7 +288,7 @@ def create_page(request, page):
     return render(request, template, data)
 
 
-def delete_page(request, page, id):
+def delete_page(request, page, id, **args):
     if page == 'posts':
         post = Post.objects.filter(id = id)
 
@@ -271,6 +301,22 @@ def delete_page(request, page, id):
 
         if product.exists():
             product.delete()
+        else:
+            messages.info('Product was not able to be deleted')
+    elif page == 'promotions':
+        id, type = id.split('end')
+
+        promotion = None
+
+        if type == 'Store':
+            promotion = StorePromotion.objects.filter(id=id)
+        elif type == 'Product':
+            promotion = ProductPromotion.objects.filter(id=id)
+        elif type == 'Post':
+            promotion = PostPromotion.objects.filter(id=id)
+
+        if promotion.exists():
+            promotion.delete()
         else:
             messages.info('Product was not able to be deleted')
 

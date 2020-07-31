@@ -66,9 +66,12 @@
 	
 	color: white;
 }
-.vendor-details p{
+.vendor-details .title{
 	font-family: Roboto-Medium;
 	font-size: 20px;
+}
+.vendor-details .promoted-tag{
+	top: -4px !important;
 }
 .vendor-details .form-submit{
 	margin-top: 5px;
@@ -79,6 +82,8 @@
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+	
+	overflow-x: auto;
 }
 .vendor-products-container .content-title{
 	padding: 20px;
@@ -92,8 +97,6 @@
 	height: 100%;
 	
 	box-sizing: border-box;
-	
-	overflow-x: auto;
 }
 .vendor-products{
 	width: fit-content;

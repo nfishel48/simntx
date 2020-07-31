@@ -12,9 +12,42 @@
 	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Promotions</p>
+			<div class = "header-actions">
+				{% if promotions|length < 6 %}
+					<a href = "{% url 'dashboards:create_page' 'promotions' %}">
+						<div class = "action" title = "Start Promotion" style = "--background-color: var(--primary);">
+							<img src = "{% static 'img/icons/plus-48.png' %}">
+						</div>
+					</a>
+				{% endif %}
+			</div>
 		</div>
-		<div class = "section">
-			
+		<div class = "section table">
+			<table class = "data-table">
+				<tbody>
+					<tr class = "header-row">
+						<th>Description</th>
+						<th>Type</th>
+						<th>Action</th>
+					</tr>
+					
+					{% for promotion in promotions %}
+						<tr>
+							<td>
+								<a class = "link underline" href>{{ promotion.get_title }}</a>
+							</td>
+							<td>{{ promotion.get_type }}</td>
+							<td class = "action-col">
+								<a href = "{% url 'dashboards:delete_page' 'promotions' promotion.id|stringformat:'i'|add:'end'|add:promotion.get_type %}">
+									<div id = "delete-post" class = "action" style = "--background-color: var(--light-red);" title = "Delete" >
+										<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
+									</div>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 	</div>
 

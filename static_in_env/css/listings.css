@@ -216,3 +216,25 @@
 .slide-left:hover img{
 	transform: scale(1) rotate(180deg);
 }
+
+.promoted-tag{
+	position: relative;
+	top: -1px;
+	
+	padding: 0px 4px;
+	
+	font-family: Roboto-Medium;
+	font-size: 10px;
+	color: var(--primary);
+	
+	border: 1px solid var(--primary);
+	
+	border-radius: 4px;
+	
+	box-sizing: border-box;
+}
+.promoted-tag.inverse{
+	background-color: white;
+	
+	border-color: white;
+}

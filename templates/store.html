@@ -29,7 +29,10 @@
 									</a>
 									<div class = "vendor-details">
 										<a href = "{{ sponsor.vendor.get_absolute_url }}">
-											<p class = "underline">{{ sponsor.vendor.title }}</p>
+											<span>
+												{% include 'blocks/promoted-tag.html' with inverse=True %}
+												<span class = "title underline">{{ sponsor.vendor.title }}</span>
+											</span>
 										</a>
 										<a href = "{{ sponsor.vendor.get_absolute_url }}">
 											<input class = "form-submit inverted rounded" type = "submit" value = "View Store">

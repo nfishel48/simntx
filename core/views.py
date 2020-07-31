@@ -32,9 +32,12 @@ from random import shuffle
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-search_load_amount = 15
 store_promotions_limit = 5
+product_promotion_limit = 2
 post_promotions_limit = 2
+total_promotion_limit = 6
+
+search_load_amount = 15
 feed_post_limit = 10
 
 # View: Index
@@ -1169,7 +1172,7 @@ def highlight_promoted_items(product_results, vendor_results):
 
     shuffle(promoted_items)
 
-    for item in promoted_items[:3]:
+    for item in promoted_items[:product_promotion_limit]:
         product_results.remove(item.product)
 
         item.product.promotion = True
@@ -1221,7 +1224,12 @@ def is_valid_form(values):
 #
 # * Doesnt support multiple vendors
 def get_vendors(owner):
-    return Vendor.objects.get(owner = owner)
+    vendors = Vendor.objects.filter(owner=owner)
+
+    if vendors.exists():
+        return vendors[0]
+
+    return redirect('core:index')
 
 #
 # Function : approve delivery
@@ -1307,3 +1315,9 @@ def get_feed_posts(request, **args):
         })
 
     return posts, more_to_load
+
+
+def can_create_promotion(vendor):
+    return len(list(StorePromotion.objects.filter(vendor = vendor)) + \
+             list(ProductPromotion.objects.filter(vendor = vendor)) + \
+             list(PostPromotion.objects.filter(vendor=vendor))) < total_promotion_limit

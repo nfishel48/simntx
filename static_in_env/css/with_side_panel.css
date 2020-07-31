@@ -208,6 +208,9 @@
 	font-size: 22px;
 }
 .right-panel-group .section{
+	display: flex;
+	flex-direction: column;
+	
 	width: 100%;
 }
 .right-panel-group .section:not(:nth-child(2)){
@@ -254,10 +257,6 @@
 	color: var(--dark-text);
 }
 
-td{
-	padding-left: 5px !important;
-	padding-right: 5px !important;
-}
 .section.table{
 	padding: 0;
 }

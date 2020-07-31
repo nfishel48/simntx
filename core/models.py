@@ -7,6 +7,7 @@ from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
 
+from model_utils.managers import InheritanceManager
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -58,19 +59,47 @@ class Vendor(models.Model):
 
 
 class Promotion(models.Model):
-    vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE, related_name='promotion_vendor')
+    vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_related')
+    objects = InheritanceManager()
+
+    class Meta:
+        abstract = True
+
+    def get_title(self):
+        return self.vendor.title
+
+    def get_type(self):
+        return 'Promotion'
 
 
 class StorePromotion(Promotion):
     products = models.ManyToManyField('Item')
 
+    def get_title(self):
+        return ', '.join(product.title for product in self.products.all())
+
+    def get_type(self):
+        return 'Store'
+
 
 class PostPromotion(Promotion):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='promotion_post')
 
+    def get_title(self):
+        return self.post.get_title()
+
+    def get_type(self):
+        return 'Post'
+
 
 class ProductPromotion(Promotion):
     product = models.ForeignKey('Item', on_delete=models.CASCADE, related_name='promotion_product')
+
+    def get_title(self):
+        return self.product.title
+
+    def get_type(self):
+        return 'Product'
 
 
 class VendorHours(models.Model):

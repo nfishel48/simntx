@@ -9,3 +9,34 @@
 select[multiple].field-input{
 	height: 150px;
 }
+
+#promotion-choices{
+	width: 100%;
+	
+	display: flex;
+}
+.promotion-choice{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	
+	padding: 40px 0;
+	
+	border: 1px solid #ddd;
+	
+	cursor: pointer;
+	
+	box-sizing: border-box;
+}
+.promotion-choice:nth-child(2){
+	margin: 0 20px;
+}
+.promotion-choice:hover{
+	background-color: #f9f9f9;
+}
+
+.promotion-option{
+	display: none;
+	flex-direction: column;
+}
