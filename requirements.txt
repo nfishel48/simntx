@@ -22,6 +22,7 @@ django-countries==6.1.2
 django-crispy-forms==1.9.1
 django-debug-toolbar==1.10.1
 django-hosts==4.0
+django-model-utils==4.0.0
 django-phonenumber-field==4.0.0
 django-storages==1.9.1
 docutils==0.15.2
@@ -44,6 +45,7 @@ kiwisolver==1.2.0
 lazy-object-proxy==1.4.3
 Markdown==3.2.2
 mccabe==0.6.1
+numpy==1.19.0
 oauthlib==3.1.0
 opt-einsum==3.2.1
 parso==0.7.0
@@ -76,9 +78,11 @@ scipy==1.4.1
 six==1.15.0
 sqlparse==0.2.4
 stripe==2.27.0
+swapper==1.1.2.post1
 termcolor==1.1.0
 threadpoolctl==2.1.0
 toml==0.10.1
+tqdm==4.48.0
 traitlets==4.3.3
 urllib3==1.25.9
 utils==1.0.1
