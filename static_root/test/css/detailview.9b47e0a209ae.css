@@ -1,0 +1,14 @@
+#main-info{
+	width: 100%;
+	
+	display: flex;
+	
+	padding: 70px 0;
+	
+	border-bottom: 1px solid #ddd;
+}
+#main-info > div{
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}

@@ -1,0 +1,31 @@
+#vendor-info{
+	padding: 50px 0 30px 0;
+	
+	border-bottom: 1px solid #ddd;
+}
+#vendor-detail{
+	display: flex;
+	
+	margin-top: 20px;
+}
+#vendor-desc{
+	display: flex;
+	flex-direction: column;
+	
+	margin-left: 20px;
+}
+#vendor-name{
+	font-size: 28px;
+}
+#vendor-image{
+	width: 200px;
+	height: 200px;
+	
+	background-color: lightgray;
+}
+#about-label{
+	margin-bottom: 10px;
+	
+	font-family: Roboto-Medium;
+	font-size: 18px;
+}

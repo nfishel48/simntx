@@ -1,0 +1,26 @@
+#feed-posts{
+	width: 100%;
+	
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+#load-more-posts{
+	width: fit-content;
+	
+	padding: 10px;
+	
+	font-family: Roboto-Medium;
+	font-size: 12px;
+	
+	text-transform: uppercase;
+	
+	cursor: pointer;
+}
+
+#end-of-posts{
+	margin-top: 20px;
+	
+	font-size: 14px;
+}

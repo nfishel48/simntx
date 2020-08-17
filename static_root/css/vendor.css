@@ -1,0 +1,143 @@
+.content-panel-container{
+	flex-direction: column;
+}
+
+#vendor-header{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	
+	position: relative;
+	
+	padding: 0 !important;
+	
+	background-color: white;
+	
+	border: 1px solid #ddd;
+}
+#vendor-cover{
+	width: 100%;
+	height: 200px;
+	
+	background-size: cover;
+	background-position: center;
+	
+	border-bottom: 1px solid #ddd;
+}
+#vendor-details{
+	display: flex;
+	
+	position: relative;
+	
+	padding: 15px 20px 0 20px;
+	
+	box-sizing: border-box;
+}
+#vendor-image{
+	width: 120px;
+	height: 120px;
+	
+	position: absolute;
+	top: calc(-50% - 40px);
+	left: 20px;
+	
+	background-color: white;
+	background-size: cover;
+	background-position: center;
+	
+	border: 3px solid white;
+	border-radius: 100%;
+}
+#vendor-main{
+	width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	
+	margin-left: 140px;
+}
+#vendor-info{
+	width: 100%;
+	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+#vendor-title{
+	font-family: Roboto-Medium;
+	font-size: 24px;
+	color: var(--dark-text);
+}
+#vendor-links{
+	display: flex;
+	
+	margin-top: 10px;
+}
+.vendor-link{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	font-size: 14px;
+	color: var(--light-text);
+	
+	padding: 12px 30px;
+	
+	border-bottom: 2px solid #ccc;
+	
+	box-sizing: border-box;
+	
+	cursor: pointer;
+}
+#vendor-links a:not(:first-child){
+	margin-left: 10px;
+}
+.vendor-link:not(.selected):hover{
+	border-color: var(--light-text);
+	
+	color: var(--dark-text);
+}
+.vendor-link.selected{
+	font-family: Roboto-Medium;
+	color: var(--dark-text);
+	
+	border-color: var(--primary);
+}
+
+#vendor-content{
+	width: 100%;
+	
+	margin-top: var(--content-panel-spacing);
+}
+#vendor-content .content-container{
+	margin: 0;
+}
+
+#vendor-posts{
+	display: flex;
+	flex-direction: column;
+}
+
+.other-vendors{
+	display: flex;
+	flex-direction: column;
+}
+.other-vendor{
+	display: flex;
+	align-items: center;
+	
+	margin: 4px 0;
+}
+.other-vendor p{
+	margin-left: 5px;
+	
+	font-size: 14px;
+	
+	text-overflow: ellipsis;
+}
+
+#load-more-posts{
+	width: fit-content;
+	
+}

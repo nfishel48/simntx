@@ -1,0 +1,153 @@
+#store-container{
+	width: 1200px;
+	
+	display: flex;
+	flex-direction: column;
+	
+	position: relative;
+	left: calc(var(--left-panel-width) / -2);
+}
+
+#sponsored-vendors{
+	width: 100%;
+	height: 300px;
+	
+	position: relative;
+	
+	padding: 0 !important;
+	
+	box-sizing: border-box;
+}
+.sponsor{
+	width: 100%;
+	height: 100%;
+	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	overflow: hidden;
+}
+.vendor-info{
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	
+	padding: 20px 60px;
+	
+	background-color: var(--primary);
+	
+	box-sizing: border-box;
+}
+.vendor-image-container{
+	flex: 1;
+}
+.vendor-image{
+	height: 100%;
+	
+	background-size: cover;
+	background-position: center;
+	
+	border: 3px solid white;
+	
+	border-radius: 100%;
+	
+	box-sizing: border-box;
+}
+.vendor-details{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+	margin-top: 15px;
+	
+	color: white;
+}
+.vendor-details .title{
+	font-family: Roboto-Medium;
+	font-size: 20px;
+}
+.vendor-details .promoted-tag{
+	top: -4px !important;
+}
+.vendor-details .form-submit{
+	margin-top: 5px;
+}
+.vendor-products-container{
+	height: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	
+	overflow-x: auto;
+}
+.vendor-products-container .content-title{
+	padding: 20px;
+	padding-bottom: 0;
+	margin: 0;
+	
+	box-sizing: border-box;
+}
+.vendor-products-wrapper{
+	width: 100%;
+	height: 100%;
+	
+	box-sizing: border-box;
+}
+.vendor-products{
+	width: fit-content;
+	height: 100%;
+	display: flex;
+	justify-content: space-around;
+	
+	padding: 20px;
+	
+	box-sizing: border-box;
+}
+
+.tag-link-container{
+	width: 100%;
+	
+	display: flex;
+	
+	margin-top: var(--content-panel-spacing);
+	
+	overflow: hidden;
+}
+.tag-link{
+	--color: var(--dark-text);
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	padding: 12px 20px;
+	
+	font-family: Roboto-Medium;
+	font-size: 12px;
+	color: white !important;
+
+	text-transform: uppercase;
+	
+	background-color: var(--color);
+	
+	border: 2px solid var(--color);
+	
+	box-sizing: border-box;
+	
+	transition: all .1s ease;
+}
+.tag-link:not(:first-child){
+	margin-left: 10px;
+}
+.tag-link:hover{
+	color: var(--color) !important;
+	
+	background-color: white;
+	
+	border-color: var(--color);
+}

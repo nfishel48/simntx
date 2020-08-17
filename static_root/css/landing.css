@@ -1,0 +1,22 @@
+html { 
+    /* background: url(s3://simntx/img/landing.jpg) no-repeat center center fixed;  */
+    background-color: #f7f8fa;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+body{
+    /* background: url(s3://simntx/img/landing.jpg) no-repeat center center fixed;  */
+    background-color: #f7f8fa;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+}
+
+.padding{
+    padding-top: 20rem;
+}

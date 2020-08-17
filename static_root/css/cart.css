@@ -1,0 +1,60 @@
+table{
+	width: 100%;
+	
+	border-collapse: collapse;
+}
+th, td{
+	color: var(--dark-text);
+}
+th{
+	padding: 15px 0;
+	
+	border-bottom: 2px solid #ddd;
+	
+	font-family: Roboto-Medium;
+	font-weight: unset;
+	
+	text-align: left;
+	
+	box-sizing: border-box;
+}
+td{
+	padding: 15px 0;
+	
+	border-bottom: 1px solid #ddd;
+	
+	font-size: 14px;
+}
+th:first-child, td:first-child{
+	padding-left: 20px;
+}
+th:last-child, td:last-child{
+	padding-right: 20px;
+}
+
+td a{
+	height: 100%;
+	
+	vertical-align: top;
+}
+.tiny-button{
+	height: 16px;
+	
+	vertical-align: middle;
+	
+	margin: 0 2px;
+}
+.tiny-button.remove{
+	height: 20px;
+}
+
+.form-end a{
+	align-self: flex-end;
+}
+.form-submit{
+	padding: 12px 20px;
+}
+
+#continue-shopping{
+	background-color: var(--light-blue);
+}
