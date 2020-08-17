@@ -70,6 +70,12 @@ class UserSignUpForm(SignupForm):
 
         return user
 
+class DriverSignUp(forms.Form):
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+    email = forms.EmailField()
+
+
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = User

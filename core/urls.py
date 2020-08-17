@@ -37,6 +37,7 @@ urlpatterns = [
     path('change_password', views.change_password, name='change_password'),
 
     path('landing/', views.landing, name='landing'),
+    path('driver_signup/', views.driver_signup, name='driver_signup'),
 
     path('read-notifications', views.read_notifications, name = 'read_notifications'),
     path('clear-notifications', views.clear_notifications, name = 'clear_notifications'),

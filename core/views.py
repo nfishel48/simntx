@@ -30,6 +30,9 @@ import math
 
 from random import shuffle
 
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 store_promotions_limit = 5
@@ -906,6 +909,35 @@ def landing(request):
     form = ZipForm()
     return render(request, "landing.html", {'form': form})
 
+# View: Driver Sign Up
+# This page will have the user enter information if they would like to become a driver
+def driver_signup(request):
+    if request.method == 'POST':
+
+        form = DriverSignUp(request.POST)
+
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+
+            request ={
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email
+            }
+
+            return sendDriverEmail(request,'natefishel@gmail.com')
+
+    form = DriverSignUp()
+    return render(request, "driver_signup.html", {'form': form})
+
+# Function: This funtion is used by the driver sign up view
+# this will send an email to the hiring person
+def sendDriverEmail(request,emailto):
+   res = send_mail("Potential new driver", "The following person has filled out the driver request form \nfirst name: "+request["first_name"]+"\nlast name: "+
+                                            request["last_name"]+"\nemail: "+request["email"] , "paul@polo.com", [emailto])
+   return HttpResponse('%s'%res)
 
 # View: Read Notifications
 # The function to read all of a users notifications
