@@ -9,7 +9,7 @@ html {
 
 body{
     /* background: url(s3://simntx/img/landing.jpg) no-repeat center center fixed;  */
-    background-color: #f7f8fa;
+    background-color: #f7f8fa !important;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

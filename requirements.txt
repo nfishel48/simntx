@@ -56,7 +56,6 @@ pickleshare==0.7.5
 Pillow==7.1.2
 prompt-toolkit==3.0.5
 protobuf==3.12.2
-psycopg2==2.8.5
 psycopg2-binary==2.8.5
 ptyprocess==0.6.0
 pyasn1==0.4.8
