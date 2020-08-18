@@ -9,7 +9,7 @@
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/dashboards/vendor.css' %}">
 
-	{% block home_css %}
+	{% block vendor_css %}
 	{% endblock %}
 
 {% endblock %}
@@ -35,20 +35,32 @@
 					<p>Posts</p>
 				</div>
 			</a>
-			<a href = "{% url 'dashboards:vendor_page' 'orders' %}">
-				<div class = "link {% block select_orders %}{% endblock %}">
-					<div class = "link-image">
-						<img src = "{% static 'img/icons/drivers-color-48.png' %}"{>
-					</div>
-					<p>Orders</p>
-				</div>
-			</a>
 			<a href = "{% url 'dashboards:vendor_page' 'products' %}">
 				<div class = "link {% block select_products %}{% endblock %}">
 					<div class = "link-image">
 						<img src = "{% static 'img/icons/products-color-48.png' %}">
 					</div>
 					<p>Products</p>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class = "left-panel-group">
+		<div class = "links">
+			<a href = "{% url 'dashboards:vendor_page' 'approve_orders' %}">
+				<div class = "link {% block select_approve_orders %}{% endblock %}">
+					<div class = "link-image">
+						<img src = "{% static 'img/icons/drivers-color-48.png' %}"{>
+					</div>
+					<p>Approve Orders</p>
+				</div>
+			</a>
+			<a href = "{% url 'dashboards:vendor_page' 'past_orders' %}">
+				<div class = "link {% block select_past_orders %}{% endblock %}">
+					<div class = "link-image">
+						<img src = "{% static 'img/icons/calendar-color-48.png' %}"{>
+					</div>
+					<p>Past Orders</p>
 				</div>
 			</a>
 		</div>
@@ -180,5 +192,7 @@
 {% block with_side_panel_js %}
 
 	<script type = "text/javascript" src = "{% static 'js/dashboards/vendor.js' %}"></script>
+	
+	{% block vendor_js %}{% endblock %}
 
 {% endblock %}

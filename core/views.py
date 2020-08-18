@@ -482,7 +482,7 @@ class PaymentView(View):
                 order.ref_code = create_ref_code()
                 order.save()
 
-                notifications.push(self.request.user, 'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been created and is waiting for a driver.', reverse('core:order', args = (order.ref_code,)))
+                notifications.push(self.request.user, 'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been created and is waiting to be approved by the vendor.', reverse('core:order', args = (order.ref_code,)))
 
                 messages.success(self.request, "Your order was successful!")
 
@@ -1282,10 +1282,10 @@ def approve_order(request, ref_code):
         order.save()
 
         notifications.push(order.user,
-                'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been approved by a vendor and will soon be assigned to a driver',
+                'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been approved by a vendor and is waiting for a driver.',
                reverse('core:order', args=(order.ref_code,)))
 
-    return redirect('dashboards:vendor')
+    return redirect('dashboards:vendor', page='approve_orders')
 
 
 def get_store_promotions():

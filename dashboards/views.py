@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.template.loader import get_template
 from django.contrib import messages
 
 from core.models import *
 from core.views import get_general_tags, get_vendors, can_create_promotion
 
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 from . import forms
 
@@ -65,7 +65,7 @@ def vendor(request):
     return render(request, 'dashboards/vendor.html', data)
 
 
-def vendor_page(request, page):
+def vendor_page(request, page, month=date.today()):
     data = {}
 
     vendor = get_vendors(request.user.userprofile)
@@ -85,10 +85,40 @@ def vendor_page(request, page):
         products = Item.objects.filter(vendor = vendor)
 
         data['products'] = products
-    elif page == 'orders':
+    elif page == 'approve_orders':
+        month_balance = 0
+
         orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = False, authorized = False, vendor = vendor)
+        month_orders = Order.objects.filter(ordered = True, authorized = True, vendor = vendor, ordered_date__date__month = datetime.today().month)
+
+        for order in month_orders.all():
+            month_balance += order.get_vendor_keep()
 
         data['orders'] = orders
+        data['num_orders'] = month_orders.count()
+        data['amount_orders'] = month_balance
+    elif page == 'past_orders':
+        month_balance = 0
+
+        month_orders = Order.objects.filter(ordered = True, authorized = True, vendor = vendor, ordered_date__date__month = month.month, ordered_date__date__year = month.year)
+
+        for order in month_orders.all():
+            month_balance += order.get_vendor_keep()
+
+        back_month = (month.replace(day = 1) - timedelta(days = 1))
+        forward_month = (month.replace(day = 1) + timedelta(days = 40))
+
+        data['orders'] = month_orders
+        data['month'] = month.strftime('%B')
+        data['year'] = month.year
+        data['num_orders'] = month_orders.count()
+        data['amount_orders'] = month_balance
+
+        data['back_month'] = back_month.strftime('%m%Y')
+        data['forward_month'] = forward_month.strftime('%m%Y')
+
+        data['back_name'] = back_month.strftime('%B')
+        data['forward_name'] = forward_month.strftime('%B')
     elif page == 'promotions':
         promotions = list(StorePromotion.objects.filter(vendor = vendor)) + \
                      list(ProductPromotion.objects.filter(vendor = vendor)) + \
@@ -101,6 +131,10 @@ def vendor_page(request, page):
     print(template)
 
     return render(request, template, data)
+
+
+def vendor_past_month(request, month):
+    return vendor_page(request, 'past_orders', month=date(int(month[-4:]), int(month[:-4]), 1))
 
 
 def edit_page(request, page, id):
@@ -364,6 +398,21 @@ def driver_page(request, page):
     print(template)
 
     return render(request, template, data)
+
+
+def vendor_order(request, ref_code):
+    order = Order.objects.filter(ref_code = ref_code)
+
+    if order.exists():
+        data = {}
+
+        order = order[0]
+
+        data['order'] = order
+
+        return render(request, 'dashboards/vendor/order.html', data)
+    else:
+        return redirect('dashboards:vendor')
 
 
 def order(request, ref_code):

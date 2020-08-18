@@ -1,0 +1,54 @@
+{% extends 'dashboards/vendor.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Approve Orders{% endblock %}
+
+{% block select_home %}{% endblock %}
+{% block select_past_orders %}selected{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header" style = "flex-direction: column;align-items: baseline; justify-content: unset;">
+			<p class = "name">{{ month }}<span style = "margin-left: 5px; color: var(--light-text);font-family: Roboto-Regular; font-size: 14px;">{{ year }}</span></p>
+			<div style = "display: flex; align-items: center;">
+				<a class = "link underline" style = "font-size: 12px;" href = "{% url 'dashboards:vendor_past_month' back_month %}">{{ back_name }}</a>
+				<p style = "margin: 0 4px;">•</p>
+				<a class = "link underline" style = "font-size: 12px;" href = "{% url 'dashboards:vendor_past_month' forward_month %}">{{ forward_name }}</a>
+			</div>
+		</div>
+		<div class = "section">
+			<p>Orders: {{ num_orders }}</p>
+			<p>Balance: <span style = "color: var(--price);">${{ amount_orders }}</span></p>
+		</div>
+		<div class = "section table" style = "border: none !important;">
+			<table class = "data-table">
+				<tbody>
+					<tr class = "header-row">
+						<th>#</th>
+						<th>Ordered</th>
+						<th>Address</th>
+						<th>Actions</th>
+					</tr>
+					
+					{% for order in orders %}
+						<tr>
+							<td>{{ order.ref_code }}</td>
+							<td>{{ order.ordered_date }}</td>
+							<td>{{ order.shipping_address.street_address }}</td>
+							<td class = "action-col">
+								<a href = "{% url 'dashboards:vendor_order' order.ref_code %}">
+									<div class = "action" title = "View">
+										<img src = "{% static 'img/icons/eye-48.png' %}">
+									</div>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

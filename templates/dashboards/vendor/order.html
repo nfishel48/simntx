@@ -1,0 +1,75 @@
+{% extends "dashboards/vendor.html" %}
+
+{% load staticfiles %}
+{% load tags %}
+
+{% block title %}Order Overview{% endblock %}
+
+{% block select_home %}{% endblock %}
+{% block select_approve_orders %}selected{% endblock %}
+
+{% block vendor_css %}
+
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/cart.css' %}">
+	
+{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header">
+			<p class = "name">Order</p>
+		</div>
+		<div class = "section">
+			<table>
+				<tbody>
+					<tr>
+						<th>Product</th>
+						<th>Vendor</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Total Price</th>
+					</tr>
+					{% get_order_items order.ref_code as items %}
+					{% for product in items.all %}
+						<tr>
+							<td>{{ product.item.title }}</td>
+							<td>{{ product.item.vendor }}</td>
+							<td>{{ product.item.price }}</td>
+							<td>{{ product.quantity }}</td>
+							<td>
+								{% if order_item.item.discount_price %}
+									{{ product.get_total_discount_item_price }}
+								{% else %}
+									{{ product.get_total_item_price }}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			
+			<div style = "margin-top: 10px;">
+				<p><span style = "font-family: Roboto-Medium;">Price</span>: ${{ order.get_total_before_fee }}</p>
+				<p><span style = "font-family: Roboto-Medium;">Delivery fee</span>: $5.00</p>
+				<p><span style = "font-family: Roboto-Medium;">Final Price</span>: ${{ order.get_total }}</p>
+				
+				<br>
+				
+				<p><span style = "font-family: Roboto-Medium;">You make</span>: <span style = "color: var(--price);">${{ order.get_vendor_keep }}</span></p>
+				<p><span style = "font-family: Roboto-Medium;">Simntx fee</span>: <span style = "color: var(--light-red);">${{ order.get_simntx_keep }}</span></p>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block js %}
+
+	<script>
+		function goBack() {
+		  window.history.back();
+		}
+	</script>
+	
+{% endblock %}

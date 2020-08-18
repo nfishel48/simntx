@@ -281,10 +281,10 @@ class Order(models.Model):
         })
 
     def get_vendor_keep(self):
-        return self.get_total_before_fee() * .8
+        return round(self.get_total_before_fee() * .8, 2)
 
     def get_simntx_keep(self):
-        return self.get_total_before_fee() * .2
+        return round(self.get_total_before_fee() * .2, 2)
 
 
     @classmethod
