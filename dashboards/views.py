@@ -9,7 +9,7 @@ from core.views import get_general_tags, get_vendors, can_create_promotion
 from datetime import datetime, date, timedelta
 
 from . import forms
-
+from core import notifications
 
 def vendor(request):
     data = {}
@@ -88,7 +88,7 @@ def vendor_page(request, page, month=date.today()):
     elif page == 'approve_orders':
         month_balance = 0
 
-        orders = Order.objects.filter(ordered = True, being_delivered = False, delivered = False, authorized = False, vendor = vendor)
+        orders = Order.objects.filter(ordered = True, authorized = False, denied = False, vendor = vendor)
         month_orders = Order.objects.filter(ordered = True, authorized = True, vendor = vendor, ordered_date__date__month = datetime.today().month)
 
         for order in month_orders.all():
@@ -135,6 +135,74 @@ def vendor_page(request, page, month=date.today()):
 
 def vendor_past_month(request, month):
     return vendor_page(request, 'past_orders', month=date(int(month[-4:]), int(month[:-4]), 1))
+
+
+def order_action(request):
+    print(request.POST)
+
+    if request.POST:
+        if 'action' in request.POST:
+            if request.POST.get('action').lower() == 'approve':
+                if 'ref_code' in request.POST:
+                    order = Order.objects.filter(ref_code=request.POST.get('ref_code'))
+
+                    if order.exists():
+                        order = order[0]
+
+                        products = [int(product) for product in request.POST.getlist('products')]
+
+                        exclusions = OrderItem.objects.filter(order = order).exclude(id__in = products)
+
+                        print('Exclusions: ' + str(exclusions))
+
+                        return approve_order(request, order.ref_code, exclusions)
+            elif request.POST.get('action').lower() == 'deny':
+                #return deny_order(request, )
+                pass
+
+    return redirect('dashboards:vendor_page', page='approve_orders')
+
+
+# Function : approve delivery
+# This function is used by vendors to aprove a delivery and
+# allow a driver too assigan the delivery
+def approve_order(request, ref_code, exclusions=None):
+    order = Order.objects.filter(ref_code=ref_code)
+
+    if order.exists() and not order[0].authorized:
+        order = order[0]
+
+        if exclusions:
+            for product in exclusions:
+                product.in_stock = False
+                product.save()
+
+        order.authorized = True
+        order.save()
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
+                               order.ref_code) + '</span> has been approved by the vendor and is waiting for a driver.',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:vendor_page', page='approve_orders')
+
+
+def deny_order(request, ref_code):
+    order = Order.objects.filter(ref_code=ref_code)
+
+    if order.exists() and not order[0].authorized:
+        order = order[0]
+
+        order.denied = True
+        order.save()
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
+                               order.ref_code) + '</span> has been denied by the vendor.',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:vendor_page', page='approve_orders')
 
 
 def edit_page(request, page, id):
@@ -428,6 +496,47 @@ def order(request, ref_code):
         return render(request, 'dashboards/driver/order.html', data)
     else:
         return redirect('dashboards:driver')
+
+
+def admin(request, month=date.today()):
+    data = {}
+    vendors = []
+
+    total_balance = 0
+
+    for vendor in Vendor.objects.all():
+        month_balance = 0
+
+        month_orders = Order.objects.filter(ordered=True, authorized=True, vendor=vendor,
+                                        ordered_date__date__month=month.month, ordered_date__date__year=month.year)
+
+        for order in month_orders.all():
+            month_balance += order.get_vendor_keep()
+
+        total_balance += month_balance
+
+        if month_orders.count() > 0:
+            vendors.append([vendor.title, month_orders.count(), month_balance])
+
+    back_month = (month.replace(day=1) - timedelta(days=1))
+    forward_month = (month.replace(day=1) + timedelta(days=40))
+
+    data['vendors'] = vendors
+    data['month'] = month.strftime('%B')
+    data['year'] = month.year
+    data['total_balance'] = total_balance
+
+    data['back_month'] = back_month.strftime('%m%Y')
+    data['forward_month'] = forward_month.strftime('%m%Y')
+
+    data['back_name'] = back_month.strftime('%B')
+    data['forward_name'] = forward_month.strftime('%B')
+
+    return render(request, 'dashboards/admin.html', data)
+
+
+def admin_past_month(request, month):
+    return admin(request, month=date(int(month[-4:]), int(month[:-4]), 1))
 
 
 # METHODS

@@ -236,6 +236,8 @@ class Order(models.Model):
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
     authorized = models.BooleanField(default=False)
+    denied = models.BooleanField(default=False)
+
     vendor = models.ForeignKey('Vendor', related_name='order_vendor', on_delete=models.CASCADE, default = 1, blank=True)
 
     '''
@@ -254,19 +256,28 @@ class Order(models.Model):
 
     def get_total(self):
         total = 0
+
         for order_item in self.get_items(self):
-            total += order_item.get_final_price()
+            if order_item.in_stock:
+                total += order_item.get_final_price()
+
         if self.coupon:
             total -= self.coupon.amount
+
         total += 5
+
         return round(total, 2)
 
     def get_total_before_fee(self):
         total = 0
+
         for order_item in self.get_items(self):
-            total += order_item.get_final_price()
+            if order_item.in_stock:
+                total += order_item.get_final_price()
+
         if self.coupon:
             total -= self.coupon.amount
+
         return round(total, 2)
 
     def get_ref_code(self):

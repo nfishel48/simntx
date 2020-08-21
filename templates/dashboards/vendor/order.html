@@ -18,47 +18,61 @@
 
 	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
-			<p class = "name">Order</p>
+			<p class = "name">Order #{{ order.ref_code }}</p>
 		</div>
 		<div class = "section">
-			<table>
-				<tbody>
-					<tr>
-						<th>Product</th>
-						<th>Vendor</th>
-						<th>Price</th>
-						<th>Quantity</th>
-						<th>Total Price</th>
-					</tr>
-					{% get_order_items order.ref_code as items %}
-					{% for product in items.all %}
-						<tr>
-							<td>{{ product.item.title }}</td>
-							<td>{{ product.item.vendor }}</td>
-							<td>{{ product.item.price }}</td>
-							<td>{{ product.quantity }}</td>
-							<td>
-								{% if order_item.item.discount_price %}
-									{{ product.get_total_discount_item_price }}
-								{% else %}
-									{{ product.get_total_item_price }}
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+			<form method = "POST" action = "{% url 'dashboards:order_action' %}">
+				{% csrf_token %}
 			
-			<div style = "margin-top: 10px;">
-				<p><span style = "font-family: Roboto-Medium;">Price</span>: ${{ order.get_total_before_fee }}</p>
-				<p><span style = "font-family: Roboto-Medium;">Delivery fee</span>: $5.00</p>
-				<p><span style = "font-family: Roboto-Medium;">Final Price</span>: ${{ order.get_total }}</p>
+				<input type = "text" name = "ref_code" value = "{{ order.ref_code }}" hidden>
+				<table>
+					<tbody>
+						<tr>
+							{% if not order.authorized %}
+								<th></th>
+							{% endif %}
+							
+							<th>Product</th>
+							<th>Vendor</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Total Price</th>
+						</tr>
+						
+						{% get_order_items order.ref_code as items %}
+						{% for product in items.all %}
+							<tr {% if not product.in_stock %}style = "opacity: .3;" title = "Out of Stock"{% endif %}>
+								{% if not order.authorized %}
+									<td>
+										<input type = "checkbox" name = "products" value = "{{ product.id }}" checked>
+									</td>
+								{% endif %}
+								
+								<td>{{ product.item.title }}</td>
+								<td>{{ product.item.vendor }}</td>
+								<td>{{ product.item.price }}</td>
+								<td>{{ product.quantity }}</td>
+								<td>
+									{% if order_item.item.discount_price %}
+										{{ product.get_total_discount_item_price }}
+									{% else %}
+										{{ product.get_total_item_price }}
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 				
-				<br>
-				
-				<p><span style = "font-family: Roboto-Medium;">You make</span>: <span style = "color: var(--price);">${{ order.get_vendor_keep }}</span></p>
-				<p><span style = "font-family: Roboto-Medium;">Simntx fee</span>: <span style = "color: var(--light-red);">${{ order.get_simntx_keep }}</span></p>
-			</div>
+				<div style = "width: fit-content; align-self: end; margin-top: 10px;">
+					<p><span style = "font-family: Roboto-Medium;">You make</span>: <span style = "color: var(--price);">${{ order.get_vendor_keep }}</span></p>
+					<p><span style = "font-family: Roboto-Medium;">Simntx fee</span>: <span style = "color: var(--light-red);">${{ order.get_simntx_keep }}</span></p>
+				</div>
+				<div class = "form-end" style = "flex-direction: row; justify-content: flex-end;">
+					<input class = "form-submit" type = "submit" name = "action" style = "background-color: var(--action-delete);" value = "Deny">
+					<input class = "form-submit" type = "submit" name = "action" style = "margin-left: 10px; background-color: var(--action-accept);" value = "Approve">
+				</div>
+			</form>
 		</div>
 	</div>
 

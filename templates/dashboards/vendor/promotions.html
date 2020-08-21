@@ -39,7 +39,7 @@
 							<td>{{ promotion.get_type }}</td>
 							<td class = "action-col">
 								<a href = "{% url 'dashboards:delete_page' 'promotions' promotion.id|stringformat:'i'|add:'end'|add:promotion.get_type %}">
-									<div id = "delete-post" class = "action" style = "--background-color: var(--light-red);" title = "Delete" >
+									<div id = "delete-post" class = "action delete" title = "Delete" >
 										<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
 									</div>
 								</a>

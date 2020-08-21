@@ -1263,30 +1263,6 @@ def get_vendors(owner):
 
     return redirect('core:index')
 
-#
-# Function : approve delivery
-# This function is used by vendors to aprove a delivery and 
-# allow a driver too assigan the delivery
-def approve_order(request, ref_code):
-    order = Order.objects.filter(ref_code = ref_code)
-    
-    if order.exists() and not order[0].being_delivered:
-        order = order[0]
-        
-        #for items in order
-            #if orderitem is not authorized
-                #order.autherized == false 
-            #else
-                #order.autherized == true
-        order.authorized = True
-        order.save()
-
-        notifications.push(order.user,
-                'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been approved by a vendor and is waiting for a driver.',
-               reverse('core:order', args=(order.ref_code,)))
-
-    return redirect('dashboards:vendor', page='approve_orders')
-
 
 def get_store_promotions():
     promotions = list(StorePromotion.objects.all())

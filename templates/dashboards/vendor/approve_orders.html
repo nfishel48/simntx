@@ -24,7 +24,7 @@
 						<th>#</th>
 						<th>Ordered</th>
 						<th>Address</th>
-						<th>Summary</th>
+						<th>Actions</th>
 					</tr>
 					
 					{% for order in orders %}
@@ -34,13 +34,18 @@
 							<td>{{ order.shipping_address.street_address }}</td>
 							<td class = "action-col">
 								<a href = "{% url 'dashboards:vendor_order' order.ref_code %}">
-									<div class = "action" title = "View">
+									<div class = "action view" title = "View">
 										<img src = "{% static 'img/icons/eye-48.png' %}">
 									</div>
 								</a>
-								<a href = "{% url 'core:approve-order' order.ref_code %}">
-									<div class = "action" title = "Approve" style = "--background-color: var(--green);">
+								<a href = "{% url 'dashboards:approve-order' order.ref_code %}">
+									<div class = "action accept" title = "Approve">
 										<img src = "{% static 'img/icons/check-48.png' %}">
+									</div>
+								</a>
+								<a href = "{% url 'dashboards:deny-order' order.ref_code %}">
+									<div class = "action delete" title = "Deny">
+										<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
 									</div>
 								</a>
 							</td>

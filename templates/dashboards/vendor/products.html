@@ -43,12 +43,12 @@
 							</td>
 							<td class = "action-col">
 								<a href = "{% url 'dashboards:edit_page' 'products' product.id %}">
-									<div class = "action" title = "Edit Post">
+									<div class = "action view" title = "Edit Post">
 										<img src = "{% static 'img/icons/edit-24.png' %}">
 									</div>
 								</a>
 								<a href = "{% url 'dashboards:delete_page' 'products' product.id %}">
-									<div id = "delete-post" class = "action" style = "--background-color: var(--light-red);" title = "Delete Post" >
+									<div id = "delete-post" class = "action delete" title = "Delete Post" >
 										<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
 									</div>
 								</a>

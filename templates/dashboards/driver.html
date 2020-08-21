@@ -58,7 +58,7 @@
 						<th>#</th>
 						<th>Ordered</th>
 						<th>Address</th>
-						<th>Summary</th>
+						<th>Actions</th>
 					</tr>
 					
 					{% for order in orders %}
@@ -68,12 +68,12 @@
 							<td>{{ order.shipping_address.street_address }}</td>
 							<td class = "action-col">
 								<a href = "{% url 'dashboards:order' order.ref_code %}">
-									<div class = "action" title = "View">
+									<div class = "action view" title = "View">
 										<img src = "{% static 'img/icons/eye-48.png' %}">
 									</div>
 								</a>
 								<a href = "{% url 'core:set-driver' order.ref_code %}">
-									<div class = "action" title = "Accept" style = "--background-color: var(--green);">
+									<div class = "action accept" title = "Accept">
 										<img src = "{% static 'img/icons/plus-48.png' %}">
 									</div>
 								</a>

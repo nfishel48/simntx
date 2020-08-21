@@ -1,0 +1,60 @@
+{% extends 'with_side_panel.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block left_panel %}
+
+	<div class = "left-panel-group">
+		<p class = "title">Admin Dashboard</p>
+		<div class = "links">
+			<a href = "{% url 'dashboards:driver' %}">
+				<div class = "link {% block select_home %}selected{% endblock %}">
+					<div class = "link-image">
+						<img src = "{% static 'img/icons/home-color-48.png' %}">
+					</div>
+					<p>Home</p>
+				</div>
+			</a>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block right_panel %}
+
+	<div class = "right-panel-group content-panel-container">
+		<div class = "header" style = "flex-direction: column;align-items: baseline; justify-content: unset;">
+			<p class = "name">{{ month }}<span style = "margin-left: 5px; color: var(--light-text);font-family: Roboto-Regular; font-size: 14px;">{{ year }}</span></p>
+			<div style = "display: flex; align-items: center;">
+				<a class = "link underline" style = "font-size: 12px;" href = "{% url 'dashboards:admin_past_month' back_month %}">{{ back_name }}</a>
+				<p style = "margin: 0 4px;">•</p>
+				<a class = "link underline" style = "font-size: 12px;" href = "{% url 'dashboards:admin_past_month' forward_month %}">{{ forward_name }}</a>
+			</div>
+		</div>
+		<div class = "section">
+			<p>Total Balance Due: <span style = "color: var(--price);">${{ total_balance }}</span></p>
+		</div>
+		<div class = "section table" style = "border: none !important;">
+			<table class = "data-table">
+				<tbody>
+					<tr class = "header-row">
+						<th>Vendor</th>
+						<th>Orders</th>
+						<th>Balance Due</th>
+					</tr>
+					
+					{% for vendor in vendors %}
+						<tr>
+							<td>{{ vendor.0 }}</td>
+							<td>{{ vendor.1 }}</td>
+							<td style = "color: var(--price);">${{ vendor.2 }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

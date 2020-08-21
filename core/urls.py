@@ -47,5 +47,4 @@ urlpatterns = [
     path('comment', views.comment, name = 'comment'),
     path('comments/', views.comments, name = 'comments'),
     path('get_feed_posts/', views.get_feed_posts, name = 'get_feed_posts'),
-    path('approve-order/<ref_code>', views.approve_order, name='approve-order'),
 ]

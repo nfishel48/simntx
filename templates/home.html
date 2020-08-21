@@ -59,6 +59,16 @@
 					</div>
 				</a>
 			{% endif %}
+			{% if user.is_staff %}
+				<a href = "{% url 'dashboards:admin' %}">
+					<div class = "link">
+						<div class = "link-image">
+							<img src = "{% static 'img/icons/dashboard-color-48.png' %}">
+						</div>
+						<p>Admin Dashboard</p>
+					</div>
+				</a>
+			{% endif %}
 			
 			<a href = "{% url 'core:account' %}">
 				<div class = "link {% block select_account %}{% endblock %}">

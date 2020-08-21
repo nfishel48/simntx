@@ -29,6 +29,7 @@
 						<th>#</th>
 						<th>Ordered</th>
 						<th>Address</th>
+						<th>Status</th>
 						<th>Actions</th>
 					</tr>
 					
@@ -37,9 +38,16 @@
 							<td>{{ order.ref_code }}</td>
 							<td>{{ order.ordered_date }}</td>
 							<td>{{ order.shipping_address.street_address }}</td>
+							<td>
+								{% if order.being_delivered %}Being Delivered
+								{% elif order.delivered %}Delivered
+								{% elif order.refund_requested %}Requested Refund
+								{% elif order.refund_granted %}Refunded
+								{% else %}Waiting for Driver{% endif %}
+							</td>
 							<td class = "action-col">
 								<a href = "{% url 'dashboards:vendor_order' order.ref_code %}">
-									<div class = "action" title = "View">
+									<div class = "action view" title = "View">
 										<img src = "{% static 'img/icons/eye-48.png' %}">
 									</div>
 								</a>
