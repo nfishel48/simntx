@@ -237,6 +237,7 @@ class Order(models.Model):
     refund_granted = models.BooleanField(default=False)
     authorized = models.BooleanField(default=False)
     denied = models.BooleanField(default=False)
+    cancelled = models.BooleanField(default=False)
 
     vendor = models.ForeignKey('Vendor', related_name='order_vendor', on_delete=models.CASCADE, default = 1, blank=True)
 

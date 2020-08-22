@@ -11,6 +11,8 @@ from datetime import datetime, date, timedelta
 from . import forms
 from core import notifications
 
+import stripe
+
 def vendor(request):
     data = {}
     
@@ -180,10 +182,18 @@ def approve_order(request, ref_code, exclusions=None):
         order.authorized = True
         order.save()
 
-        notifications.push(order.user,
+        charge = chargeUser(request, order)
+
+        if charge[0]:
+            notifications.push(order.user,
                            'Order <span style = "font-family: Roboto-Medium;">#' + str(
-                               order.ref_code) + '</span> has been approved by the vendor and is waiting for a driver.',
+                               order.ref_code) + '</span> has been approved by the vendor and is waiting for a driver. Your card has been charged.',
                            reverse('core:order', args=(order.ref_code,)))
+        else:
+            notifications.push(order.user,
+                               'Order <span style = "font-family: Roboto-Medium;">#' + str(
+                                   order.ref_code) + '</span> has been cancelled. <span style "color: var(--light-red)">' + charge[1] + '</span>',
+                               reverse('core:order', args=(order.ref_code,)))
 
     return redirect('dashboards:vendor_page', page='approve_orders')
 
@@ -203,6 +213,58 @@ def deny_order(request, ref_code):
                            reverse('core:order', args=(order.ref_code,)))
 
     return redirect('dashboards:vendor_page', page='approve_orders')
+
+
+def chargeUser(request, order):
+    warning = ''
+
+    try:
+        amount = int(order.get_total() * 100)
+
+        charge = stripe.Charge.create(amount=amount, currency="usd", customer=order.user.userprofile.stripe_customer_id)
+
+        payment = Payment()
+        payment.stripe_charge_id = charge['id']
+        payment.user = order.user
+        payment.amount = charge['amount']
+        payment.save()
+
+        order.payment = payment
+        order.save()
+
+        return True, True
+    except stripe.error.CardError as e:
+        body = e.json_body
+
+        err = body.get('error', {})
+
+        warning = f"{err.get('message')}"
+    except stripe.error.RateLimitError as e:
+        # Too many requests made to the API too quickly
+        warning = "Rate limit error"
+    except stripe.error.InvalidRequestError as e:
+        # Invalid parameters were supplied to Stripe's API
+        print(e)
+
+        warning = "Invalid parameters"
+    except stripe.error.AuthenticationError as e:
+        # Authentication with Stripe's API failed
+        # (maybe you changed API keys recently)
+        warning = "Not authenticated"
+    except stripe.error.APIConnectionError as e:
+        # Network communication with Stripe failed
+        warning = "Network error"
+    except stripe.error.StripeError as e:
+        # Display a very generic error to the user, and maybe send
+        # yourself an email
+        warning = "Something went wrong. You were not charged. Please try again."
+    except Exception as e:
+        # send an email to ourselves
+        warning = "A serious error occurred. We have been notifed."
+
+        print(e)
+
+    return False, warning
 
 
 def edit_page(request, page, id):
