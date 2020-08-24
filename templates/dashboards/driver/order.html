@@ -7,84 +7,77 @@
 
 {% block driver_css %}
 
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/checkout.css' %}">
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/cart.css' %}">
 	
 {% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group content-panel-container">
-		<div class = "header">
-			<p class = "name">Order</p>
-		</div>
-		<div class = "section">
-			<table>
-				<tbody>
-					<tr>
-						<th>Product</th>
-						<th>Vendor</th>
-						<th>Price</th>
-						<th>Quantity</th>
-						<th>Total Price</th>
-					</tr>
-					{% get_order_items order.ref_code as items %}
-					{% for product in items.all %}
-						<tr>
-							<td>{{ product.item.title }}</td>
-							<td>{{ product.item.vendor }}</td>
-							<td>{{ product.item.price }}</td>
-							<td>{{ product.quantity }}</td>
-							<td>
-								{% if order_item.item.discount_price %}
-									{{ product.get_total_discount_item_price }}
-								{% else %}
-									{{ product.get_total_item_price }}
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-			<table>
-				<tbody>
-					<tr>
-						<td>Price: ${{ order.get_total_before_fee }}</td>
-					</tr>
-					<tr>
-						<td>Delivery fee: $5.00</td>
-					</tr>
-					<tr>
-						<td>Final Price: ${{ order.get_total }}</td>
-					</tr>
-				</tbody>
-			</table>
-
-			{% if request.user.userprofile.vendor_owner == True %}
-				<table>
-					<tbody>
-						<tr>
-							<td style="color:green">What you make ${{ order.get_vendor_keep }}</td>
-							<td style="color:red">What you pay Simntx ${{ order.get_simntx_keep }}</td>
-						</tr>
-					</tbody>
-				</table>
-			{% endif %}
+	<div class = "content-panel-container content-grid two inverse" style = "--side-panel-width: 300px;">
+		<div class = "content-container">
+			<div class = "content-panel">
+				<div class = "header" style = "display: flex; align-items: baseline;">
+					<p class = "content-title large">Order #{{ order.ref_code }}</p>
+					<p class = "content-subtitle">{% if order.cancelled %}Cancelled
+												  {% elif order.refund_granted %}Refunded
+												  {% elif order.being_delivered %}Being Delivered
+												  {% elif order.delivered %}Delivered
+												  {% endif %}</p>
+				</div>
+				<div class = "section">
+					<table>
+						<tbody>
+							<tr>
+								<th>Product</th>
+								<th>Vendor</th>
+								<th>Price</th>
+								<th>Quantity</th>
+								<th>Total Price</th>
+							</tr>
+							{% get_order_items order.ref_code as items %}
+							{% for product in items.all %}
+								<tr {% if not product.in_stock %}style = "opacity: .3;" title = "Out of Stock"{% endif %}>
+									<td>{{ product.item.title }}</td>
+									<td>{{ product.item.vendor }}</td>
+									<td>{{ product.item.price }}</td>
+									<td>{{ product.quantity }}</td>
+									<td>
+										{% if order_item.item.discount_price %}
+											{{ product.get_total_discount_item_price }}
+										{% else %}
+											{{ product.get_total_item_price }}
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 			
-			{% if not order.delivered and request.user.userprofile == order.driver %}
-				<div class = "form-end start">
-					{% if order.being_delivered %}
-						<a href = "{% url 'core:set_delivered' order.ref_code %}">
-							<input class = "form-submit" type = "submit" value = "Mark Delivered">
-						</a>
-					{% else %}
-						<a href = "{% url 'core:set-driver' order.ref_code %}">
-							<input class = "form-submit" type = "submit" value = "Accept" style = "background-color: var(--green);">
-						</a>
+					{% if order.authorized and not order.cancelled and not order.refund_granted and not order.delivered and request.user.userprofile == order.driver %}
+						<div class = "form-end start">
+							{% if order.being_delivered %}
+								<a href = "{% url 'core:set_delivered' order.ref_code %}">
+									<input class = "form-submit" type = "submit" value = "Mark Delivered">
+								</a>
+							{% else %}
+								<a href = "{% url 'core:set-driver' order.ref_code %}">
+									<input class = "form-submit" type = "submit" value = "Accept" style = "background-color: var(--green);">
+								</a>
+							{% endif %}
+						</div>
 					{% endif %}
 				</div>
-			{% endif %}
+			</div>
 		</div>
-		
+		<div class = "content-container main">
+			<div class = "content-panel">
+				{% include "order_snippet.html" with order=order items=items %}
+			</div>
+			<div class = "content-panel">
+				{% include "blocks/order_keep.html" with order=order items=items vendor_view=False %}
+			</div>
+		</div>
 	</div>
 
 {% endblock %}

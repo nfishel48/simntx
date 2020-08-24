@@ -10,69 +10,85 @@
 
 {% block vendor_css %}
 
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/checkout.css' %}">
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/cart.css' %}">
 	
 {% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group content-panel-container">
-		<div class = "header">
-			<p class = "name">Order #{{ order.ref_code }}</p>
-		</div>
-		<div class = "section">
-			<form method = "POST" action = "{% url 'dashboards:order_action' %}">
-				{% csrf_token %}
-			
-				<input type = "text" name = "ref_code" value = "{{ order.ref_code }}" hidden>
-				<table>
-					<tbody>
-						<tr>
-							{% if not order.authorized %}
-								<th></th>
-							{% endif %}
-							
-							<th>Product</th>
-							<th>Vendor</th>
-							<th>Price</th>
-							<th>Quantity</th>
-							<th>Total Price</th>
-						</tr>
-						
-						{% get_order_items order.ref_code as items %}
-						{% for product in items.all %}
-							<tr {% if not product.in_stock %}style = "opacity: .3;" title = "Out of Stock"{% endif %}>
-								{% if not order.authorized %}
-									<td>
-										<input type = "checkbox" name = "products" value = "{{ product.id }}" checked>
-									</td>
-								{% endif %}
-								
-								<td>{{ product.item.title }}</td>
-								<td>{{ product.item.vendor }}</td>
-								<td>{{ product.item.price }}</td>
-								<td>{{ product.quantity }}</td>
-								<td>
-									{% if order_item.item.discount_price %}
-										{{ product.get_total_discount_item_price }}
-									{% else %}
-										{{ product.get_total_item_price }}
+	<div class = "content-panel-container content-grid two inverse" style = "--side-panel-width: 300px;">
+		<div class = "content-container">
+			<div class = "content-panel">
+				<div class = "header" style = "display: flex; align-items: baseline;">
+					<p class = "content-title large">Order #{{ order.ref_code }}</p>
+					<p class = "content-subtitle">{% if order.cancelled %}Cancelled
+												  {% elif order.refund_granted %}Refunded
+												  {% elif order.authorized %}Approved
+												  {% elif order.denied %}Denied
+												  {% endif %}</p>
+				</div>
+				<div class = "section">
+					<form method = "POST" action = "{% url 'dashboards:order_action' %}">
+						{% csrf_token %}
+					
+						<input type = "text" name = "ref_code" value = "{{ order.ref_code }}" hidden>
+						<table>
+							<tbody>
+								<tr>
+									{% if not order.authorized %}
+										<th></th>
 									{% endif %}
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				
-				<div style = "width: fit-content; align-self: end; margin-top: 10px;">
-					<p><span style = "font-family: Roboto-Medium;">You make</span>: <span style = "color: var(--price);">${{ order.get_vendor_keep }}</span></p>
-					<p><span style = "font-family: Roboto-Medium;">Simntx fee</span>: <span style = "color: var(--light-red);">${{ order.get_simntx_keep }}</span></p>
+									
+									<th>Product</th>
+									<th>Vendor</th>
+									<th>Price</th>
+									<th>Quantity</th>
+									<th>Total Price</th>
+								</tr>
+								
+								{% get_order_items order.ref_code as items %}
+								{% for product in items.all %}
+									<tr {% if not product.in_stock %}style = "opacity: .3;" title = "Out of Stock"{% endif %}>
+										{% if not order.authorized %}
+											<td>
+												<input type = "checkbox" name = "products" value = "{{ product.id }}" checked>
+											</td>
+										{% endif %}
+										
+										<td>{{ product.item.title }}</td>
+										<td>{{ product.item.vendor }}</td>
+										<td>{{ product.item.price }}</td>
+										<td>{{ product.quantity }}</td>
+										<td>
+											{% if order_item.item.discount_price %}
+												{{ product.get_total_discount_item_price }}
+											{% else %}
+												{{ product.get_total_item_price }}
+											{% endif %}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+						
+						{% if not order.authorized and not order.denied and not order.cancelled %}
+							<div class = "form-end" style = "flex-direction: row; justify-content: flex-end;">
+								<input class = "form-submit" type = "submit" name = "action" style = "background-color: var(--action-delete);" value = "Deny">
+								<input class = "form-submit" type = "submit" name = "action" style = "margin-left: 10px; background-color: var(--action-accept);" value = "Approve">
+							</div>
+						{% endif %}
+					</form>
 				</div>
-				<div class = "form-end" style = "flex-direction: row; justify-content: flex-end;">
-					<input class = "form-submit" type = "submit" name = "action" style = "background-color: var(--action-delete);" value = "Deny">
-					<input class = "form-submit" type = "submit" name = "action" style = "margin-left: 10px; background-color: var(--action-accept);" value = "Approve">
-				</div>
-			</form>
+			</div>
+		</div>
+		<div class = "content-container main">
+			<div class = "content-panel">
+				{% include "order_snippet.html" with order=order items=items %}
+			</div>
+			<div class = "content-panel">
+				{% include "blocks/order_keep.html" with order=order items=items vendor_view=True %}
+			</div>
 		</div>
 	</div>
 

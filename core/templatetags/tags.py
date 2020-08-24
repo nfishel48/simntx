@@ -20,6 +20,11 @@ def get_cart_count(user):
 
 
 @register.simple_tag
+def get_order_count(items):
+    return items.filter(in_stock = True).count()
+
+
+@register.simple_tag
 def get_notification_count(user):
     notis = Notification.objects.filter(user = user.userprofile, read = False)
 

@@ -1,0 +1,40 @@
+<div class = "header" style = "display: flex; align-items: baseline;">
+	<p class = "content-title large">Keep</p>
+</div>
+
+<div class = "cart-final-prices">
+	{% if vendor_view %}
+		<div class = "cart-item">
+			<div class = "item-details">
+				<p class = "title">Delivery Fee</p>
+			</div>
+			<p class = "price">-$5.00</p>
+		</div>
+		<div class = "cart-item">
+			<div class = "item-details">
+				<p class = "title">Simntx Fee</p>
+			</div>
+			<p class = "price">-${{ order.get_simntx_keep }}</p>
+		</div>
+		<div class = "cart-total">
+			<p class = "title">Vendor Keep (USD)</p>
+			<p class = "price">${{ order.get_vendor_keep }}</p>
+		</div>
+	{% else %}
+		<div class = "cart-total">
+			<p class = "title">Driver Keep (USD)</p>
+			<p class = "price">$5.00</p>
+		</div>
+	{% endif %}
+</div>
+
+{% if DISPLAY_COUPON_FORM %}
+	<form class="card p-2" action="{% url 'core:add-coupon' %}" method="POST">
+		{% csrf_token %}
+		
+		<div class = "form-field row">
+			<input id = "id_code" class = "field-input" type = "text" name = "code" placeholder = "Promo code">
+			<input class = "form-submit" type = "submit" value = "Apply">
+		</div>
+	</form>
+{% endif %}

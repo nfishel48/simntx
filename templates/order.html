@@ -14,42 +14,56 @@ function goBack() {
 {% block home_css %}
 
 	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/cart.css' %}">
+	<link rel = "stylesheet" type = "text/css" href = "{% static 'css/checkout.css' %}">
 	
 {% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group content-panel-container">
-		<div class = "header">
-			<p class = "name">Order #{{ order.ref_code }}</p>
+	<div class = "content-panel-container content-grid two inverse" style = "--side-panel-width: 300px;">
+		<div class = "content-container">
+			<div class = "content-panel">
+				<div class = "header" style = "display: flex; align-items: baseline;">
+					<p class = "content-title large">Order #{{ order.ref_code }}</p>
+					<p class = "content-subtitle">{% if order.cancelled %}Cancelled
+												  {% elif order.refund_granted %}Refunded
+												  {% elif order.authorized %}Approved
+												  {% elif order.denied %}Denied
+												  {% endif %}</p>
+				</div>
+				<div class = "section">
+					<table>
+						<tbody>
+							<tr>
+								<th>Product</th>
+								<th>Vendor</th>
+								<th>Price</th>
+								<th>Quantity</th>
+								<th>Total Price</th>
+							</tr>
+							{% for product in items.all %}
+								<tr {% if not product.in_stock %}style = "opacity: .3;" title = "Out of Stock"{% endif %}>
+									<td>{{ product.item.title }}</td>
+									<td>{{ product.item.vendor }}</td>
+									<td>{{ product.item.price }}</td>
+									<td>{{ product.quantity }}</td>
+									<td>
+										{% if order_item.item.discount_price %}
+											{{ product.get_total_discount_item_price }}
+										{% else %}
+											{{ product.get_total_item_price }}
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
-		<div class = "section">
-			<table>
-				<tbody>
-					<tr>
-						<th>Product</th>
-						<th>Vendor</th>
-						<th>Price</th>
-						<th>Quantity</th>
-						<th>Total Price</th>
-					</tr>
-					{% for product in items.all %}
-						<tr>
-							<td>{{ product.item.title }}</td>
-							<td>{{ product.item.vendor }}</td>
-							<td>{{ product.item.price }}</td>
-							<td>{{ product.quantity }}</td>
-							<td>
-								{% if order_item.item.discount_price %}
-									{{ product.get_total_discount_item_price }}
-								{% else %}
-									{{ product.get_total_item_price }}
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+		<div class = "content-container main">
+			<div class = "content-panel">
+				{% include "order_snippet.html" with order=order items=items %}
 		</div>
 	</div>
 

@@ -1,17 +1,18 @@
 <div class = "header" style = "display: flex; align-items: baseline;">
 	<p class = "content-title large">Order</p>
-	<p class = "content-subtitle">{% get_cart_count user as cart_count %}{{ cart_count }} item{% if cart_count > 1 %}s{% endif %}</p>
+	<p class = "content-subtitle">{% get_order_count items as order_count %}{{ order_count }} item{% if order_count != 1 %}s{% endif %}</p>
 </div>
 <div class = "cart-items">
-	{% get_active_order_items user as cart %}
-	{% for item in cart %}
-		<div class = "cart-item">
-			<div class = "item-details">
-				<p class = "title">{{ item.item.title }}</p>
-				<p class = "quantity">x{{ item.quantity }}</p>
+	{% for item in items %}
+		{% if item.in_stock %}
+			<div class = "cart-item">
+				<div class = "item-details">
+					<p class = "title">{{ item.item.title }}</p>
+					<p class = "quantity">x{{ item.quantity }}</p>
+				</div>
+				<p class = "price">${{ item.get_final_price }}</p>
 			</div>
-			<p class = "price">${{ item.get_final_price }}</p>
-		</div>
+		{% endif %}
 	{% endfor %}
 </div>
 <hr>
