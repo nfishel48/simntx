@@ -29,8 +29,6 @@ urlpatterns = [
     path('request-refund/', views.RequestRefundView.as_view(), name='request-refund'),
 
     path('order/<ref_code>', views.OrderView.as_view(), name='order'),
-    path('set-driver/<ref_code>', views.set_driver, name='set-driver'),
-    path('set-delivered/<ref_code>', views.set_delivered, name='set_delivered'),
 
     path('account/', views.account, name='account'),
     path('account/<str:page>', views.account_page, name='account_page'),

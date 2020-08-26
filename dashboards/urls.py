@@ -22,6 +22,11 @@ urlpatterns = [
     path('driver/<str:page>', views.driver_page, name = 'driver_page'),
     path('driver/order/<str:ref_code>', views.order, name = 'order'),
 
+    path('set-driver/<ref_code>', views.set_driver, name='set-driver'),
+    path('set-delivered/<ref_code>', views.set_delivered, name='set_delivered'),
+    path('unset-driver/<ref_code>', views.unset_driver, name='unset_driver'),
+    path('cancel-order/<ref_code>', views.cancel_order, name='cancel_order'),
+
     path('admin', views.admin, name='admin'),
     path('admin/past_months/<str:month>', views.admin_past_month, name = 'admin_past_month'),
 ]

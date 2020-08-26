@@ -11,7 +11,14 @@
 
 	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
-			<p class = "name">Approve Orders</p>
+			<div style = "display: flex; align-items: baseline;">
+				<p class = "name">Approve Orders</p>
+				<p id = "refresh-timer" class = "content-subtitle">:60</p>
+			</div>
+			<div style = "display: flex; align-items: center;">
+				<input id = "refresh" type = "checkbox" checked>
+				<p style = "font-size: 14px; margin-left: 5px;">Refresh Page Every Minute</p>
+			</div>
 		</div>
 		<div class = "section">
 			<p>Orders: {{ num_orders }}</p>
@@ -55,5 +62,11 @@
 			</table>
 		</div>
 	</div>
+
+{% endblock %}
+
+{% block vendor_js %}
+
+	<script type = "text/javascript" src = "{% static 'js/dashboards/approve_orders.js' %}"></script>
 
 {% endblock %}

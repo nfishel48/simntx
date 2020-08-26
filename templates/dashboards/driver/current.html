@@ -34,9 +34,14 @@
 										<img src = "{% static 'img/icons/eye-48.png' %}">
 									</div>
 								</a>
-								<a href = "{% url 'core:set_delivered' order.ref_code %}">
+								<a href = "{% url 'dashboards:set_delivered' order.ref_code %}">
 									<div class = "action accept" title = "Mark Delivered">
 										<img src = "{% static 'img/icons/check-48.png' %}">
+									</div>
+								</a>
+								<a href = "{% url 'dashboards:unset_driver' order.ref_code %}">
+									<div class = "action delete" title = "Cancel Delivery">
+										<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
 									</div>
 								</a>
 							</td>

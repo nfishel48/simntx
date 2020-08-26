@@ -51,6 +51,13 @@
 										<img src = "{% static 'img/icons/eye-48.png' %}">
 									</div>
 								</a>
+								{% if not order.cancelled and not order.refund_granted and not order.refund_requested and not order.delivered %}
+									<a href = "{% url 'dashboards:cancel_order' order.ref_code %}">
+										<div class = "action delete" title = "Cancel">
+											<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
+										</div>
+									</a>
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}

@@ -711,44 +711,6 @@ class OrderView(LoginRequiredMixin, View):
         return render(self.request, 'order.html', data)
 
 
-# View: Set Driver
-# The function to attach a driver to an order
-def set_driver(request, ref_code):
-    order = Order.objects.filter(ref_code = ref_code)
-
-    if order.exists() and not order[0].being_delivered:
-        order = order[0]
-
-        order.driver = request.user.userprofile
-        order.being_delivered = True
-        order.save()
-
-        notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
-                           reverse('core:order', args=(order.ref_code,)))
-
-    return redirect('dashboards:driver')
-
-
-# View: Set Delivered
-# The function to set an order as delivered
-def set_delivered(request, ref_code):
-    order = Order.objects.filter(ref_code = ref_code)
-
-    if order.exists() and not order[0].delivered:
-        order = order[0]
-        order.being_delivered = False
-        order.delivered = True
-        order.delivered_date = timezone.now()
-        order.save()
-
-        notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
-                           reverse('core:order', args=(order.ref_code,)))
-
-    return redirect('dashboards:driver')
-
-
 # View: Account
 # The homepage for your account settings
 @login_required

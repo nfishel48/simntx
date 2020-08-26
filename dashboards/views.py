@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, reverse
 from django.template.loader import get_template
 from django.contrib import messages
+from django.utils import timezone
 
 from core.models import *
 from core.views import get_general_tags, get_vendors, can_create_promotion
@@ -90,8 +91,8 @@ def vendor_page(request, page, month=date.today()):
     elif page == 'approve_orders':
         month_balance = 0
 
-        orders = Order.objects.filter(ordered = True, authorized = False, denied = False, vendor = vendor)
-        month_orders = Order.objects.filter(ordered = True, authorized = True, vendor = vendor, ordered_date__date__month = datetime.today().month)
+        orders = Order.objects.filter(ordered = True, authorized = False, denied = False, cancelled = False, vendor = vendor)
+        month_orders = Order.objects.filter(ordered = True, authorized = True, cancelled = False, vendor = vendor, ordered_date__date__month = datetime.today().month)
 
         for order in month_orders.all():
             month_balance += order.get_vendor_keep()
@@ -490,7 +491,7 @@ def delete_page(request, page, id, **args):
 def driver(request):
     data = {}
 
-    orders = Order.objects.filter(ordered=True, being_delivered=False, delivered=False, authorized = True)#.exclude(user = request.user)
+    orders = Order.objects.filter(ordered=True, being_delivered=False, delivered=False, cancelled=False, authorized = True).exclude(user = request.user)
 
     data['orders'] = orders
 
@@ -506,7 +507,7 @@ def driver_page(request, page):
         return redirect('dashboards:driver')
 
     if page == 'current':
-        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = False, driver = request.user.userprofile, authorized = True)#.exclude(user = request.user)
+        orders = Order.objects.filter(ordered = True, being_delivered = True, delivered = False, cancelled = False, driver = request.user.userprofile, authorized = True).exclude(user = request.user)
 
         data['orders'] = orders
        
@@ -528,6 +529,80 @@ def driver_page(request, page):
     print(template)
 
     return render(request, template, data)
+
+
+# View: Set Driver
+# The function to attach a driver to an order
+def set_driver(request, ref_code):
+    order = Order.objects.filter(ref_code = ref_code)
+
+    if order.exists() and not order[0].being_delivered:
+        order = order[0]
+
+        order.driver = request.user.userprofile
+        order.being_delivered = True
+        order.save()
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:driver')
+
+
+# View: Set Delivered
+# The function to set an order as delivered
+def set_delivered(request, ref_code):
+    order = Order.objects.filter(ref_code = ref_code)
+
+    if order.exists() and not order[0].delivered:
+        order = order[0]
+        order.being_delivered = False
+        order.delivered = True
+        order.delivered_date = timezone.now()
+        order.save()
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:driver')
+
+
+def unset_driver(request, ref_code):
+    order = Order.objects.filter(ref_code=ref_code)
+
+    if order.exists() and not order[0].delivered:
+        order = order[0]
+        order.being_delivered = False
+        order.driver = None
+        order.save()
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
+                               order.ref_code) + '</span> has been unassigned its driver. Its now waiting for another.',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:driver')
+
+
+def cancel_order(request, ref_code):
+    order = Order.objects.filter(ref_code=ref_code)
+
+    if order.exists() and not order[0].delivered:
+        order = order[0]
+        order.being_delivered = False
+        order.delivered = False
+        order.authorized = False
+        order.cancelled = True
+        order.save()
+
+        notifications.push(order.user,
+                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
+                               order.ref_code) + '</span> has been cancelled by the vendor.',
+                           reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('dashboards:vendor')
 
 
 def vendor_order(request, ref_code):
