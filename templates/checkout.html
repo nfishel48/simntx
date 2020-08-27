@@ -114,7 +114,8 @@
 		</div>
 		<div class = "content-container main">
 			<div class = "content-panel">
-				{% include "order_snippet.html" %}
+				{% get_active_order_items user as order_items %}
+				{% include "order_snippet.html" with items=order_items %}
 			</div>
 		</div>
 	</div>

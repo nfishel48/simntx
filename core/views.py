@@ -711,6 +711,27 @@ class OrderView(LoginRequiredMixin, View):
         return render(self.request, 'order.html', data)
 
 
+def cancel_order(request, ref_code):
+    order = Order.objects.filter(ref_code=ref_code)
+
+    if order.exists():
+        if order.exists() and not order[0].being_delivered and not order[0].delivered and not order[0].refund_granted and not order[0].refund_requested:
+            order = order[0]
+
+            if not order.authorized and not order.denied:
+                stripe.Refund.create(charge = order.payment.stripe_charge_id)
+
+            order.cancelled = True
+            order.save()
+
+            notifications.push(order.user,
+                               'Order <span style = "font-family: Roboto-Medium;">#' + str(
+                                   order.ref_code) + '</span> has been delivered!',
+                               reverse('core:order', args=(order.ref_code,)))
+
+    return redirect('core:account_page', page = 'orders')
+
+
 # View: Account
 # The homepage for your account settings
 @login_required

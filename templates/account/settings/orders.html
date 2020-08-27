@@ -18,18 +18,35 @@
 					<tr class = "header-row">
 						<th>Reference Code</th>
 						<th>Ordered</th>
-						<th>Delivered</th>
+						<th>Status</th>
 					</tr>
 					
 					{% for order in orders %}
 						<tr>
 							<td>{{ order.ref_code }}</td>
 							<td>{{ order.ordered_date }}</td>
-							<td>{{ order.delivered_date }}</td>
 							<td>
+								{% if order.cancelled %}Cancelled
+								{% elif order.denied %}Denied
+								{% elif order.being_delivered %}Being Delivered
+								{% elif order.delivered %}Delivered on {{ order.delivered_date }}
+								{% elif order.refund_requested %}Requested Refund
+								{% elif order.refund_granted %}Refunded
+								{% else %}Waiting for Driver{% endif %}
+							</td>
+							<td class = "action-col">
 								<a href = "{{ order.get_absolute_url }}">
-									<button class="form-submit"  type="submit">View this order</button>
+									<div id = "delete-post" class = "action view" title = "View" >
+										<img src = "{% static 'img/icons/eye-48.png' %}">
+									</div>
 								</a>
+								{% if not order.cancelled and not order.being_delivered and not order.delivered and not order.denied and not order.refund_granted and not order.refund_requested %}
+									<a href = "{% url 'core:cancel_order' order.ref_code %}">
+										<div class = "action delete" title = "Cancel">
+											<img src = "{% static 'img/icons/delete-red-24.png' %}" style = "--grayscale: 100%; --brightness: 0%;">
+										</div>
+									</a>
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}
