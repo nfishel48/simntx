@@ -8,7 +8,7 @@ from django.contrib.admin import sites
 #ENVIRONMENT = os.getenv('ENVIRONMENT', 'developmentLocalNate', 'developmentLocalNick', 'devlomentLiveHeroku')
 
 ENVIRONMENT = local_settings.ENVIRONMENT
-DEBUG = True
+DEBUG = False
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
@@ -92,36 +92,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if ENVIRONMENT == 'developmentLocalNick':
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, 'db.sqlite3')
-        }
-    }
-
-if ENVIRONMENT == 'developmentLocalNate':
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "psql",
-            "USER": "nfishel",
-            "PASSWORD": "",
-            "HOST": "localhost",
-            "PORT": "5432",
-            }
-    }
 
 if ENVIRONMENT == 'developmentLiveHeroku':
     INSTALLED_APPS.append('storages')
 
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "dai1klnpvfaja0",
-            "USER": "cgovsgkihvelvu",
-            "PASSWORD": "991cb9de5f5b9ca3a4d0dbf51d48a17862735567d0994a3441161ea7898c0e6f",
-            "HOST": "ec2-52-72-65-76.compute-1.amazonaws.com",
+            "NAME": "d3v4ll78418ovf",
+            "USER": "tdwtocjocvuysq",
+            "PASSWORD": "df50fc64a2ab062534f1e5f212eb3de7c53e133dc550d509f27b56f2cec71c86",
+            "HOST": "ec2-50-19-26-235.compute-1.amazonaws.com",
             "PORT": "5432",
             }
     }

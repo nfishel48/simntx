@@ -317,6 +317,9 @@
 	
 	cursor: pointer;
 }
+.action.view{ --background-color: var(--action-view); }
+.action.accept{ --background-color: var(--action-accept); }
+.action.delete{ --background-color: var(--action-delete); }
 .action:hover{
 	background-color: var(--background-color);
 }

@@ -22,6 +22,10 @@
 	--dark-text: #404040;
 	--light-text: #8c8c8c;
 	--price: #46b323;
+	
+	--action-view: var(--light-blue);
+	--action-accept: var(--green);
+	--action-delete: var(--light-red);
 }
 
 *{
