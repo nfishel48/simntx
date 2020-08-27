@@ -17,7 +17,7 @@ ALLOWED_HOSTS = [
     'localhost', 'vendor.localhost',
     '10.0.0.53', 'vendor.10.0.0.53',
     'simntxdev.herokuapp.com', 'vendor.simntxdev.herokuapp.com',
-    'simntx.herokuapp.com', 'vendor.simntx.herokuapp.com',
+    'simntx.herokuapp.com', 'vendor.simntx.herokuapp.com', 'simntx-live.herokuapp.com',
     '127.0.0.1', 'vendor.127.0.0.1', 'http://www.simntx.net/', 'www.simntx.net'
 ]
 
@@ -98,6 +98,7 @@ if ENVIRONMENT == 'developmentLiveHeroku':
 
     DATABASES = {
         "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
             "NAME": "d3v4ll78418ovf",
             "USER": "tdwtocjocvuysq",
             "PASSWORD": "df50fc64a2ab062534f1e5f212eb3de7c53e133dc550d509f27b56f2cec71c86",
