@@ -1,16 +1,33 @@
 {% extends 'account.html' %}
 
+{% load staticfiles %}
+
+{% block title %}Delete Account{% endblock %}
+
 {% block select_account %}{% endblock %}
 {% block select_delete %}selected{% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Delete Account</p>
 		</div>
 		<div class = "section">
-			
+			<form method = 'POST' action = "{% url 'core:delete_account' %}">
+				{% csrf_token %}
+				
+				<div class = "form-field row">
+					<p class = "field-label">Current Password</p>
+					<div class = "field-inputs">
+						<input id = "password" class = "field-input" type = "password" name = "password" placeholder = "Password" required>
+					</div>
+				</div>
+				
+				<div class = "form-end end">
+					<input class = "form-submit small" type = "submit" name = "action" value = "Delete">
+				</div>
+			</form>
 		</div>
 	</div>
 

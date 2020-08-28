@@ -103,7 +103,7 @@ def vendor_page(request, page, month=date.today()):
     elif page == 'past_orders':
         month_balance = 0
 
-        month_orders = Order.objects.filter(ordered = True, authorized = True, vendor = vendor, ordered_date__date__month = month.month, ordered_date__date__year = month.year)
+        month_orders = Order.objects.filter(ordered = True, authorized = True, cancelled = False, vendor = vendor, ordered_date__date__month = month.month, ordered_date__date__year = month.year)
 
         for order in month_orders.all():
             month_balance += order.get_vendor_keep()
@@ -186,15 +186,9 @@ def approve_order(request, ref_code, exclusions=None):
         charge = chargeUser(request, order)
 
         if charge[0]:
-            notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
-                               order.ref_code) + '</span> has been approved by the vendor and is waiting for a driver. Your card has been charged.',
-                           reverse('core:order', args=(order.ref_code,)))
+            notifications.order_approved_denied(order.user, order.ref_code, True)
         else:
-            notifications.push(order.user,
-                               'Order <span style = "font-family: Roboto-Medium;">#' + str(
-                                   order.ref_code) + '</span> has been cancelled. <span style "color: var(--light-red)">' + charge[1] + '</span>',
-                               reverse('core:order', args=(order.ref_code,)))
+            notifications.order_cancelled(order.user, order.ref_code, charge[1])
 
     return redirect('dashboards:vendor_page', page='approve_orders')
 
@@ -208,10 +202,7 @@ def deny_order(request, ref_code):
         order.denied = True
         order.save()
 
-        notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
-                               order.ref_code) + '</span> has been denied by the vendor.',
-                           reverse('core:order', args=(order.ref_code,)))
+        notifications.order_approved_denied(order.user, order.ref_code, False)
 
     return redirect('dashboards:vendor_page', page='approve_orders')
 
@@ -491,7 +482,7 @@ def delete_page(request, page, id, **args):
 def driver(request):
     data = {}
 
-    orders = Order.objects.filter(ordered=True, being_delivered=False, delivered=False, cancelled=False, authorized = True).exclude(user = request.user)
+    orders = Order.objects.filter(ordered=True, being_delivered=False, delivered=False, cancelled=False, authorized = True)
 
     data['orders'] = orders
 
@@ -543,9 +534,7 @@ def set_driver(request, ref_code):
         order.being_delivered = True
         order.save()
 
-        notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been assigned a driver. Watch for your delivery!',
-                           reverse('core:order', args=(order.ref_code,)))
+        notifications.order_assigned_unassigned(order.user, order.ref_code, True)
 
     return redirect('dashboards:driver')
 
@@ -562,9 +551,7 @@ def set_delivered(request, ref_code):
         order.delivered_date = timezone.now()
         order.save()
 
-        notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been delivered!',
-                           reverse('core:order', args=(order.ref_code,)))
+        notifications.order_delivered(order.user, order.ref_code)
 
     return redirect('dashboards:driver')
 
@@ -578,10 +565,7 @@ def unset_driver(request, ref_code):
         order.driver = None
         order.save()
 
-        notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
-                               order.ref_code) + '</span> has been unassigned its driver. Its now waiting for another.',
-                           reverse('core:order', args=(order.ref_code,)))
+        notifications.order_assigned_unassigned(order.user, order.ref_code, False)
 
     return redirect('dashboards:driver')
 
@@ -597,10 +581,7 @@ def cancel_order(request, ref_code):
         order.cancelled = True
         order.save()
 
-        notifications.push(order.user,
-                           'Order <span style = "font-family: Roboto-Medium;">#' + str(
-                               order.ref_code) + '</span> has been cancelled by the vendor.',
-                           reverse('core:order', args=(order.ref_code,)))
+        notifications.order_cancelled(order.user, order.ref_code, '')
 
     return redirect('dashboards:vendor')
 
@@ -670,6 +651,50 @@ def admin(request, month=date.today()):
     data['forward_name'] = forward_month.strftime('%B')
 
     return render(request, 'dashboards/admin.html', data)
+
+
+def admin_page(request, page, month=date.today()):
+    data = {}
+
+    template = 'dashboards/admin/' + page + '.html'
+
+    if not is_template(template):
+        return redirect('dashboards:admin')
+
+    if page == 'drivers':
+        drivers = []
+
+        total_balance = 0
+
+        for driver in UserProfile.objects.filter(is_driver = True):
+            amount_orders = Order.objects.filter(ordered=True, authorized=True, cancelled=False, delivered=True, driver=driver,
+                                                ordered_date__date__month=month.month,
+                                                ordered_date__date__year=month.year).count()
+
+            print(amount_orders)
+
+            month_balance = amount_orders * 5
+
+            total_balance += month_balance
+
+            if amount_orders > 0:
+                drivers.append([driver, amount_orders, "%.2f" % round(month_balance, 2)])
+
+        back_month = (month.replace(day=1) - timedelta(days=1))
+        forward_month = (month.replace(day=1) + timedelta(days=40))
+
+        data['drivers'] = drivers
+        data['month'] = month.strftime('%B')
+        data['year'] = month.year
+        data['total_balance'] = "%.2f" % round(total_balance, 2)
+
+        data['back_month'] = back_month.strftime('%m%Y')
+        data['forward_month'] = forward_month.strftime('%m%Y')
+
+        data['back_name'] = back_month.strftime('%B')
+        data['forward_name'] = forward_month.strftime('%B')
+
+    return render(request, template, data)
 
 
 def admin_past_month(request, month):

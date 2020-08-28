@@ -147,6 +147,15 @@ class UserProfile(models.Model):
         return 0
 
 
+class UserNotificationSettings(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created = models.BooleanField(default = True)
+    approved_denied = models.BooleanField(default = True)
+    assigned_unassigned = models.BooleanField(default = True)
+    cancelled = models.BooleanField(default = True)
+    delivered = models.BooleanField(default = True)
+
+
 class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.FloatField()

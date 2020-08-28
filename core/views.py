@@ -462,7 +462,7 @@ class PaymentView(View):
             order.ref_code = create_ref_code()
             order.save()
 
-            notifications.push(self.request.user, 'Order <span style = "font-family: Roboto-Medium;">#' + str(order.ref_code) + '</span> has been created and is waiting to be approved by the vendor.', reverse('core:order', args = (order.ref_code,)))
+            notifications.order_created(self.request.user, order.ref_code)
 
             messages.success(self.request, "Your order was successful!")
 
@@ -724,10 +724,7 @@ def cancel_order(request, ref_code):
             order.cancelled = True
             order.save()
 
-            notifications.push(order.user,
-                               'Order <span style = "font-family: Roboto-Medium;">#' + str(
-                                   order.ref_code) + '</span> has been delivered!',
-                               reverse('core:order', args=(order.ref_code,)))
+            notifications.order_delivered(order.user, order.ref_code)
 
     return redirect('core:account_page', page = 'orders')
 
@@ -802,6 +799,51 @@ class ChangePassView(PasswordChangeView):
 
 
 change_password = login_required(ChangePassView.as_view())
+
+
+def change_preferences(request):
+    if request.method == 'POST':
+        created = request.POST.get('created') == 'on'
+        approved_denied = request.POST.get('approved_denied') == 'on'
+        assigned_unassigned = request.POST.get('assigned_unassigned') == 'on'
+        cancelled = request.POST.get('cancelled') == 'on'
+        delivered = request.POST.get('delivered') == 'on'
+
+        print(created)
+
+        if request.user.usernotificationsettings:
+           request.user.usernotificationsettings.created = created
+           request.user.usernotificationsettings.approved_denied = approved_denied
+           request.user.usernotificationsettings.assigned_unassigned = assigned_unassigned
+           request.user.usernotificationsettings.cancelled = cancelled
+           request.user.usernotificationsettings.delivered = delivered
+
+           request.user.usernotificationsettings.save()
+        else:
+            request.user.usernotificationsettings = UserNotificationSettings(created=created,
+                                                                             approved_denied=approved_denied,
+                                                                             assigned_unassigned=assigned_unassigned,
+                                                                             cancelled=cancelled, delivered=delivered)
+
+            request.user.usernotificationsettings.save()
+
+    return redirect('core:account_page', page = 'notifications')
+
+
+def delete_account(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+
+        user = authenticate(email = request.user.email, password = password)
+
+        if user is not None:
+            user.delete()
+
+            return redirect('core:landing')
+        else:
+            messages.info('Password does not match')
+
+            return redirect('core:account_page', page = 'delete')
 
 
 # View: Landing

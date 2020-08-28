@@ -1,34 +1,11 @@
-{% extends 'with_side_panel.html' %}
+{% extends 'dashboards/admin.html' %}
 
 {% load staticfiles %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}Drivers{% endblock %}
 
-{% block left_panel %}
-
-	<div class = "left-panel-group">
-		<p class = "title">Admin Dashboard</p>
-		<div class = "links">
-			<a href = "{% url 'dashboards:admin' %}">
-				<div class = "link {% block select_vendors %}selected{% endblock %}">
-					<div class = "link-image">
-						<img src = "{% static 'img/icons/home-color-48.png' %}">
-					</div>
-					<p>Vendors</p>
-				</div>
-			</a>
-			<a href = "{% url 'dashboards:admin_page' 'drivers' %}">
-				<div class = "link {% block select_drivers %}{% endblock %}">
-					<div class = "link-image">
-						<img src = "{% static 'img/icons/home-color-48.png' %}">
-					</div>
-					<p>Drivers</p>
-				</div>
-			</a>
-		</div>
-	</div>
-
-{% endblock %}
+{% block select_vendors %}{% endblock %}
+{% block select_drivers %}selected{% endblock %}
 
 {% block right_panel %}
 
@@ -48,16 +25,16 @@
 			<table class = "data-table">
 				<tbody>
 					<tr class = "header-row">
-						<th>Vendor</th>
+						<th>Driver</th>
 						<th>Orders</th>
 						<th>Balance Due</th>
 					</tr>
 					
-					{% for vendor in vendors %}
+					{% for driver in drivers %}
 						<tr>
-							<td>{{ vendor.0 }}</td>
-							<td>{{ vendor.1 }}</td>
-							<td style = "color: var(--price);">${{ vendor.2 }}</td>
+							<td>{{ driver.0 }}</td>
+							<td>{{ driver.1 }}</td>
+							<td style = "color: var(--price);">${{ driver.2 }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

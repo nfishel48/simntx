@@ -28,5 +28,6 @@ urlpatterns = [
     path('cancel-order/<ref_code>', views.cancel_order, name='cancel_order'),
 
     path('admin', views.admin, name='admin'),
+    path('admin/<str:page>', views.admin_page, name='admin_page'),
     path('admin/past_months/<str:month>', views.admin_past_month, name = 'admin_past_month'),
 ]

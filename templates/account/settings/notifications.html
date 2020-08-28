@@ -2,17 +2,46 @@
 
 {% load staticfiles %}
 
+{% block title %}Notifications{% endblock %}
+
 {% block select_account %}{% endblock %}
 {% block select_notifications %}selected{% endblock %}
 
 {% block right_panel %}
 
-	<div class = "right-panel-group">
+	<div class = "right-panel-group content-panel-container">
 		<div class = "header">
 			<p class = "name">Notifications</p>
 		</div>
 		<div class = "section">
-			
+			<form method = 'POST' action = "{% url 'core:change_preferences' %}">
+				{% csrf_token %}
+				
+				<div class = "form-field row left" style = "margin-top: 5px !important; margin-bottom: 5px;">
+					<input class = "form-checkbox" id = "created" type = "checkbox" name = "created" {% if user.usernotificationsettings.created %}checked{% endif %}>
+					<label for = "created">When an order is created</label>
+				</div>
+				<div class = "form-field row left" style = "margin-top: 5px !important; margin-bottom: 5px;">
+					<input class = "form-checkbox" id = "approved_denied" type = "checkbox" name = "approved_denied" {% if user.usernotificationsettings.approved_denied %}checked{% endif %}>
+					<label for = "approved_denied">When an order is approved/denied by the vendor</label>
+				</div>
+				<div class = "form-field row left" style = "margin-top: 5px !important; margin-bottom: 5px;">
+					<input class = "form-checkbox" id = "assigned_unassigned" type = "checkbox" name = "assigned_unassigned" {% if user.usernotificationsettings.assigned_unassigned %}checked{% endif %}>
+					<label for = "assigned_unassigned">When an order is assigned/unassigned a driver</label>
+				</div>
+				<div class = "form-field row left" style = "margin-top: 5px !important; margin-bottom: 5px;">
+					<input class = "form-checkbox" id = "cancelled" type = "checkbox" name = "cancelled" {% if user.usernotificationsettings.cancelled %}checked{% endif %}>
+					<label for = "cancelled">When an order is cancelled</label>
+				</div>
+				<div class = "form-field row left" style = "margin-top: 5px !important; margin-bottom: 5px;">
+					<input class = "form-checkbox" id = "delivered" type = "checkbox" name = "delivered" {% if user.usernotificationsettings.delivered %}checked{% endif %}>
+					<label for = "delivered">When an order is delivered</label>
+				</div>
+				
+				<div class = "form-end end">
+					<input class = "form-submit small" type = "submit" name = "action" value = "Save">
+				</div>
+			</form>
 		</div>
 	</div>
 

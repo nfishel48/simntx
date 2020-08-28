@@ -34,6 +34,8 @@ urlpatterns = [
     path('account/', views.account, name='account'),
     path('account/<str:page>', views.account_page, name='account_page'),
     path('change_password', views.change_password, name='change_password'),
+    path('change_preferences', views.change_preferences, name='change_preferences'),
+    path('delete_account', views.delete_account, name='delete_account'),
 
     path('landing/', views.landing, name='landing'),
     path('driver_signup/', views.driver_signup, name='driver_signup'),
