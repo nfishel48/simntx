@@ -8,7 +8,7 @@ from django.contrib.admin import sites
 #ENVIRONMENT = os.getenv('ENVIRONMENT', 'developmentLocalNate', 'developmentLocalNick', 'devlomentLiveHeroku')
 
 ENVIRONMENT = local_settings.ENVIRONMENT
-DEBUG = True
+DEBUG = False
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
@@ -93,9 +93,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-if ENVIRONMENT == 'developmentLiveHeroku':
+if (DEBUG == False):
     INSTALLED_APPS.append('storages')
-
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -106,15 +105,20 @@ if ENVIRONMENT == 'developmentLiveHeroku':
             "PORT": "5432",
             }
     }
-
-    # AWS_ACCESS_KEY_ID = ' AKIAXZMCD6S4VCTZGHVQ '
-    # AWS_SECRET_ACCESS_KEY = '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'
-    # AWS_STORAGE_BUCKET_NAME = 'simntx'
-    # AWS_S3_FILE_OVERWRITE = False
-    # AWS_DEFAULT_ACL = None
-    # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    # AWS_S3_REGION_NAME = 'us-east-2'
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+else:
+    INSTALLED_APPS.append('storages')
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "dai1klnpvfaja0",
+            "USER": "cgovsgkihvelvu",
+            "PASSWORD": "991cb9de5f5b9ca3a4d0dbf51d48a17862735567d0994a3441161ea7898c0e6f",
+            "HOST": "ec2-52-72-65-76.compute-1.amazonaws.com",
+            "PORT": "5432",
+            }
+    }
+  
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
 if ENVIRONMENT == 'production':
@@ -167,9 +171,12 @@ ACCOUNT_FORMS = {'signup': 'core.forms.UserSignUpForm'}
 ROOT_URLCONF = 'simntx.urls'
 
 # STRIPE SETTINGS
-STRIPE_PUBLIC_KEY = 'pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk'
-STRIPE_SECRET_KEY = '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'
-
+if DEBUG == True:
+    STRIPE_PUBLIC_KEY = 'pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk'
+    STRIPE_SECRET_KEY = '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'
+else:
+    STRIPE_PUBLIC_KEY = 'pk_test_51H6HtIBIRW4ci3Bhs3n98Lmeb9sZiXLnKpKsWVxp3BU0ULH4rnv8KtPl6MgA8WzBia6Muc7ZE1E84MSHiR9HrwrJ00WpXuvaSn'
+    STRIPE_SECRET_KEY = 'sk_test_51H6HtIBIRW4ci3Bh2WYF9bkxfJZydcTVgosqEVhzlsrDS2fhgmMFd3bCo6Rn7bFgx6TtOZLYKgX8zI1ltidHvja600x1w3CRGz'
 
 EMAIL_HOST= 'smtp.gmail.com'
 EMAIL_HOST_USER= 'simntxdev@gmail.com'
