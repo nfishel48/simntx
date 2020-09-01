@@ -86,7 +86,12 @@
 		</div>
 		<div class = "content-container">
 			<div class = "content-panel">
+			{% comment %}
+			Somthing is wrong with this and im not being payed anymore
+			 {% get_cart_count user as cart_count_two %}
+			{% if cart_count_two == 0 %}
 				{% include "order_snippet.html" with items=order_items %}
+			{% endif %} {% endcomment %}
 			</div>
 		</div>
 	</div>

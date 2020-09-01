@@ -137,8 +137,8 @@ class UserProfile(models.Model):
     def get_user(self):
         return self.user
 
-    @classmethod
-    def get_cart_count(cls, user):
+    def get_cart_count(self):
+        user = get_user(self)
         order = Order.objects.filter(user = user, ordered = False)
 
         if order.exists():
