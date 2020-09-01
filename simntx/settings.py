@@ -18,7 +18,7 @@ ALLOWED_HOSTS = [
     '10.0.0.53', 'vendor.10.0.0.53',
     'simntxdev.herokuapp.com', 'vendor.simntxdev.herokuapp.com',
     'simntx.herokuapp.com', 'vendor.simntx.herokuapp.com', 'simntx-live.herokuapp.com',
-    '127.0.0.1', 'vendor.127.0.0.1', 'http://www.simntx.net/', 'www.simntx.net'
+    '127.0.0.1', 'vendor.127.0.0.1', 'http://www.simntx.net/', 'www.simntx.net','www.simntx.com'
 ]
 
 # must make migrations and migrate after adding apps
