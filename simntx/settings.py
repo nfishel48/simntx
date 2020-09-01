@@ -17,13 +17,12 @@ ALLOWED_HOSTS = [
     'localhost', 'vendor.localhost',
     '10.0.0.53', 'vendor.10.0.0.53',
     'simntxdev.herokuapp.com', 'vendor.simntxdev.herokuapp.com',
-    'simntx.herokuapp.com', 'vendor.simntx.herokuapp.com', 'simntx-live.herokuapp.com',
-    '127.0.0.1', 'vendor.127.0.0.1', 'http://www.simntx.net/', 'www.simntx.net'
+    'simntx.herokuapp.com', 'vendor.simntx.herokuapp.com',
+    '127.0.0.1', 'vendor.127.0.0.1',
 ]
 
 # must make migrations and migrate after adding apps
 INSTALLED_APPS = [
-    #'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,31 +80,35 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+if ENVIRONMENT == 'developmentLocalNick':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, 'db.sqlite3')
+        }
+    }
 
-if (DEBUG == False):
-    INSTALLED_APPS.append('storages')
+if ENVIRONMENT == 'developmentLocalNate':
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "d3v4ll78418ovf",
-            "USER": "tdwtocjocvuysq",
-            "PASSWORD": "df50fc64a2ab062534f1e5f212eb3de7c53e133dc550d509f27b56f2cec71c86",
-            "HOST": "ec2-50-19-26-235.compute-1.amazonaws.com",
+            "NAME": "psql",
+            "USER": "nfishel",
+            "PASSWORD": "",
+            "HOST": "localhost",
             "PORT": "5432",
             }
     }
-else:
+
+if ENVIRONMENT == 'developmentLiveHeroku':
     INSTALLED_APPS.append('storages')
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -117,8 +119,15 @@ else:
             "PORT": "5432",
             }
     }
-  
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+    AWS_ACCESS_KEY_ID = ' AKIAXZMCD6S4VCTZGHVQ '
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'simntx'
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_S3_REGION_NAME = 'us-east-2'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 if ENVIRONMENT == 'production':
@@ -144,7 +153,6 @@ LOGIN_REDIRECT_URL = '/'
 # CRISPY FORMS
 
 LOGIN_EXEMPT_URLS = (
-    r'^store',
     r'^account/login/$',
     r'^accounts/login/$',
     r'^account/logout/$',
@@ -172,11 +180,12 @@ ROOT_URLCONF = 'simntx.urls'
 
 # STRIPE SETTINGS
 if DEBUG == True:
-    STRIPE_PUBLIC_KEY = 'pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk'
-    STRIPE_SECRET_KEY = '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'
-else:
     STRIPE_PUBLIC_KEY = 'pk_test_51H6HtIBIRW4ci3Bhs3n98Lmeb9sZiXLnKpKsWVxp3BU0ULH4rnv8KtPl6MgA8WzBia6Muc7ZE1E84MSHiR9HrwrJ00WpXuvaSn'
     STRIPE_SECRET_KEY = 'sk_test_51H6HtIBIRW4ci3Bh2WYF9bkxfJZydcTVgosqEVhzlsrDS2fhgmMFd3bCo6Rn7bFgx6TtOZLYKgX8zI1ltidHvja600x1w3CRGz'
+else:
+    STRIPE_PUBLIC_KEY = 'pk_live_51H6HtIBIRW4ci3BhZLMNo2GrB2F79zFZtwF0OgmHH42tWNvlCOoNv4WSMebIVsEfDJ5Y7XxKQb4ddsxjQLceC1LV00GsItcgxk'
+    STRIPE_SECRET_KEY = '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'
+
 
 EMAIL_HOST= 'smtp.gmail.com'
 EMAIL_HOST_USER= 'simntxdev@gmail.com'
@@ -186,3 +195,19 @@ EMAIL_PORT= 587
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
+
+#S3 BUCKETS CONFIG
+
+
+'''
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+'''
