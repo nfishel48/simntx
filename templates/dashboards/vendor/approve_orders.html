@@ -35,7 +35,7 @@
 					</tr>
 					
 					{% for order in orders %}
-						{% if order.payment_id.exists() %}
+						{% comment %} {% if order.payment_id.exists() %} {% endcomment %}
 						<tr>
 							<td>{{ order.ref_code }}</td>
 							<td>{{ order.ordered_date }}</td>
@@ -58,7 +58,7 @@
 								</a>
 							</td>
 						</tr>
-						{% endif %}
+						{% comment %} {% endif %} {% endcomment %}
 					{% endfor %}
 				</tbody>
 			</table>
