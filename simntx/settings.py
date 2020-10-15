@@ -9,6 +9,7 @@ from django.contrib.admin import sites
 
 ENVIRONMENT = local_settings.ENVIRONMENT
 DEBUG = True
+USE_S3 = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_countries',
     'stripe',
+
+    #S3 storage
+    'storages',
 
     # Custom
     'core',
@@ -85,16 +89,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AKIATOTJI2BKFIJUCHYI')
+    AWS_SECRET_ACCESS_KEY = os.getenv('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')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('django-static-simntx')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    AWS_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 
 if (DEBUG == False):
-    INSTALLED_APPS.append('storages')
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -106,7 +125,6 @@ if (DEBUG == False):
             }
     }
 else:
-    INSTALLED_APPS.append('storages')
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -118,7 +136,7 @@ else:
             }
     }
   
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
 if ENVIRONMENT == 'production':
