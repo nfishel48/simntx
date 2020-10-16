@@ -1,5 +1,5 @@
 html { 
-    /* background: url(s3://simntx/img/landing.jpg) no-repeat center center fixed;  */
+    background: url(https://django-static-simntx.s3.us-east-2.amazonaws.com/static_in_env/css/landing.jpg) no-repeat center center fixed;
     background-color: #f7f8fa;
     -webkit-background-size: cover;
     -moz-background-size: cover;
