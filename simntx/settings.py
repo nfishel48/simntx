@@ -92,16 +92,25 @@ USE_TZ = True
 USE_S3 = os.getenv('USE_S3') == 'TRUE'
 USE_S3 = True
 
+AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'CacheControl': 'max-age=94608000',
+}
+
 if USE_S3:
     # aws settings
-    AWS_ACCESS_KEY_ID = ('AKIATOTJI2BKFIJUCHYI')
-    AWS_SECRET_ACCESS_KEY = ('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')
-    AWS_STORAGE_BUCKET_NAME = ('django-static-simntx')
+    AWS_STORAGE_BUCKET_NAME = 'django-static-simntx'
+    AWS_S3_REGION_NAME = 'us-east-2'  # e.g. us-east-2
+    AWS_ACCESS_KEY_ID = 'AKIATOTJI2BKFIJUCHYI'
+    AWS_SECRET_ACCESS_KEY = 'Y53Bb0bsEMnj6fqCPNgeRpqhb2ldQkY63LZiDKun'
+    
+    # Tell django-storages the domain to use to refer to static files.
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
     AWS_DEFAULT_ACL = 'public-read'
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+   
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # s3 static settings
-    AWS_LOCATION = 'static_root'
+    AWS_LOCATION = 'static_in_env'
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
